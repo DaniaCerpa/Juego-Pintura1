@@ -6,7 +6,10 @@
       "jars": [["red", "red", "red", "blue"], ["blue", "blue", "blue"], ["red"]],
       "par": 2,
       "difficulty": 1,
-      "rules": { "mixes": [], "drying": [] },
+      "rules": {
+        "mixes": [],
+        "drying": []
+      },
       "handmade": true,
       "seed": 1
     },
@@ -16,7 +19,10 @@
       "jars": [["red", "red", "red", "blue"], ["blue", "blue", "blue", "red"], [], []],
       "par": 3,
       "difficulty": 1,
-      "rules": { "mixes": [], "drying": [] },
+      "rules": {
+        "mixes": [],
+        "drying": []
+      },
       "handmade": true,
       "seed": 2
     },
@@ -26,9 +32,51 @@
       "jars": [["yellow", "yellow", "blue", "blue"], ["blue", "blue", "yellow", "yellow"], [], []],
       "par": 3,
       "difficulty": 1,
-      "rules": { "mixes": [], "drying": [] },
+      "rules": {
+        "mixes": [],
+        "drying": []
+      },
       "handmade": true,
       "seed": 3
+    },
+    {
+      "id": 21,
+      "capacity": 4,
+      "jars": [["red", "red", "red", "blue"], ["green", "green", "red", "yellow"], [], []],
+      "par": 4,
+      "difficulty": 1,
+      "rules": {
+        "mixes": ["blue+yellow"],
+        "drying": []
+      },
+      "handmade": true,
+      "seed": 21
+    },
+    {
+      "id": 51,
+      "capacity": 4,
+      "jars": [
+        ["orange", "pink", "cream", "sky"],
+        ["cream", "cream", "pink", "sky"],
+        ["yellow", "pink", "orange", "sky"],
+        ["pink", "orange", "blue", "orange"],
+        ["yellow", "blue", "cream", "sky"],
+        [],
+        []
+      ],
+      "par": 16,
+      "difficulty": 4,
+      "rules": {
+        "mixes": ["blue+yellow"],
+        "drying": [
+          {
+            "jar": 1,
+            "fuse": 12
+          }
+        ]
+      },
+      "handmade": true,
+      "seed": 51
     }
   ]
 }

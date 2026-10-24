@@ -20,3 +20,14 @@ export function getLevelDef(id: number): LevelDef | undefined {
 export function handmadeLevels(): LevelDef[] {
   return [...handmade.values()];
 }
+
+/** Pigmentos que aparecen en los niveles de la decena de un cuadro (para generar el cuadro). */
+export function paintingPigments(index: number, levelsPerPainting: number): string[] {
+  const set = new Set<string>();
+  for (let l = index * levelsPerPainting + 1; l <= (index + 1) * levelsPerPainting; l++) {
+    const def = getLevelDef(l);
+    if (!def) continue;
+    for (const p of def.jars.flat()) set.add(p);
+  }
+  return [...set];
+}

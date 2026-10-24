@@ -13,6 +13,21 @@ describe('niveles hechos a mano (§4.4) y precalculados', () => {
     }
   });
 
+  it('el nivel 21 enseña la mezcla: irresoluble sin mezclar (§4.4)', () => {
+    const l = getLevelDef(21)!;
+    expect(l.handmade).toBe(true);
+    expect(l.rules.mixes).toEqual(['blue+yellow']);
+    expect(solve(l).solvable).toBe(true);
+    expect(solve({ ...l, rules: { mixes: [], drying: [] } }).solvable).toBe(false);
+  });
+
+  it('el nivel 51 enseña el secado con mecha 12 (§6, §8)', () => {
+    const l = getLevelDef(51)!;
+    expect(l.handmade).toBe(true);
+    expect(l.rules.drying).toEqual([{ jar: 1, fuse: 12 }]);
+    expect(solve(l).solvable).toBe(true);
+  });
+
   it('niveles 1–3 según §8: frascos y par', () => {
     expect(getLevelDef(1)!.jars).toHaveLength(3);
     expect(getLevelDef(1)!.par).toBe(2);
