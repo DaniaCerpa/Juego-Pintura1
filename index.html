@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#2A2621" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="description"
+      content="Pigmento: ordena pinturas, mezcla colores y pinta tu galería."
+    />
+    <link rel="icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Pigmento</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #2a2621;
+        overflow: hidden;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        font-family: 'Nunito', Arial, sans-serif;
+      }
+      #game {
+        position: fixed;
+        inset: 0;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+          env(safe-area-inset-left);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #game canvas {
+        display: block;
+        margin: 0 auto;
+      }
+      /* En escritorio el juego se centra con ancho máximo (GDD §9.2). */
+      @media (min-width: 700px) and (min-height: 500px) and (pointer: fine) {
+        #game {
+          max-width: 480px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+      /* Precarga de la fuente para que Phaser la tenga al dibujar. */
+      #font-preload {
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
+        opacity: 0;
+        font-family: 'Nunito';
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <span id="font-preload"><b>Pigmento</b> pigmento</span>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

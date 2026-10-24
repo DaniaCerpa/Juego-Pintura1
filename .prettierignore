@@ -1,0 +1,7 @@
+node_modules
+dist
+dev-dist
+package-lock.json
+src/data/levels/levels_0001_0500.json
+docs/GDD.md
+CLAUDE.md
