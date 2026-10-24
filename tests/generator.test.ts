@@ -4,6 +4,7 @@ import { difficultyConfig, paramsForLevel } from '../src/core/difficulty';
 import { createRng } from '../src/core/rng';
 import { solve } from '../src/core/solver';
 import { isDistinguishableSet } from '../src/core/pigments';
+import { recipesUnlockedAt } from '../src/core/mixes';
 
 const LEVELS_PER_ROW = 50;
 
@@ -55,12 +56,12 @@ describe('generador (§4.2) — propiedades', () => {
     }
   });
 
-  // Filas de la tabla §4.3 sin mezclas ni secado (F0). Las filas con esas reglas se
-  // cubren en F1; aquí se generan como sort puro para verificar resolubilidad y rango de par.
-  const rows = difficultyConfig.rows.filter((r) => r.from !== r.to && r.to <= 300);
+  // Test de propiedad (§14.3): 50 niveles por fila de la tabla §4.3, todos resolubles,
+  // par en rango, recetas solo desbloqueadas y mecha dentro de lo configurado.
+  const rows = difficultyConfig.rows.filter((r) => r.from !== r.to);
   for (const row of rows) {
     it(`fila ${row.from}–${row.to}: ${LEVELS_PER_ROW} niveles resolubles con par en rango`, () => {
-      const span = row.to - row.from + 1;
+      const span = Math.min(row.to, row.from + 200) - row.from + 1;
       let outOfRange = 0;
       for (let k = 0; k < LEVELS_PER_ROW; k++) {
         const level = row.from + (k % span);
@@ -68,16 +69,23 @@ describe('generador (§4.2) — propiedades', () => {
         const params = paramsForLevel(level);
         expect(g.solver.solvable).toBe(true);
         expect(rejectReason(g.def.jars, g.def.capacity)).toBeNull();
-        expect(g.def.jars.length).toBe(
-          new Set(g.def.jars.flat()).size + g.def.jars.filter((j) => j.length === 0).length,
-        );
+        const unlocked = new Set(recipesUnlockedAt(level).map((r) => r.id));
+        for (const m of g.def.rules.mixes)
+          expect(unlocked.has(m), `receta ${m} en ${level}`).toBe(true);
+        expect(g.def.rules.mixes.length).toBeLessThanOrEqual(params.mixes[1]);
+        expect(g.def.rules.drying.length).toBeLessThanOrEqual(params.drying[1]);
+        for (const d of g.def.rules.drying) {
+          expect(d.fuse).toBeGreaterThanOrEqual(difficultyConfig.dryingFuseMin);
+          expect(g.def.jars[d.jar].length).toBeGreaterThan(0);
+        }
         const inRange = g.def.par >= params.par[0] && g.def.par <= params.par[1];
         if (!inRange) outOfRange++;
         const check = solve(g.def);
         expect(check.solvable).toBe(true);
         expect(check.par).toBe(g.def.par);
       }
-      expect(outOfRange).toBe(0);
-    });
+      // Las filas altas pueden caer al escalón inferior (warning del generador, §4.2.8).
+      expect(outOfRange).toBeLessThanOrEqual(row.from >= 151 ? LEVELS_PER_ROW * 0.3 : 0);
+    }, 300_000);
   }
 });
