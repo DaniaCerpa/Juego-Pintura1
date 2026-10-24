@@ -23,7 +23,7 @@ Se despliega automáticamente con cada push a `main` (`.github/workflows/deploy.
 ### Verificación
 
 - `npm run lint && npm test && npm run build` en verde.
-- E2E con Playwright (renderer Canvas, ver `docs/DECISIONES.md`): niveles 1–50 jugados de corrido con la solución del solver, sin errores de consola, guardado avanzando en cada victoria; capturas en `docs/capturas/` a 1080×1920 y 1080×2400 (galería, nivel, victoria, ajustes).
+- E2E con Playwright (renderer Canvas, ver `docs/DECISIONES.md`): niveles 1–50 jugados de corrido con la solución del solver, sin errores de consola, guardado avanzando en cada victoria. (Las capturas de `docs/capturas/` corresponden al estado final de F1.)
 - 60 fps: no hay `update()` por frasco; frascos y botones son sprites de texturas generadas una vez; partículas con tope global. No se pudo medir en un Android físico desde este entorno (pendiente de confirmar en dispositivo).
 
 ### Qué quedó pendiente / notas
@@ -36,3 +36,34 @@ Se despliega automáticamente con cada push a `main` (`.github/workflows/deploy.
 ### Decisiones
 
 Ver `docs/DECISIONES.md` (sección 2026-10-24 F0).
+
+## F1 — Profundidad · cerrada el 2026-10-24
+
+### Qué se hizo
+
+- **Mezclas (§5)** en `rules.ts` (`pourOutcome` con tabla simétrica de recetas), solver y generador. Nivel 21 a mano (par 4, mezcla en el 2.º movimiento) con test de que es irresoluble sin mezclar. Feedback: remolino de partículas de los dos colores, flash del producto, sonido swirl, shake y toast "¡Nueva mezcla!" (+100 monedas) la primera vez.
+- **Secado (§6)**: mecha por frasco en el modelo (`drying`), `tickDrying` tras cada movimiento, anillo que se consume con número sobre el frasco, `DefeatScene` con "Diluir (ver anuncio)", "Diluir (200 monedas)" y "Lienzo nuevo". Nivel 51 a mano con mecha 12. El generador marca el frasco que más tarde se resuelve en la solución óptima y fija `F = índice + 3` (mín. 6).
+- **Solver**: A\* con cola de cubos y heurística admisible de segmentos (equivale a BFS con h = 0); las podas y la clave canónica se mantienen. Generador con recetas no encadenadas y reactivos solo por pares reemplazados (ver `DECISIONES.md`): un intento cuesta ~0,4 s en la fila 301+.
+- **Niveles 1–500 regenerados** con la tabla completa (mezclas desde el 22, secado desde el 52). 2 warnings de escalón inferior en 500 niveles. Rangos de par de las filas 151+ ajustados en `difficulty.json`.
+- **Estrellas, monedas y economía (§7)**: `core/stars.ts`, `core/economy.ts` (recompensas, diferencia al rejugar, encargo, regalo diario con racha 1→7), costos de ayudas (Trapo 3 gratis → anuncio o 100; Frasco vacío anuncio o 150; Diluir anuncio o 200) con `OfferScene`.
+- **Cuadros procedurales (§7.3)**: `core/painting.ts` genera paisajes geométricos a partir de la decena y la paleta de sus niveles; `PaintingCanvas` rasteriza boceto y cuadro a textura una vez, revela por 10 pinceladas diagonales (máscara) y firma al completar el Encargo. `VictoryScene` con estrellas animadas, monedas, la pincelada (+10 %), "Duplicar (ver anuncio)" solo con ★★+, Siguiente/Rejugar/Galería. Todo saltable con un toque.
+- **GalleryScene real**: pared con los últimos cuadros colgados, caballete con el cuadro de la decena, monedas, Paleta, Ajustes y Regalo diario. **PaletteScene**: rueda con las 8 recetas (descubiertas con animación, fecha y usos; las demás en gris con "?" y nivel de desbloqueo). **SettingsScene** con i18n es/en (todas las cadenas en `src/data/i18n/*.json`) y símbolos de accesibilidad (activados por defecto si `prefers-contrast`/`forced-colors`).
+- **Ads**: `StubAdsService` muestra el overlay "ANUNCIO (stub) — 2 s" en los 5 placements (`rw_extra_jar`, `rw_undo_pack`, `rw_dilute`, `rw_daily_coins`*, `rw_double_reward`) y el intersticial tras ganar según `core/adPolicy.ts` (tests: nunca antes del 8, 1 cada 3 victorias, 90 s, no tras rewarded, sin ads si `adsRemoved`). *El rewarded de monedas diarias se reserva para F2 (la galería ya tiene el regalo diario gratuito).
+- **Analytics**: `PostHogAnalytics` (HTTP a `/batch/`, sin SDK, buffer local y reintento) con todos los eventos de §12.2; activo solo si existe `VITE_POSTHOG_KEY`, si no `ConsoleAnalytics`.
+- 90 tests en Vitest (reglas, mezclas, secado, solver, generador por filas con mezclas/secado, dificultad, estrellas, economía, adPolicy, cuadros, guardado, niveles a mano/precalculados).
+
+### Verificación
+
+- `npm run lint && npm test && npm run build` en verde. Bundle 1,8 MB.
+- E2E con Playwright (renderer Canvas): niveles **1–150** jugados de corrido con la solución del solver (mezclas, secado, intersticial cada 3 victorias desde el 8), sin errores de página. Capturas de galería, nivel, victoria, paleta y ajustes a 1080×1920 y 1080×2400 en `docs/capturas/`, revisadas contra el GDD §9–§10 (frascos de vidrio con borde y reflejo, HUD con Nunito, bandas de color de fondo en 20:9).
+
+### Qué quedó pendiente
+
+- **Testers y embudo (§15 F1.9, §13):** no se puede reclutar ni medir desde esta sesión. Al publicar el link: configurar `VITE_POSTHOG_KEY` como secreto del workflow de Pages, compartirlo con 10–20 testers y medir 7 días; con el embudo por nivel se decide 0 → 1.
+- "Un tester nuevo entiende la mezcla sin explicación": el nivel 21 fuerza la mezcla y tras 8 s sin mover brillan los dos frascos; pendiente de validar con personas.
+- Encargos procedurales (no a mano); música lo-fi opcional no incluida (ajuste presente, sin pista).
+- Push a GitHub: en esta sesión el push devolvió 403 (la app de Claude no tiene acceso al repositorio). Los commits quedan en la rama local `claude/affectionate-gauss-hfrymy`; al reconectar GitHub basta con `git push -u origin claude/affectionate-gauss-hfrymy` y `git push origin HEAD:main` para publicar en Pages.
+
+### Decisiones
+
+Ver `docs/DECISIONES.md` (sección 2026-10-24 F1).

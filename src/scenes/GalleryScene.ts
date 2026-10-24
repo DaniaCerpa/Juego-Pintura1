@@ -197,10 +197,15 @@ export class GalleryScene extends Phaser.Scene {
       pct,
     );
     const title = canvas.spec.title;
+    // Placa con el título y el progreso (tapa el cruce de las patas)
+    g.fillStyle(COLORS.panel, 0.92);
+    g.fillRoundedRect(cx - 330, cy + 236, 660, 64, 20);
+    g.lineStyle(2, COLORS.accent, 0.4);
+    g.strokeRoundedRect(cx - 330, cy + 236, 660, 64, 20);
     this.add
       .text(
         cx,
-        cy + 250,
+        cy + 268,
         `${title} · ${t('gallery.progress', { pct })}`,
         textStyle(32, UI.colors.textDim, '600'),
       )
