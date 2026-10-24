@@ -17,7 +17,10 @@ import { solve } from './core/solver';
 registerSW({ immediate: true });
 
 // `?renderer=canvas` fuerza Canvas (pruebas E2E y respaldo en dispositivos sin WebGL).
-const forceCanvas = new URLSearchParams(location.search).get('renderer') === 'canvas';
+const query = new URLSearchParams(location.search);
+const forceCanvas = query.get('renderer') === 'canvas';
+// `?fps=N` limita los frames por segundo (depuración y pruebas E2E en entornos sin GPU).
+const fpsLimit = Number(query.get('fps')) || 0;
 
 const config: Phaser.Types.Core.GameConfig = {
   type: forceCanvas ? Phaser.CANVAS : Phaser.AUTO,
@@ -37,7 +40,7 @@ const config: Phaser.Types.Core.GameConfig = {
   input: {
     activePointers: 2,
   },
-  fps: { target: 60, smoothStep: true },
+  fps: { target: 60, smoothStep: true, ...(fpsLimit > 0 ? { limit: fpsLimit } : {}) },
   disableContextMenu: true,
   scene: [
     BootScene,
