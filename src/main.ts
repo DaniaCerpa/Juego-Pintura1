@@ -7,6 +7,10 @@ import { PauseScene } from './scenes/PauseScene';
 import { SettingsScene } from './scenes/SettingsScene';
 import { VictoryScene } from './scenes/VictoryScene';
 import { AdOverlayScene } from './scenes/AdOverlayScene';
+import { PaletteScene } from './scenes/PaletteScene';
+import { DefeatScene } from './scenes/DefeatScene';
+import { OfferScene } from './scenes/OfferScene';
+import { services } from './services';
 import { registerSW } from 'virtual:pwa-register';
 import { solve } from './core/solver';
 
@@ -42,11 +46,22 @@ const config: Phaser.Types.Core.GameConfig = {
     VictoryScene,
     PauseScene,
     SettingsScene,
+    PaletteScene,
+    DefeatScene,
+    OfferScene,
     AdOverlayScene,
   ],
 };
 
 const game = new Phaser.Game(config);
+
+// El stub de anuncios muestra su overlay como escena por encima de la activa (§11.4).
+services().ads.setOverlay(
+  (label, durationMs) =>
+    new Promise<void>((resolve) => {
+      game.scene.start('AdOverlay', { label, durationMs, onDone: resolve });
+    }),
+);
 
 // Gancho de depuración/pruebas E2E: acceso al juego y al solver desde la consola.
 declare global {

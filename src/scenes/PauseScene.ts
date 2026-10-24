@@ -52,7 +52,7 @@ export class PauseScene extends Phaser.Scene {
     mk(y + 230, t('pause.continue'), true).onPress = resume;
     mk(y + 380, t('pause.restart'), false).onPress = () => {
       resume();
-      (level as unknown as { restart: () => void }).restart();
+      level.restart();
     };
     mk(y + 530, t('pause.settings'), false).onPress = () => {
       this.scene.stop(this.params.from);
