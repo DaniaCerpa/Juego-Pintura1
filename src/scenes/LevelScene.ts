@@ -234,7 +234,7 @@ export class LevelScene extends Phaser.Scene {
   // ---------- Input (§14.4) ----------
   private onJarTap(i: number): void {
     if (this.finished) return;
-    const now = this.time.now;
+    const now = performance.now(); // reloj de pared: el tiempo de frame miente si hay un tirón
     if (now - this.lastTapAt < UI.anim.debounceMs) return;
     this.lastTapAt = now;
     const { audio } = services();
