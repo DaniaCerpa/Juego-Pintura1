@@ -69,7 +69,7 @@ services().ads.setOverlay(
 // Gancho de depuración/pruebas E2E: acceso al juego y al solver desde la consola.
 declare global {
   interface Window {
-    __pigmento?: { game: Phaser.Game; solve: typeof solve };
+    __pigmento?: { game: Phaser.Game; solve: typeof solve; services: typeof services };
   }
 }
-window.__pigmento = { game, solve };
+window.__pigmento = { game, solve, services };

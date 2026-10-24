@@ -13,7 +13,8 @@
     "levels": "tsx scripts/generate-levels.ts"
   },
   "dependencies": {
-    "phaser": "^3.90.0"
+    "phaser": "^3.90.0",
+    "posthog-js": "^1.438.21"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
