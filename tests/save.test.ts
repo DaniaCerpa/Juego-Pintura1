@@ -74,3 +74,62 @@ describe('GameState', () => {
     expect(g.settings.sound).toBe(false);
   });
 });
+
+describe('GameState F1: estrellas, cuadros, recetas y regalo diario', () => {
+  it('completeLevel calcula estrellas, monedas y % del cuadro', () => {
+    const g = new GameState(new MemoryStorage());
+    const r = g.completeLevel(1, 2, 2);
+    expect(r.stars).toBe(3);
+    expect(r.reward.total).toBe(25 + 30 + 20);
+    expect(r.paintingAfter).toBe(10);
+    expect(g.coins).toBe(75);
+    const again = g.completeLevel(1, 9, 2);
+    expect(again.stars).toBe(1);
+    expect(again.reward.total).toBe(0);
+    expect(g.starsOf(1)).toBe(3);
+    expect(g.paintingPercent(0)).toBe(10);
+  });
+  it('el encargo completa el cuadro y paga 150', () => {
+    const g = new GameState(new MemoryStorage());
+    for (let l = 1; l <= 9; l++) g.completeLevel(l, 99, 2);
+    const r = g.completeLevel(10, 99, 2);
+    expect(r.isCommission).toBe(true);
+    expect(r.paintingCompleted).toBe(true);
+    expect(r.paintingAfter).toBe(100);
+    expect(r.reward.commission).toBe(150);
+  });
+  it('useMix descubre una vez y cuenta usos', () => {
+    const g = new GameState(new MemoryStorage());
+    const a = g.useMix('blue+yellow');
+    expect(a.isNew).toBe(true);
+    expect(a.coins).toBe(100);
+    const b = g.useMix('blue+yellow');
+    expect(b.isNew).toBe(false);
+    expect(g.data.mixStats['blue+yellow'].uses).toBe(2);
+    expect(g.data.mixes).toEqual(['blue+yellow']);
+  });
+  it('completar la paleta paga 1000 extra', () => {
+    const g = new GameState(new MemoryStorage());
+    const ids = [
+      'blue+yellow',
+      'red+yellow',
+      'red+blue',
+      'red+white',
+      'blue+white',
+      'blue+green',
+      'yellow+white',
+    ];
+    for (const id of ids) g.useMix(id);
+    const last = g.useMix('orange+purple');
+    expect(last.paletteCompleted).toBe(true);
+    expect(last.coins).toBe(1100);
+  });
+  it('regalo diario', () => {
+    const g = new GameState(new MemoryStorage());
+    const d = new Date(2026, 9, 24);
+    expect(g.dailyOffer(d).claimable).toBe(true);
+    expect(g.claimDaily(d)).toBe(50);
+    expect(g.claimDaily(d)).toBe(0);
+    expect(g.claimDaily(new Date(2026, 9, 25))).toBe(60);
+  });
+});

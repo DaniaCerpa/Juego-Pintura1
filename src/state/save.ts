@@ -23,6 +23,7 @@ export interface SaveData {
   stars: Record<string, number>; // id de nivel → mejor cantidad de estrellas
   bestMoves: Record<string, number>; // id de nivel → mejor cantidad de movimientos
   mixes: string[]; // recetas descubiertas
+  mixStats: Record<string, { first: string; uses: number }>; // receta → fecha y usos
   paintings: Record<string, number>; // id de cuadro → % pintado
   settings: Settings;
   adsRemoved: boolean;
@@ -43,6 +44,7 @@ export function createDefaultSave(distinctId: string, settings = defaultSettings
     stars: {},
     bestMoves: {},
     mixes: [],
+    mixStats: {},
     paintings: {},
     settings,
     adsRemoved: false,
@@ -95,6 +97,10 @@ export function loadSave(storage: StorageService, fallbackSettings?: Settings): 
   if (!Number.isInteger(merged.level) || merged.level < 1) merged.level = 1;
   if (!Number.isFinite(merged.coins) || merged.coins < 0) merged.coins = 0;
   if (!Array.isArray(merged.mixes)) merged.mixes = [];
+  if (!merged.mixStats || typeof merged.mixStats !== 'object') merged.mixStats = {};
+  if (!merged.stars || typeof merged.stars !== 'object') merged.stars = {};
+  if (!merged.bestMoves || typeof merged.bestMoves !== 'object') merged.bestMoves = {};
+  if (!merged.paintings || typeof merged.paintings !== 'object') merged.paintings = {};
   if (!Array.isArray(merged.seenTips)) merged.seenTips = [];
   if (typeof merged.distinctId !== 'string' || !merged.distinctId)
     merged.distinctId = fresh.distinctId;
