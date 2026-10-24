@@ -1,3 +1,4 @@
+import { buildMixTable, getRecipe } from './mixes';
 import { pourOutcome } from './rules';
 import type { LevelDef, LevelRules, LevelState, PigmentId, Pour } from './types';
 
@@ -66,8 +67,18 @@ function keyOf(c: Compact): string {
   return parts.join(',');
 }
 
+function segments(jar: string): number {
+  if (jar.length === 0) return 0;
+  let n = 1;
+  for (let i = 1; i < jar.length; i++) if (jar[i] !== jar[i - 1]) n++;
+  return n;
+}
+
 /**
- * BFS sobre estados canónicos (§4.1). Devuelve si el nivel es resoluble y su par.
+ * Búsqueda óptima (A* con cola de cubos, equivalente a BFS cuando h = 0) sobre estados
+ * canónicos (§4.1). Heurística admisible: cada movimiento reduce el total de segmentos de
+ * color en ≤ 1 (vertido) o ≤ 2 (mezcla), y el estado final tiene exactamente un segmento
+ * por frasco lleno. Devuelve si el nivel es resoluble y su par (mínimo de movimientos).
  * El orden de los frascos no importa para la clave; los movimientos devueltos usan índices reales.
  */
 export function solve(
@@ -78,9 +89,14 @@ export function solve(
   const maxMs = options.maxMs ?? DEFAULT_MAX_MS;
   const capacity = input.capacity;
   const rules: LevelRules = 'rules' in input ? input.rules : { mixes: [], drying: [] };
-  const intern = internPigments(input.jars);
-  // Las recetas se traducen al alfabeto interno (F1).
-  const compactRules: LevelRules = { mixes: rules.mixes, drying: rules.drying };
+  // Alfabeto interno: pigmentos del tablero más reactivos/productos de las recetas activas.
+  const extra: PigmentId[][] = rules.mixes.map((id) => {
+    const r = getRecipe(id);
+    return [...r.reagents, r.product];
+  });
+  const intern = internPigments([...input.jars, ...extra]);
+  const mixTable = buildMixTable(rules.mixes, (p) => intern.get(p)!);
+  const hasMixes = mixTable.size > 0;
 
   const startJars = input.jars.map((j) => j.map((p) => intern.get(p)!).join(''));
   let startDrying: Int16Array | null = null;
@@ -96,13 +112,16 @@ export function solve(
   const start: Compact = { jars: startJars, drying: startDrying };
   const n = startJars.length;
   const deadline = Date.now() + maxMs;
+  const totalLayers = startJars.reduce((a, j) => a + j.length, 0);
+  const finalFull = Math.ceil(totalLayers / capacity);
 
-  const states: Compact[] = [start];
-  const parent: number[] = [-1];
-  const moveFrom: number[] = [-1];
-  const moveTo: number[] = [-1];
-  const depth: number[] = [0];
-  const visited = new Set<string>([keyOf(start)]);
+  const heuristic = (c: Compact): number => {
+    let segs = 0;
+    for (const j of c.jars) segs += segments(j);
+    const h = segs - finalFull;
+    if (h <= 0) return 0;
+    return hasMixes ? Math.ceil(h / 2) : h;
+  };
 
   const allResolved = (c: Compact): boolean => {
     for (const j of c.jars) if (!isResolved(j, capacity)) return false;
@@ -113,15 +132,45 @@ export function solve(
     return { solvable: true, par: 0, statesExplored: 1, verified: true, solution: [] };
   }
 
-  let head = 0;
+  const states: Compact[] = [start];
+  const parent: number[] = [-1];
+  const moveFrom: number[] = [-1];
+  const moveTo: number[] = [-1];
+  const gOf: number[] = [0];
+  const bestG = new Map<string, number>([[keyOf(start), 0]]);
+  const buckets: number[][] = [];
+  const push = (idx: number, f: number) => {
+    (buckets[f] ??= []).push(idx);
+  };
+  push(0, heuristic(start));
+
+  let f = 0;
   let explored = 0;
   let timedOut = false;
 
-  outer: while (head < states.length) {
-    const cur = states[head];
-    const curDepth = depth[head];
-    const curIdx = head;
-    head++;
+  outer: while (true) {
+    while (f < buckets.length && (!buckets[f] || buckets[f].length === 0)) f++;
+    if (f >= buckets.length) break; // cola vacía: irresoluble
+    const curIdx = buckets[f].pop()!;
+    const cur = states[curIdx];
+    const curG = gOf[curIdx];
+    const curKey = keyOf(cur);
+    if ((bestG.get(curKey) ?? Infinity) < curG) continue; // entrada obsoleta
+    if (allResolved(cur)) {
+      const result: SolverResult = {
+        solvable: true,
+        par: curG,
+        statesExplored: explored,
+        verified: true,
+      };
+      if (options.withSolution) {
+        const path: Pour[] = [];
+        for (let k = curIdx; k > 0; k = parent[k]) path.push({ from: moveFrom[k], to: moveTo[k] });
+        path.reverse();
+        result.solution = path;
+      }
+      return result;
+    }
     explored++;
     if ((explored & 1023) === 0 && Date.now() > deadline) {
       timedOut = true;
@@ -154,12 +203,15 @@ export function solve(
           }
         }
         const dstTop = dst.length ? dst[dst.length - 1] : undefined;
-        const outcome = pourOutcome(top, run, dstTop, dst.length, capacity, compactRules);
+        const outcome = pourOutcome(top, run, dstTop, dst.length, capacity, mixTable);
         if (!outcome) continue;
 
         const nextJars = cur.jars.slice();
         nextJars[i] = src.slice(0, src.length - outcome.layers);
-        nextJars[j] = dst + top.repeat(outcome.layers);
+        nextJars[j] =
+          outcome.kind === 'mix'
+            ? dst.slice(0, dst.length - 1) + outcome.product! + outcome.product!
+            : dst + top.repeat(outcome.layers);
         let nextDrying: Int16Array | null = null;
         if (cur.drying) {
           nextDrying = tickCompactDrying(cur.drying, nextJars, capacity);
@@ -167,31 +219,18 @@ export function solve(
         }
         const next: Compact = { jars: nextJars, drying: nextDrying };
         const key = keyOf(next);
-        if (visited.has(key)) continue;
-        visited.add(key);
+        const g = curG + 1;
+        if ((bestG.get(key) ?? Infinity) <= g) continue;
+        bestG.set(key, g);
 
         const idx = states.length;
         states.push(next);
         parent.push(curIdx);
         moveFrom.push(i);
         moveTo.push(j);
-        depth.push(curDepth + 1);
+        gOf.push(g);
+        push(idx, g + heuristic(next));
 
-        if (allResolved(next)) {
-          const result: SolverResult = {
-            solvable: true,
-            par: curDepth + 1,
-            statesExplored: explored,
-            verified: true,
-          };
-          if (options.withSolution) {
-            const path: Pour[] = [];
-            for (let k = idx; k > 0; k = parent[k]) path.push({ from: moveFrom[k], to: moveTo[k] });
-            path.reverse();
-            result.solution = path;
-          }
-          return result;
-        }
         if (states.length >= maxStates) {
           timedOut = true;
           break outer;

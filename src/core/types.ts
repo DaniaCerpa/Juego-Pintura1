@@ -51,6 +51,7 @@ export interface PourResult {
   pigment: PigmentId; // pigmento vertido
   product?: PigmentId; // pigmento producido si kind === 'mix'
   recipeId?: string;
+  dried: number[]; // frascos cuya mecha llegó a 0 con este movimiento (§6)
 }
 
 export interface PourRejected {
