@@ -43,7 +43,7 @@ export class Fx {
         speed: { min: 60, max: 260 },
         angle: { min: 200, max: 340 },
         scale: { start: 0.55, end: 0 },
-        gravityY: 600,
+        gravityY: 350,
       },
       50,
     );

@@ -28,7 +28,7 @@ export class GalleryScene extends Phaser.Scene {
 
     // Cabecera: monedas, título, ajustes
     this.drawCoins();
-    this.add.text(W / 2, 140, t('app.name'), textStyle(110, UI.colors.accent)).setOrigin(0.5);
+    this.add.text(W / 2, 140, t('app.name'), textStyle(96, UI.colors.accent)).setOrigin(0.5);
     this.add
       .text(W / 2, 222, t('gallery.subtitle'), textStyle(36, UI.colors.textDim, '600'))
       .setOrigin(0.5);
@@ -178,9 +178,9 @@ export class GalleryScene extends Phaser.Scene {
     const g = this.add.graphics();
     // Patas del caballete (detrás del cuadro)
     g.lineStyle(16, COLORS.accentDark, 1);
-    g.lineBetween(cx - 60, cy - 300, cx - 250, cy + 300);
-    g.lineBetween(cx + 60, cy - 300, cx + 250, cy + 300);
-    g.lineBetween(cx, cy - 200, cx, cy + 320);
+    g.lineBetween(cx - 60, cy - 300, cx - 235, cy + 270);
+    g.lineBetween(cx + 60, cy - 300, cx + 235, cy + 270);
+    g.lineBetween(cx, cy - 200, cx, cy + 285);
     g.lineStyle(14, COLORS.accentDark, 1);
     g.lineBetween(cx - 250, cy + 150, cx + 250, cy + 150);
     const w = 560;

@@ -406,7 +406,8 @@ export class LevelScene extends Phaser.Scene {
     const targetX = dst.baseX + side * dst.jarWidth * 0.78;
     const targetY = dst.baseY - dst.jarHeight * 0.72;
     const tilt = side === -1 ? Phaser.Math.DegToRad(62) : Phaser.Math.DegToRad(-62);
-    src.setDepth(10);
+    // Los frascos viven en un Container: el orden de dibujo se cambia dentro de él.
+    this.boardLayer.bringToTop(src);
 
     const drawStream = (progress: number) => {
       const m = src.mouthPoint();
@@ -455,7 +456,6 @@ export class LevelScene extends Phaser.Scene {
               rotation: 0,
               duration: back,
               ease: 'Quad.In',
-              onComplete: () => src.setDepth(0),
             });
             this.track(tw3);
           },
