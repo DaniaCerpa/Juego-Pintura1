@@ -1,0 +1,34 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "capacity": 4,
+      "jars": [["red", "red", "red", "blue"], ["blue", "blue", "blue"], ["red"]],
+      "par": 2,
+      "difficulty": 1,
+      "rules": { "mixes": [], "drying": [] },
+      "handmade": true,
+      "seed": 1
+    },
+    {
+      "id": 2,
+      "capacity": 4,
+      "jars": [["red", "red", "red", "blue"], ["blue", "blue", "blue", "red"], [], []],
+      "par": 3,
+      "difficulty": 1,
+      "rules": { "mixes": [], "drying": [] },
+      "handmade": true,
+      "seed": 2
+    },
+    {
+      "id": 3,
+      "capacity": 4,
+      "jars": [["yellow", "yellow", "blue", "blue"], ["blue", "blue", "yellow", "yellow"], [], []],
+      "par": 3,
+      "difficulty": 1,
+      "rules": { "mixes": [], "drying": [] },
+      "handmade": true,
+      "seed": 3
+    }
+  ]
+}
