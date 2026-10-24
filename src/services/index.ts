@@ -1,4 +1,6 @@
 import { ConsoleAnalytics } from './analytics/ConsoleAnalytics';
+import { PostHogAnalytics } from './analytics/PostHogAnalytics';
+import type { AnalyticsService } from './analytics/AnalyticsService';
 import { StubAdsService } from './ads/StubAdsService';
 import { StubIapService } from './iap/StubIapService';
 import { WebStorage } from './storage/WebStorage';
@@ -12,7 +14,7 @@ import { detectLang, setLang } from '../ui/i18n';
 export interface Services {
   storage: WebStorage;
   state: GameState;
-  analytics: ConsoleAnalytics;
+  analytics: AnalyticsService;
   ads: StubAdsService;
   iap: StubIapService;
   audio: AudioService;
@@ -41,7 +43,17 @@ export function services(): Services {
   };
   applySettings();
   state.on('settings', applySettings);
-  const analytics = new ConsoleAnalytics(storage, state.data.distinctId, import.meta.env.DEV);
+  // PostHog si hay clave en el entorno (VITE_POSTHOG_KEY); si no, consola + buffer local.
+  const phKey = import.meta.env.VITE_POSTHOG_KEY as string | undefined;
+  const analytics: AnalyticsService = phKey
+    ? new PostHogAnalytics(
+        storage,
+        state.data.distinctId,
+        phKey,
+        (import.meta.env.VITE_POSTHOG_HOST as string | undefined) || undefined,
+        import.meta.env.DEV,
+      )
+    : new ConsoleAnalytics(storage, state.data.distinctId, import.meta.env.DEV);
   // session_end (§12.2): al ocultar/cerrar la pestaña, con duración y niveles jugados.
   const sessionStart = Date.now();
   let levelsPlayed = 0;
@@ -60,11 +72,13 @@ export function services(): Services {
     if (document.visibilityState === 'hidden') endSession();
     else ended = false;
   });
+  const ads = new StubAdsService();
+  ads.setAnalytics((e, p) => analytics.log(e, p));
   instance = {
     storage,
     state,
     analytics,
-    ads: new StubAdsService(),
+    ads,
     iap: new StubIapService(),
     audio,
     haptics,
