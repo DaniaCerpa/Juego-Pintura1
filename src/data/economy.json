@@ -1,0 +1,20 @@
+{
+  "stars": { "three": 2, "two": 6 },
+  "rewards": {
+    "win": 25,
+    "perStar": 10,
+    "firstThreeStars": 20,
+    "commission": 150,
+    "discoverMix": 100,
+    "rewardedCoins": 100,
+    "dailyGift": [50, 60, 75, 90, 110, 130, 200]
+  },
+  "costs": { "extraJar": 150, "undoPack": 100, "dilute": 200 },
+  "helpers": {
+    "undoFreePerLevel": 3,
+    "undoRewardedPack": 3,
+    "undoHistoryMax": 20,
+    "extraJarsPerLevel": 1
+  },
+  "startingCoins": 0
+}

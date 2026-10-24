@@ -1,0 +1,114 @@
+{
+  "capacity": 4,
+  "breatherEvery": 5,
+  "commissionEvery": 10,
+  "maxAttempts": 50,
+  "solver": { "maxStates": 300000, "maxMs": 2000 },
+  "dryingFuseExtra": 3,
+  "dryingFuseMin": 6,
+  "dryingFuseMax": 12,
+  "rows": [
+    {
+      "from": 1,
+      "to": 3,
+      "pigments": [2, 2],
+      "empties": [2, 2],
+      "par": [2, 4],
+      "mixes": [0, 0],
+      "drying": [0, 0],
+      "note": "Hechos a mano. Enseñan verter."
+    },
+    {
+      "from": 4,
+      "to": 10,
+      "pigments": [3, 3],
+      "empties": [2, 2],
+      "par": [5, 9],
+      "mixes": [0, 0],
+      "drying": [0, 0]
+    },
+    {
+      "from": 11,
+      "to": 20,
+      "pigments": [4, 4],
+      "empties": [2, 2],
+      "par": [8, 14],
+      "mixes": [0, 0],
+      "drying": [0, 0]
+    },
+    {
+      "from": 21,
+      "to": 21,
+      "pigments": [3, 3],
+      "empties": [2, 2],
+      "par": [4, 9],
+      "mixes": [1, 1],
+      "drying": [0, 0],
+      "note": "Hecho a mano, enseña la mezcla."
+    },
+    {
+      "from": 22,
+      "to": 30,
+      "pigments": [5, 5],
+      "empties": [2, 2],
+      "par": [12, 18],
+      "mixes": [1, 1],
+      "drying": [0, 0]
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "pigments": [5, 6],
+      "empties": [2, 2],
+      "par": [15, 24],
+      "mixes": [1, 2],
+      "drying": [0, 0]
+    },
+    {
+      "from": 51,
+      "to": 51,
+      "pigments": [5, 5],
+      "empties": [2, 2],
+      "par": [10, 18],
+      "mixes": [1, 1],
+      "drying": [1, 1],
+      "note": "Hecho a mano, enseña el secado. Mecha 12."
+    },
+    {
+      "from": 52,
+      "to": 80,
+      "pigments": [6, 7],
+      "empties": [2, 2],
+      "par": [20, 30],
+      "mixes": [1, 2],
+      "drying": [1, 1]
+    },
+    {
+      "from": 81,
+      "to": 150,
+      "pigments": [7, 9],
+      "empties": [2, 2],
+      "par": [25, 40],
+      "mixes": [1, 3],
+      "drying": [1, 1]
+    },
+    {
+      "from": 151,
+      "to": 300,
+      "pigments": [8, 10],
+      "empties": [1, 2],
+      "par": [30, 55],
+      "mixes": [1, 3],
+      "drying": [1, 2]
+    },
+    {
+      "from": 301,
+      "to": 100000,
+      "pigments": [9, 12],
+      "empties": [1, 2],
+      "par": [40, 70],
+      "mixes": [1, 4],
+      "drying": [0, 2]
+    }
+  ]
+}

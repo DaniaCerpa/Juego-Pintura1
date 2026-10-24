@@ -1,0 +1,40 @@
+{
+  "canvas": { "width": 1080, "height": 1920, "desktopMaxWidth": 480 },
+  "anim": {
+    "selectMs": 120,
+    "pourMs": 325,
+    "bounceMs": 150,
+    "mixMs": 500,
+    "completeMs": 250,
+    "brushMs": 600,
+    "victoryMs": 1200,
+    "sceneFadeMs": 220,
+    "debounceMs": 80,
+    "liftPx": 20,
+    "hintPulseMs": 900,
+    "hintAfterIdleMs": 8000
+  },
+  "board": {
+    "maxPerRow": 5,
+    "marginPx": 24,
+    "minTouchPx": 96,
+    "jarAspect": 2.35,
+    "rowGapPx": 70,
+    "maxJarWidthPx": 200
+  },
+  "fx": { "particleCap": 200, "pourParticles": 14, "mixParticles": 70, "confettiParticles": 120 },
+  "haptics": { "completeMs": 10, "mixMs": 30, "errorMs": 0 },
+  "colors": {
+    "background": "#2A2621",
+    "backgroundLight": "#3A342C",
+    "panel": "#1F1B17",
+    "text": "#F4EDE1",
+    "textDim": "#B8AD9C",
+    "accent": "#E8B04B",
+    "accentDark": "#B9842C",
+    "glass": "#DCE8F0",
+    "danger": "#E2473F",
+    "success": "#6CC070"
+  },
+  "font": { "family": "Nunito", "fallback": "Arial, sans-serif" }
+}

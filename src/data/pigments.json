@@ -1,0 +1,27 @@
+{
+  "pigments": [
+    { "id": "red", "hex": "#E2473F", "primary": true, "symbol": "●" },
+    { "id": "blue", "hex": "#2F6FDB", "primary": true, "symbol": "■" },
+    { "id": "yellow", "hex": "#F3D23A", "primary": true, "symbol": "▲" },
+    { "id": "white", "hex": "#F6F1E6", "primary": true, "symbol": "○" },
+    { "id": "green", "hex": "#3BA65A", "primary": false, "symbol": "◆" },
+    { "id": "orange", "hex": "#F08A24", "primary": false, "symbol": "★" },
+    { "id": "purple", "hex": "#7A4FC2", "primary": false, "symbol": "♦" },
+    { "id": "pink", "hex": "#F48FB6", "primary": false, "symbol": "♥" },
+    { "id": "teal", "hex": "#1FA7A3", "primary": false, "symbol": "✚" },
+    { "id": "brown", "hex": "#8A5A2E", "primary": false, "symbol": "▼" },
+    { "id": "sky", "hex": "#82CBF7", "primary": false, "symbol": "☁" },
+    { "id": "cream", "hex": "#F7E6B0", "primary": false, "symbol": "☼" }
+  ],
+  "avoidPairsWhenFewPigments": [
+    ["red", "green"],
+    ["teal", "green"],
+    ["sky", "blue"],
+    ["cream", "white"],
+    ["cream", "yellow"],
+    ["pink", "red"],
+    ["brown", "orange"]
+  ],
+  "fewPigmentsThreshold": 6,
+  "symbolsFromPigmentCount": 7
+}

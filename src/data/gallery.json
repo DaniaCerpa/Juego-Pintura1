@@ -1,0 +1,7 @@
+{
+  "levelsPerPainting": 10,
+  "revealPerLevel": 10,
+  "slotsPerWall": 4,
+  "frames": [{ "id": "classic", "default": true }],
+  "walls": [{ "id": "studio", "default": true }]
+}
