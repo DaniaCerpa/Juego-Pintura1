@@ -54,7 +54,10 @@ export function drawBackdrop(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
   g.fillStyle(COLORS.background, 1);
   g.fillRect(0, 0, W, H);
-  if (scene.textures.exists('canvas-noise')) {
+  // Con el renderer Canvas (respaldo) cada imagen a pantalla completa es un drawImage de
+  // 2 MP por frame; se omite la textura de lienzo y se deja solo la viñeta.
+  const webgl = scene.sys.game.renderer.type === Phaser.WEBGL;
+  if (webgl && scene.textures.exists('canvas-noise')) {
     const noise = scene.add.tileSprite(W / 2, H / 2, W, H, 'canvas-noise');
     noise.setAlpha(0.16);
   }

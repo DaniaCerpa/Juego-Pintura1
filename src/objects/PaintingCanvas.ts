@@ -10,11 +10,10 @@ import { COLORS, hexToNum, UI } from '../ui/theme';
  */
 export class PaintingCanvas extends Phaser.GameObjects.Container {
   readonly spec: PaintingSpec;
-  private art: Phaser.GameObjects.Graphics;
-  /** Contenedor aparte para el arte enmascarado: el renderer Canvas solo aplica máscaras
-   *  a objetos de primer nivel o a contenedores, no a hijos de un contenedor. */
+  /** Capa del cuadro: 10 franjas verticales de la misma textura, reveladas con `setCrop`
+   *  (sin máscaras: funciona igual en WebGL y Canvas y no cuesta clips por frame). */
   private artLayer: Phaser.GameObjects.Container;
-  private maskGfx: Phaser.GameObjects.Graphics;
+  private strips: Phaser.GameObjects.Image[] = [];
   private percent = 0;
   private readonly pw: number;
   private readonly ph: number;
@@ -61,20 +60,40 @@ export class PaintingCanvas extends Phaser.GameObjects.Container {
       g.fillRect(-width / 2 - 4, -height / 2 - 4, width + 8, height + 8);
       this.add(g);
     }
-    // Boceto: lienzo crudo con las formas en gris claro (líneas).
-    const sketch = scene.add.graphics();
-    sketch.fillStyle(0xd8d0c2, 1);
-    sketch.fillRect(-width / 2, -height / 2, width, height);
-    for (const s of this.spec.shapes) this.drawShape(sketch, s, true);
-    this.add(sketch);
-    // Cuadro a color, en su propia capa enmascarada
-    this.art = scene.add.graphics();
-    this.art.fillStyle(hexToNum(this.spec.background), 1);
-    this.art.fillRect(-width / 2, -height / 2, width, height);
-    for (const s of this.spec.shapes) this.drawShape(this.art, s, false);
-    this.artLayer = scene.add.container(x, y, [this.art]);
-    this.maskGfx = scene.make.graphics({ x: 0, y: 0 }, false);
-    this.artLayer.setMask(this.maskGfx.createGeometryMask());
+    // Boceto y cuadro se rasterizan una sola vez a textura (por índice y tamaño): así el
+    // costo por frame es el de dos sprites, no el de decenas de formas de Graphics.
+    const w = Math.round(width);
+    const h = Math.round(height);
+    const sketchKey = `painting-${index}-${w}x${h}-sketch`;
+    const artKey = `painting-${index}-${w}x${h}-art`;
+    if (!scene.textures.exists(sketchKey)) {
+      const g = scene.make.graphics({ x: 0, y: 0 }, false);
+      g.fillStyle(0xd8d0c2, 1);
+      g.fillRect(0, 0, w, h);
+      g.translateCanvas(w / 2, h / 2);
+      for (const s of this.spec.shapes) this.drawShape(g, s, true);
+      g.generateTexture(sketchKey, w, h);
+      g.destroy();
+    }
+    if (!scene.textures.exists(artKey)) {
+      const g = scene.make.graphics({ x: 0, y: 0 }, false);
+      g.fillStyle(hexToNum(this.spec.background), 1);
+      g.fillRect(0, 0, w, h);
+      g.translateCanvas(w / 2, h / 2);
+      for (const s of this.spec.shapes) this.drawShape(g, s, false);
+      g.generateTexture(artKey, w, h);
+      g.destroy();
+    }
+    this.add(scene.add.image(0, 0, sketchKey));
+    // Cuadro a color en franjas (pinceladas verticales de izquierda a derecha)
+    this.artLayer = scene.add.container(x, y);
+    const n = this.spec.strokes.length;
+    for (let i = 0; i < n; i++) {
+      const strip = scene.add.image(-w / 2, -h / 2, artKey).setOrigin(0, 0);
+      strip.setCrop(Math.floor((i * w) / n), 0, Math.ceil(w / n), 0).setVisible(false);
+      this.strips.push(strip);
+      this.artLayer.add(strip);
+    }
     scene.add.existing(this);
     // El arte va justo encima del marco/boceto en el orden de dibujo.
     scene.children.moveAbove(this.artLayer, this);
@@ -123,35 +142,21 @@ export class PaintingCanvas extends Phaser.GameObjects.Container {
   }
 
   private redrawMask(frac: number): void {
-    const m = this.maskGfx;
-    m.clear();
-    m.fillStyle(0xffffff, 1);
-    const w = this.pw;
-    const h = this.ph;
-    // La máscara vive en coordenadas del mundo: usar la posición absoluta del contenedor.
-    const ox = this.x - w / 2;
-    const oy = this.y - h / 2;
-    const strokes = this.spec.strokes;
-    const total = strokes.length;
+    const w = Math.round(this.pw);
+    const h = Math.round(this.ph);
+    const total = this.strips.length;
     const full = Math.floor(frac * total);
     const partial = frac * total - full;
     for (let i = 0; i < total; i++) {
-      const s = strokes[i];
+      const strip = this.strips[i];
       const amount = i < full ? 1 : i === full ? partial : 0;
-      if (amount <= 0) continue;
-      // Banda diagonal que crece de arriba hacia abajo según `amount`.
-      const x0 = s.x * w;
-      const sw = s.w * w;
-      const slant = s.slant * w;
-      const hh = h * amount;
-      const cx = (v: number) => Phaser.Math.Clamp(v, ox, ox + w);
-      m.beginPath();
-      m.moveTo(cx(ox + x0), oy);
-      m.lineTo(cx(ox + x0 + sw), oy);
-      m.lineTo(cx(ox + x0 + sw + slant * amount), oy + hh);
-      m.lineTo(cx(ox + x0 + slant * amount), oy + hh);
-      m.closePath();
-      m.fillPath();
+      if (amount <= 0.001) {
+        strip.setVisible(false);
+        continue;
+      }
+      // La franja crece de arriba hacia abajo según `amount`.
+      strip.setVisible(true);
+      strip.setCrop(Math.floor((i * w) / total), 0, Math.ceil(w / total), Math.max(1, h * amount));
     }
   }
 
@@ -205,7 +210,6 @@ export class PaintingCanvas extends Phaser.GameObjects.Container {
   }
 
   destroy(fromScene?: boolean): void {
-    this.maskGfx.destroy();
     this.artLayer.destroy();
     super.destroy(fromScene);
   }
