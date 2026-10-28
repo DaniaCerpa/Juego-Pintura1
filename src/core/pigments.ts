@@ -13,6 +13,8 @@ export interface PigmentsConfig {
   avoidPairsWhenFewPigments: [PigmentId, PigmentId][];
   fewPigmentsThreshold: number;
   symbolsFromPigmentCount: number;
+  minDeltaE: number;
+  minDeltaEDeuteranopia: number;
 }
 
 export const pigmentsConfig: PigmentsConfig = pigmentsData as PigmentsConfig;
