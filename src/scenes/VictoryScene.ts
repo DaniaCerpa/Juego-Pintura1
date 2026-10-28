@@ -12,6 +12,7 @@ import { t } from '../ui/i18n';
 import { COLORS, drawBackdrop, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
 import { sharePaintingFromScene } from '../ui/share';
+import { IconButton } from '../ui/IconButton';
 
 export interface VictoryData {
   result: LevelResult;
@@ -180,13 +181,21 @@ export class VictoryScene extends Phaser.Scene {
     // Botones
     const nextLevel = r.level + 1;
     const hasNext = nextLevel <= MAX_PRECOMPUTED_LEVEL;
-    const next = new Button(this, W / 2, 1300, hasNext ? t('victory.next') : t('victory.gallery'), {
+    // En un Encargo el botón principal lleva a la galería, donde el cuadro vuela a su marco.
+    const hang = r.paintingCompleted;
+    const nextLabel = hang ? t('victory.hang') : hasNext ? t('victory.next') : t('victory.gallery');
+    const next = new Button(this, W / 2, 1300, nextLabel, {
       width: 640,
       height: 150,
-      fontSize: 54,
+      fontSize: 50,
     });
-    next.onPress = () =>
-      hasNext ? goTo(this, 'Level', { level: nextLevel }) : goTo(this, 'Gallery');
+    next.onPress = () => {
+      if (hang) {
+        this.registry.set('justHung', r.paintingIndex);
+        goTo(this, 'Gallery');
+      } else if (hasNext) goTo(this, 'Level', { level: nextLevel });
+      else goTo(this, 'Gallery');
+    };
     if (r.stars >= 2 && r.reward.total > 0 && r.level >= adsData.minLevelForRewardedOffers) {
       const dbl = new Button(this, W / 2, 1470, t('victory.double'), {
         width: 640,
@@ -215,17 +224,13 @@ export class VictoryScene extends Phaser.Scene {
       };
     }
     if (r.paintingCompleted) {
-      // Encargo: compartir el cuadro terminado (A5)
-      const share = new Button(this, W / 2, 1180, t('share.button'), {
-        width: 300,
-        height: 96,
-        fontSize: 32,
-        color: COLORS.accent,
-        outline: true,
-        textColor: UI.colors.text,
-        icon: '⇪',
+      // Encargo: compartir el cuadro terminado (A5), botón en la esquina del marco.
+      const share = new IconButton(this, W / 2 + 290, 690, 'share', {
+        size: 104,
+        color: UI.colors.accent,
+        iconColor: UI.colors.panel,
       });
-      share.setAlpha(0);
+      share.setAlpha(0).setDepth(5);
       this.time.delayedCall(1000 + UI.anim.brushMs + 300, () => {
         this.tweens.add({ targets: share, alpha: 1, duration: 250 });
       });
@@ -246,7 +251,10 @@ export class VictoryScene extends Phaser.Scene {
       color: COLORS.backgroundLight,
       textColor: UI.colors.text,
     });
-    gallery.onPress = () => goTo(this, 'Gallery');
+    gallery.onPress = () => {
+      if (r.paintingCompleted) this.registry.set('justHung', r.paintingIndex);
+      goTo(this, 'Gallery');
+    };
 
     // Saltable (§9.3): un toque termina la intro de inmediato.
     this.input.on('pointerdown', () => this.skipIntro(r));

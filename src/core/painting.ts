@@ -20,12 +20,37 @@ export interface Shape {
   alpha?: number;
 }
 
-export interface Stroke {
-  /** Banda diagonal en coordenadas 0–1: x de inicio en la parte superior y ancho. */
-  x: number;
-  w: number;
-  slant: number;
+/** Región con sentido del cuadro (B6): se revela entera con una pincelada. */
+export interface PaintingRegion {
+  /** Clave i18n del nombre de la región (`painting.region.<key>`). */
+  key: RegionKey;
+  shapes: Shape[];
 }
+
+export type RegionKey =
+  | 'sky'
+  | 'sun'
+  | 'clouds'
+  | 'farMountains'
+  | 'mountains'
+  | 'water'
+  | 'hills'
+  | 'meadow'
+  | 'trees'
+  | 'houses';
+
+export const REGION_ORDER: RegionKey[] = [
+  'sky',
+  'sun',
+  'clouds',
+  'farMountains',
+  'mountains',
+  'water',
+  'hills',
+  'meadow',
+  'trees',
+  'houses',
+];
 
 export interface PaintingSpec {
   id: number;
@@ -33,10 +58,54 @@ export interface PaintingSpec {
   /** Clave i18n del título (`painting.title.N`); la UI la traduce. */
   titleKey: string;
   background: string;
+  /** 10 regiones en orden de dibujo (de atrás hacia adelante); cada nivel revela una. */
+  regions: PaintingRegion[];
+  /** Todas las formas en orden de dibujo (para miniaturas y la imagen de compartir). */
   shapes: Shape[];
-  /** 10 pinceladas que revelan el cuadro de izquierda a derecha, con inclinación. */
-  strokes: Stroke[];
   palette: string[];
+}
+
+/** Rectángulo (en píxeles) que ocupa una forma dibujada en un lienzo w×h. */
+export function shapeBoundsPx(
+  s: Shape,
+  w: number,
+  h: number,
+): { x0: number; y0: number; x1: number; y1: number } {
+  const cx = s.x * w;
+  const cy = s.y * h;
+  const hw = (s.w * w) / 2;
+  const hh = s.kind === 'circle' ? hw : (s.h * h) / 2;
+  return { x0: cx - hw, y0: cy - hh, x1: cx + hw, y1: cy + hh };
+}
+
+/** Unión de los rectángulos de las formas de una región, recortada al lienzo. */
+export function regionBoundsPx(
+  r: PaintingRegion,
+  w: number,
+  h: number,
+): { x0: number; y0: number; x1: number; y1: number } {
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (const s of r.shapes) {
+    const b = shapeBoundsPx(s, w, h);
+    x0 = Math.min(x0, b.x0);
+    y0 = Math.min(y0, b.y0);
+    x1 = Math.max(x1, b.x1);
+    y1 = Math.max(y1, b.y1);
+  }
+  return {
+    x0: Math.max(0, Math.floor(x0) - 2),
+    y0: Math.max(0, Math.floor(y0) - 2),
+    x1: Math.min(w, Math.ceil(x1) + 2),
+    y1: Math.min(h, Math.ceil(y1) + 2),
+  };
+}
+
+/** Regiones reveladas para un porcentaje pintado (10 % por región). */
+export function regionsRevealed(percent: number): number {
+  return Math.max(0, Math.min(REGION_ORDER.length, Math.floor(percent / 10 + 1e-9)));
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -83,115 +152,219 @@ export function generatePainting(index: number, pigments: PigmentId[]): Painting
   const base = ids.map((p) => getPigment(p).hex);
   const palette = rng.shuffle([...base]);
   const pick = (i: number) => palette[i % palette.length];
+  const regions: Record<RegionKey, Shape[]> = {
+    sky: [],
+    sun: [],
+    clouds: [],
+    farMountains: [],
+    mountains: [],
+    water: [],
+    hills: [],
+    meadow: [],
+    trees: [],
+    houses: [],
+  };
+  const HORIZON = 0.6;
 
-  const shapes: Shape[] = [];
-  // Cielo: bandas horizontales degradadas a partir del primer color.
+  // 0 · Cielo: bandas horizontales degradadas
   const sky = pick(0);
-  const bands = 4 + rng.int(0, 2);
+  const bands = 5;
   for (let i = 0; i < bands; i++) {
     const t = i / (bands - 1);
-    shapes.push({
+    regions.sky.push({
       kind: 'rect',
       x: 0.5,
-      y: (t * 0.6) / 2 + (0.6 / bands) * 0.5 * 0,
+      y: (i + 0.5) * (HORIZON / bands),
       w: 1,
-      h: 0.6 / bands + 0.01,
-      color: shadeHex(sky, 0.55 - t * 0.45),
+      h: HORIZON / bands + 0.01,
+      color: shadeHex(sky, 0.62 - t * 0.42),
     });
-    shapes[shapes.length - 1].y = (i + 0.5) * (0.6 / bands);
   }
-  // Astro
+  // 1 · Sol con halo
   const sun = pick(1);
-  shapes.push({
+  const sunX = 0.18 + rng.next() * 0.64;
+  const sunY = 0.14 + rng.next() * 0.14;
+  const sunR = 0.12 + rng.next() * 0.06;
+  regions.sun.push({
     kind: 'circle',
-    x: 0.2 + rng.next() * 0.6,
-    y: 0.14 + rng.next() * 0.2,
-    w: 0.1 + rng.next() * 0.1,
+    x: sunX,
+    y: sunY,
+    w: sunR * 1.7,
     h: 0,
-    color: shadeHex(sun, 0.25),
+    color: shadeHex(sun, 0.55),
+    alpha: 0.45,
   });
-  // Montañas: 2–3 capas de triángulos, de lejos (claro) a cerca (oscuro).
-  const mountain = pick(2);
-  const layers = 2 + rng.int(0, 1);
-  for (let l = 0; l < layers; l++) {
-    const depth = l / Math.max(1, layers - 1);
-    const peaks = 2 + rng.int(0, 2);
-    for (let p = 0; p < peaks; p++) {
-      shapes.push({
-        kind: 'triangle',
-        x: (p + 0.5) / peaks + (rng.next() - 0.5) * 0.2,
-        y: 0.62 - depth * 0.04,
-        w: 0.35 + rng.next() * 0.3,
-        h: 0.18 + rng.next() * 0.2 - depth * 0.05,
-        color: shadeHex(mountain, 0.35 - depth * 0.55),
-      });
-    }
-  }
-  // Colinas: elipses anchas.
-  const hill = pick(3);
-  const hills = 2 + rng.int(0, 2);
-  for (let i = 0; i < hills; i++) {
-    shapes.push({
+  regions.sun.push({ kind: 'circle', x: sunX, y: sunY, w: sunR, h: 0, color: shadeHex(sun, 0.2) });
+  // 2 · Nubes: grupos de elipses claras
+  const clouds = 2 + rng.int(0, 1);
+  for (let c = 0; c < clouds; c++) {
+    const cx = 0.12 + rng.next() * 0.76;
+    const cy = 0.08 + rng.next() * 0.22;
+    const cw = 0.16 + rng.next() * 0.1;
+    const col = shadeHex(pick(2), 0.82);
+    regions.clouds.push({ kind: 'ellipse', x: cx, y: cy + 0.015, w: cw, h: 0.045, color: col });
+    regions.clouds.push({
       kind: 'ellipse',
-      x: rng.next(),
-      y: 0.72 + i * 0.06,
-      w: 0.7 + rng.next() * 0.5,
-      h: 0.2 + rng.next() * 0.1,
-      color: shadeHex(hill, 0.2 - i * 0.2),
+      x: cx - cw * 0.2,
+      y: cy,
+      w: cw * 0.5,
+      h: 0.05,
+      color: col,
+    });
+    regions.clouds.push({
+      kind: 'ellipse',
+      x: cx + cw * 0.15,
+      y: cy - 0.01,
+      w: cw * 0.55,
+      h: 0.06,
+      color: col,
     });
   }
-  // Suelo
-  shapes.push({ kind: 'rect', x: 0.5, y: 0.93, w: 1, h: 0.16, color: shadeHex(pick(4), -0.35) });
-  // Árboles / casas pequeñas
-  const accent = pick(5);
-  const items = 3 + rng.int(0, 4);
-  for (let i = 0; i < items; i++) {
-    const x = 0.08 + rng.next() * 0.84;
-    const y = 0.8 + rng.next() * 0.08;
-    if (rng.next() < 0.6) {
-      shapes.push({
-        kind: 'rect',
-        x,
-        y: y + 0.04,
-        w: 0.012,
-        h: 0.07,
-        color: shadeHex(accent, -0.6),
-      });
-      shapes.push({
-        kind: 'triangle',
-        x,
-        y: y + 0.02,
-        w: 0.07,
-        h: 0.11,
-        color: shadeHex(accent, -0.15),
-      });
-    } else {
-      shapes.push({ kind: 'rect', x, y: y + 0.02, w: 0.07, h: 0.06, color: shadeHex(accent, 0.3) });
-      shapes.push({
-        kind: 'triangle',
-        x,
-        y: y - 0.03,
-        w: 0.09,
-        h: 0.05,
-        color: shadeHex(accent, -0.3),
-      });
-    }
+  // 3 · Montañas lejanas (claras)
+  const mountain = pick(3);
+  const far = 3 + rng.int(0, 1);
+  for (let p = 0; p < far; p++) {
+    const h = 0.16 + rng.next() * 0.14;
+    regions.farMountains.push({
+      kind: 'triangle',
+      x: (p + 0.5) / far + (rng.next() - 0.5) * 0.12,
+      y: HORIZON - h / 2,
+      w: 0.38 + rng.next() * 0.22,
+      h,
+      color: shadeHex(mountain, 0.42),
+    });
+  }
+  // 4 · Montañas cercanas (oscuras)
+  const near = 2 + rng.int(0, 1);
+  for (let p = 0; p < near; p++) {
+    const h = 0.14 + rng.next() * 0.12;
+    regions.mountains.push({
+      kind: 'triangle',
+      x: (p + 0.5) / near + (rng.next() - 0.5) * 0.18,
+      y: HORIZON - h / 2 + 0.01,
+      w: 0.42 + rng.next() * 0.2,
+      h,
+      color: shadeHex(mountain, -0.15 - p * 0.08),
+    });
+  }
+  // 5 · Agua: lago con reflejos
+  const water = shadeHex(sky, -0.05);
+  regions.water.push({ kind: 'rect', x: 0.5, y: HORIZON + 0.06, w: 1, h: 0.12, color: water });
+  for (let i = 0; i < 4; i++) {
+    regions.water.push({
+      kind: 'ellipse',
+      x: 0.1 + rng.next() * 0.8,
+      y: HORIZON + 0.02 + rng.next() * 0.08,
+      w: 0.12 + rng.next() * 0.16,
+      h: 0.008,
+      color: shadeHex(water, 0.45),
+    });
+  }
+  // 6 · Colinas
+  const hill = pick(4);
+  const hills = 3;
+  for (let i = 0; i < hills; i++) {
+    regions.hills.push({
+      kind: 'ellipse',
+      x: (i + 0.5) / hills + (rng.next() - 0.5) * 0.2,
+      y: 0.78 + i * 0.012,
+      w: 0.7 + rng.next() * 0.3,
+      h: 0.14 + rng.next() * 0.04,
+      color: shadeHex(hill, 0.18 - i * 0.12),
+    });
+  }
+  // 7 · Pradera con flores
+  const meadow = pick(5);
+  regions.meadow.push({
+    kind: 'rect',
+    x: 0.5,
+    y: 0.92,
+    w: 1,
+    h: 0.18,
+    color: shadeHex(meadow, -0.3),
+  });
+  for (let i = 0; i < 9; i++) {
+    regions.meadow.push({
+      kind: 'circle',
+      x: 0.04 + rng.next() * 0.92,
+      y: 0.88 + rng.next() * 0.1,
+      w: 0.018 + rng.next() * 0.012,
+      h: 0,
+      color: shadeHex(pick(6 + i), 0.25),
+    });
+  }
+  // 8 · Árboles
+  const trees = 3 + rng.int(0, 2);
+  const treeCol = pick(6);
+  for (let i = 0; i < trees; i++) {
+    const x = 0.06 + rng.next() * 0.88;
+    const y = 0.8 + rng.next() * 0.06;
+    regions.trees.push({
+      kind: 'rect',
+      x,
+      y: y + 0.045,
+      w: 0.016,
+      h: 0.07,
+      color: shadeHex(treeCol, -0.65),
+    });
+    regions.trees.push({
+      kind: 'triangle',
+      x,
+      y: y - 0.01,
+      w: 0.08,
+      h: 0.12,
+      color: shadeHex(treeCol, -0.2),
+    });
+    regions.trees.push({
+      kind: 'triangle',
+      x,
+      y: y - 0.045,
+      w: 0.06,
+      h: 0.08,
+      color: shadeHex(treeCol, 0.05),
+    });
+  }
+  // 9 · Casas (Encargo): 1–2 casas con techo y puerta
+  const houses = 1 + rng.int(0, 1);
+  const houseCol = pick(7);
+  for (let i = 0; i < houses; i++) {
+    const x = 0.25 + i * 0.45 + (rng.next() - 0.5) * 0.12;
+    const y = 0.86;
+    regions.houses.push({ kind: 'rect', x, y, w: 0.13, h: 0.09, color: shadeHex(houseCol, 0.45) });
+    regions.houses.push({
+      kind: 'triangle',
+      x,
+      y: y - 0.075,
+      w: 0.16,
+      h: 0.07,
+      color: shadeHex(houseCol, -0.3),
+    });
+    regions.houses.push({
+      kind: 'rect',
+      x,
+      y: y + 0.02,
+      w: 0.03,
+      h: 0.05,
+      color: shadeHex(houseCol, -0.55),
+    });
+    regions.houses.push({
+      kind: 'rect',
+      x: x + 0.04,
+      y: y - 0.01,
+      w: 0.025,
+      h: 0.022,
+      color: shadeHex(sun, 0.4),
+    });
   }
 
-  // Pinceladas: 10 bandas diagonales que cubren el lienzo de izquierda a derecha.
-  const strokes: Stroke[] = [];
-  const slant = 0.12 + rng.next() * 0.1;
-  for (let i = 0; i < 10; i++) {
-    strokes.push({ x: i / 10 - slant / 2, w: 0.1 + slant + 0.02, slant });
-  }
-
+  const ordered: PaintingRegion[] = REGION_ORDER.map((key) => ({ key, shapes: regions[key] }));
   return {
     id: index,
     seed,
     titleKey: `painting.title.${index % PAINTING_TITLE_COUNT}`,
     background: shadeHex(sky, 0.6),
-    shapes,
-    strokes,
+    regions: ordered,
+    shapes: ordered.flatMap((r) => r.shapes),
     palette,
   };
 }
