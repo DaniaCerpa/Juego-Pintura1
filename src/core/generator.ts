@@ -217,7 +217,11 @@ function tryParams(
     const dryCount = rng.int(params.drying[0], params.drying[1]);
     let result = solve(
       { jars: cand.jars, capacity: cfg.capacity, rules: cand.rules },
-      { maxStates: cfg.solver.maxStates, maxMs: cfg.solver.maxMs, withSolution: dryCount > 0 },
+      {
+        maxStates: cfg.solver.maxStates,
+        maxMs: Number.POSITIVE_INFINITY,
+        withSolution: dryCount > 0,
+      },
     );
     if (!result.solvable) {
       report(result.verified ? 'irresoluble' : 'no verificable');
@@ -231,7 +235,7 @@ function tryParams(
       };
       result = solve(
         { jars: cand.jars, capacity: cfg.capacity, rules: cand.rules },
-        { maxStates: cfg.solver.maxStates, maxMs: cfg.solver.maxMs },
+        { maxStates: cfg.solver.maxStates, maxMs: Number.POSITIVE_INFINITY },
       );
       if (!result.solvable) {
         report(result.verified ? 'irresoluble con secado' : 'no verificable con secado');
@@ -265,7 +269,8 @@ function tryParams(
 }
 
 /**
- * Genera el nivel N (§4.2). Determinista: `seed = N * 1000 + intento`.
+ * Genera el nivel N (§4.2). Determinista: `seed = N * 1000 + intento`. El solver se limita
+ * solo por número de estados (no por tiempo) para que el resultado no dependa de la máquina.
  * Si tras `maxAttempts` no hay candidato en rango, baja un escalón y registra warning.
  */
 export function generateLevel(level: number, options: GeneratorOptions = {}): GeneratedLevel {

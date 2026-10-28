@@ -80,7 +80,7 @@ describe('generador (§4.2) — propiedades', () => {
         }
         const inRange = g.def.par >= params.par[0] && g.def.par <= params.par[1];
         if (!inRange) outOfRange++;
-        const check = solve(g.def);
+        const check = solve(g.def, { maxMs: Number.POSITIVE_INFINITY });
         expect(check.solvable).toBe(true);
         expect(check.par).toBe(g.def.par);
       }
