@@ -217,7 +217,7 @@ Remolino de partículas de los dos colores que converge en el producto (60–80 
 
 ## 6. Secado (única fuente de derrota) — F1
 
-Un frasco **abierto** tiene pintura que se seca: muestra una **mecha** F (6–12) como un anillo que se consume y un número.
+Un frasco **abierto** tiene pintura que se seca: muestra una **mecha** F como un anillo de progreso alrededor de la boca del frasco y una costra que se va formando en la superficie (más opaca y agrietada cerca de 0). El número solo aparece, en rojo y con pulso, cuando quedan ≤ 3 movimientos.
 
 - F baja **1 por cada movimiento** del jugador (cualquier frasco), mientras el frasco no esté resuelto (uniforme lleno o vacío).
 - Al llegar a 0 la pintura **se seca**: derrota. Pantalla con "Diluir (ver anuncio)" (rewarded: repone F y continúa) o "Lienzo nuevo".
@@ -245,7 +245,7 @@ Pantalla de colección: una **rueda de color** donde cada receta descubierta se 
 
 ### 7.3 Galería de cuadros (meta principal)
 
-- Cada decena de niveles (1–10, 11–20, …) corresponde a **un cuadro**. Cada nivel ganado **pinta el 10 %** del cuadro (revelado por máscara, de boceto a color). El Encargo (nivel 10, 20, …) completa la obra con una animación de "firma" y la cuelga en la galería.
+- Cada decena de niveles (1–10, 11–20, …) corresponde a **un cuadro**. Cada nivel ganado **pinta el 10 %** del cuadro: el cuadro se divide en **10 regiones con sentido** (cielo, sol, nubes, montañas lejanas, montañas, agua, colinas, pradera, árboles, casas) y cada victoria revela una con una animación de pincel que la recorre (600 ms), de boceto a color. El Encargo (nivel 10, 20, …) completa la obra con una animación de "firma" y el cuadro vuela del caballete a su marco en la galería. Los cuadros colgados se pueden **compartir** (PNG 1080×1350 con el cuadro enmarcado, título, "Pintado en Pigmento" y la URL).
 - **Los cuadros son originales**, nunca obras reales ni imitaciones reconocibles. En F0/F1 se generan **por procedimiento** (composiciones abstractas o paisajes geométricos a partir de la semilla de la decena, con la paleta de pigmentos de esos niveles). Costo de arte: cero. Arte dibujado a mano puede reemplazarlos en F3 sin tocar el sistema.
 - La **Galería** es la pantalla de inicio: paredes con los cuadros colgados, el cuadro actual a medio pintar en el caballete, botón grande "Pintar nivel N".
 - Marcos y paredes cosméticos: **F3**, no antes. El sistema de slots queda definido en `src/data/gallery.json` desde F1 pero sin tienda.
@@ -321,8 +321,8 @@ Si el jugador toca durante una animación, la animación termina instantáneamen
 
 ## 10. Arte, audio y accesibilidad
 
-- **Estilo:** flat con textura sutil de lienzo en el fondo (#2A2621 aprox., tono taller con luz cálida). Frascos de vidrio con borde claro y reflejo. Los pigmentos son los protagonistas; todo lo demás es neutro. HUD con tipografía humanista (Google Fonts, gratis).
-- **Paleta:** 12 pigmentos en `pigments.json`, verificados para deuteranopia/protanopia. En niveles con C ≤ 6 no combinar red y green; con C ≥ 7 activar **símbolos** sobre cada capa (modo accesibilidad, en Ajustes, activado por defecto si `prefers-contrast` o `forced-colors` lo sugieren).
+- **Estilo:** flat con textura sutil de lienzo en el fondo (#2A2621 aprox., tono taller con luz cálida desde arriba a la izquierda y viñeta). Los frascos se apoyan en una **mesa de madera** (estantes para filas superiores) y proyectan sombra sobre ella. Frascos de vidrio con borde claro y reflejo; la pintura se dibuja por bloques del mismo color (sin líneas entre capas iguales), con gradiente, brillo especular y menisco; la superficie ondula al verter y un corcho cae al completar un frasco. Marca: wordmark "Pigmento" con cada letra de un pigmento y una gota en la "i". Los pigmentos son los protagonistas; todo lo demás es neutro. HUD con tipografía humanista (Google Fonts, gratis).
+- **Paleta:** 12 pigmentos en `pigments.json`, verificados con un test en core: ΔE CIEDE2000 ≥ 20 entre todos los pares y ≥ 12 bajo simulación de deuteranopia (umbrales en `pigments.json`). En niveles con C ≤ 6 no combinar red y green; con C ≥ 7 activar **símbolos** sobre cada capa (modo accesibilidad, en Ajustes, activado por defecto si `prefers-contrast` o `forced-colors` lo sugieren).
 - **Audio:** vertido (3 variantes "glug"), mezcla ("swirl"), frasco completo (nota ascendente por cada frasco resuelto en la sesión: do, re, mi…), victoria, error. Fuentes CC0 (Kenney, Freesound). Música lo-fi opcional, apagada por defecto. Audio desbloqueado tras el primer toque (requisito de navegadores móviles).
 - **Haptics:** `navigator.vibrate` en web / plugin Haptics en Capacitor. 10 ms al completar frasco, 30 ms en mezcla. Desactivable.
 - **Placeholders:** F0 y F1 usan gráficos generados por código (`Phaser.GameObjects.Graphics`) y cuadros procedurales. No bloquear nada esperando arte.
