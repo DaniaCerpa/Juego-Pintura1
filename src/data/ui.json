@@ -16,7 +16,8 @@
     "debounceMs": 80,
     "liftPx": 20,
     "hintPulseMs": 900,
-    "hintAfterIdleMs": 6000
+    "hintAfterIdleMs": 6000,
+    "rippleMs": 200
   },
   "board": {
     "maxPerRow": 5,
@@ -24,7 +25,9 @@
     "minTouchPx": 96,
     "jarAspect": 2.35,
     "rowGapPx": 70,
-    "maxJarWidthPx": 200
+    "maxJarWidthPx": 270,
+    "topReservePx": 56,
+    "bottomReservePx": 120
   },
   "fx": {
     "particleCap": 200,
