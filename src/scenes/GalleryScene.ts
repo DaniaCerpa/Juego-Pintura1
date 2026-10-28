@@ -8,6 +8,7 @@ import { t } from '../ui/i18n';
 import { showToast } from '../ui/Toast';
 import { COLORS, drawBackdrop, H, shade, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
+import { sharePaintingFromScene } from '../ui/share';
 
 /**
  * Galería (§7.3, §9.1.2): pared con los últimos cuadros colgados, caballete con el cuadro
@@ -151,7 +152,7 @@ export class GalleryScene extends Phaser.Scene {
       const y = 300 + slotH / 2 + 20;
       const idx = currentPainting - slots + i;
       if (idx >= 0 && state.paintingPercent(idx) >= 100) {
-        new PaintingCanvas(
+        const hung = new PaintingCanvas(
           this,
           x,
           y,
@@ -161,6 +162,12 @@ export class GalleryScene extends Phaser.Scene {
           paintingPigments(idx, galleryData.levelsPerPainting),
           100,
         );
+        // Tocar un cuadro colgado lo comparte (A5)
+        hung.setSize(slotW, slotH).setInteractive({ useHandCursor: true });
+        hung.on('pointerdown', () => {
+          this.tweens.add({ targets: hung, scale: { from: 0.94, to: 1 }, duration: 160 });
+          void sharePaintingFromScene(this, hung.spec);
+        });
       } else {
         // Marco vacío a la espera
         g.fillStyle(shade(COLORS.panel, 0.08), 1);
@@ -196,7 +203,7 @@ export class GalleryScene extends Phaser.Scene {
       paintingPigments(paintingIdx, galleryData.levelsPerPainting),
       pct,
     );
-    const title = canvas.spec.title;
+    const title = t(canvas.spec.titleKey);
     // Placa con el título y el progreso (tapa el cruce de las patas)
     g.fillStyle(COLORS.panel, 0.92);
     g.fillRoundedRect(cx - 330, cy + 236, 660, 64, 20);

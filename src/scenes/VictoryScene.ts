@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import adsData from '../data/ads.json';
 import galleryData from '../data/gallery.json';
 import { MAX_PRECOMPUTED_LEVEL, paintingPigments } from '../core/levels';
 import type { PigmentId } from '../core/types';
@@ -10,6 +11,7 @@ import { Button } from '../ui/Button';
 import { t } from '../ui/i18n';
 import { COLORS, drawBackdrop, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
+import { sharePaintingFromScene } from '../ui/share';
 
 export interface VictoryData {
   result: LevelResult;
@@ -185,7 +187,7 @@ export class VictoryScene extends Phaser.Scene {
     });
     next.onPress = () =>
       hasNext ? goTo(this, 'Level', { level: nextLevel }) : goTo(this, 'Gallery');
-    if (r.stars >= 2 && r.reward.total > 0) {
+    if (r.stars >= 2 && r.reward.total > 0 && r.level >= adsData.minLevelForRewardedOffers) {
       const dbl = new Button(this, W / 2, 1470, t('victory.double'), {
         width: 640,
         height: 120,
@@ -211,6 +213,23 @@ export class VictoryScene extends Phaser.Scene {
         audio.play('victory');
         dbl.setVisible(false);
       };
+    }
+    if (r.paintingCompleted) {
+      // Encargo: compartir el cuadro terminado (A5)
+      const share = new Button(this, W / 2, 1180, t('share.button'), {
+        width: 300,
+        height: 96,
+        fontSize: 32,
+        color: COLORS.accent,
+        outline: true,
+        textColor: UI.colors.text,
+        icon: '⇪',
+      });
+      share.setAlpha(0);
+      this.time.delayedCall(1000 + UI.anim.brushMs + 300, () => {
+        this.tweens.add({ targets: share, alpha: 1, duration: 250 });
+      });
+      share.onPress = () => void sharePaintingFromScene(this, this.canvas.spec);
     }
     const replay = new Button(this, W / 2 - 170, 1640, t('victory.replay'), {
       width: 300,
