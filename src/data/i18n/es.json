@@ -92,5 +92,20 @@
   "pigment.sky": "celeste",
   "pigment.cream": "crema",
   "ad.rewarded": "Anuncio con recompensa",
-  "ad.interstitial": "Anuncio"
+  "ad.interstitial": "Anuncio",
+  "painting.title.0": "Amanecer en el taller",
+  "painting.title.1": "Colinas de pigmento",
+  "painting.title.2": "Marea de color",
+  "painting.title.3": "Noche de esmalte",
+  "painting.title.4": "Valle templado",
+  "painting.title.5": "Sol de cadmio",
+  "painting.title.6": "Costa de óxido",
+  "painting.title.7": "Bosque de ultramar",
+  "painting.title.8": "Campo abierto",
+  "painting.title.9": "Luna de cerusa",
+  "share.button": "Compartir",
+  "share.caption": "Pintado en Pigmento",
+  "share.done": "Imagen lista para compartir",
+  "share.saved": "Imagen guardada",
+  "share.error": "No se pudo compartir"
 }

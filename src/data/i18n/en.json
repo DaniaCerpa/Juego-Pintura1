@@ -92,5 +92,20 @@
   "pigment.sky": "sky blue",
   "pigment.cream": "cream",
   "ad.rewarded": "Rewarded ad",
-  "ad.interstitial": "Ad"
+  "ad.interstitial": "Ad",
+  "painting.title.0": "Dawn in the studio",
+  "painting.title.1": "Pigment hills",
+  "painting.title.2": "Tide of color",
+  "painting.title.3": "Enamel night",
+  "painting.title.4": "Temperate valley",
+  "painting.title.5": "Cadmium sun",
+  "painting.title.6": "Oxide coast",
+  "painting.title.7": "Ultramarine forest",
+  "painting.title.8": "Open field",
+  "painting.title.9": "Ceruse moon",
+  "share.button": "Share",
+  "share.caption": "Painted in Pigmento",
+  "share.done": "Image ready to share",
+  "share.saved": "Image saved",
+  "share.error": "Could not share"
 }

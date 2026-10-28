@@ -30,7 +30,8 @@ export interface Stroke {
 export interface PaintingSpec {
   id: number;
   seed: number;
-  title: string;
+  /** Clave i18n del título (`painting.title.N`); la UI la traduce. */
+  titleKey: string;
   background: string;
   shapes: Shape[];
   /** 10 pinceladas que revelan el cuadro de izquierda a derecha, con inclinación. */
@@ -59,18 +60,8 @@ export function shadeHex(hex: string, f: number): string {
   return rgbToHex(r + (t - r) * k, g + (t - g) * k, b + (t - b) * k);
 }
 
-const TITLES_ES = [
-  'Amanecer en el taller',
-  'Colinas de pigmento',
-  'Marea de color',
-  'Noche de esmalte',
-  'Valle templado',
-  'Sol de cadmio',
-  'Costa de óxido',
-  'Bosque de ultramar',
-  'Campo abierto',
-  'Luna de cerusa',
-];
+/** Cantidad de títulos disponibles en i18n (`painting.title.0` … `painting.title.N-1`). */
+export const PAINTING_TITLE_COUNT = 10;
 
 /** Índice de cuadro (decena) para un nivel. */
 export function paintingIndexFor(level: number): number {
@@ -197,7 +188,7 @@ export function generatePainting(index: number, pigments: PigmentId[]): Painting
   return {
     id: index,
     seed,
-    title: TITLES_ES[index % TITLES_ES.length],
+    titleKey: `painting.title.${index % PAINTING_TITLE_COUNT}`,
     background: shadeHex(sky, 0.6),
     shapes,
     strokes,

@@ -13,8 +13,9 @@ export function getLang(): Lang {
   return current;
 }
 
+/** Idioma del dispositivo en el primer arranque: es* → español; cualquier otro → inglés. */
 export function detectLang(navLang: string | undefined): Lang {
-  return navLang && navLang.toLowerCase().startsWith('en') ? 'en' : 'es';
+  return navLang && navLang.toLowerCase().startsWith('es') ? 'es' : 'en';
 }
 
 /** Traduce una clave con parámetros `{nombre}`. Si falta, devuelve la clave. */
