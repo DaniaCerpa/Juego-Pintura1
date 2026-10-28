@@ -67,3 +67,14 @@ Ver `docs/DECISIONES.md` (sección 2026-10-24 F0).
 ### Decisiones
 
 Ver `docs/DECISIONES.md` (sección 2026-10-24 F1).
+
+## F1.5 — Ronda para testers (en curso)
+
+### Cómo configurar `VITE_POSTHOG_KEY`
+
+1. Crear una cuenta gratuita en https://us.posthog.com y un proyecto ("Pigmento"). Región **US**.
+2. En el proyecto: _Settings → Project → Project API key_ (empieza por `phc_`). Es una clave pública de ingesta, no un secreto de administración.
+3. En GitHub: _Settings → Secrets and variables → Actions → New repository secret_, nombre `VITE_POSTHOG_KEY`, valor la clave del paso 2.
+4. (Opcional) _Variables → New repository variable_ `VITE_POSTHOG_HOST` si se usa otra región (por defecto `https://us.i.posthog.com`).
+5. Relanzar el workflow **Deploy a GitHub Pages** (o hacer push a `main`). Sin la clave, el juego usa `ConsoleAnalytics` con buffer local y no se rompe nada.
+6. Desarrollo local: `VITE_POSTHOG_KEY=phc_... npm run dev`.
