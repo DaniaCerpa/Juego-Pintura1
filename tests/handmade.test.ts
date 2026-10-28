@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { handmadeLevels, getLevelDef, MAX_PRECOMPUTED_LEVEL } from '../src/core/levels';
+import { difficultyConfig } from '../src/core/difficulty';
 import { rejectReason } from '../src/core/generator';
 import { solve } from '../src/core/solver';
 
@@ -13,19 +14,31 @@ describe('niveles hechos a mano (§4.4) y precalculados', () => {
     }
   });
 
-  it('el nivel 21 enseña la mezcla: irresoluble sin mezclar (§4.4)', () => {
-    const l = getLevelDef(21)!;
+  it('el nivel de enseñanza de mezcla es irresoluble sin mezclar (§4.4)', () => {
+    const l = getLevelDef(difficultyConfig.teach.mixLevel)!;
     expect(l.handmade).toBe(true);
     expect(l.rules.mixes).toEqual(['blue+yellow']);
     expect(solve(l).solvable).toBe(true);
     expect(solve({ ...l, rules: { mixes: [], drying: [] } }).solvable).toBe(false);
   });
 
-  it('el nivel 51 enseña el secado con mecha 12 (§6, §8)', () => {
-    const l = getLevelDef(51)!;
+  it('el nivel de enseñanza de secado tiene mecha generosa y es ganable dentro de ella (§6, §8)', () => {
+    const l = getLevelDef(difficultyConfig.teach.dryingLevel)!;
     expect(l.handmade).toBe(true);
-    expect(l.rules.drying).toEqual([{ jar: 1, fuse: 12 }]);
+    expect(l.rules.drying).toHaveLength(1);
+    expect(l.rules.drying[0].fuse).toBeGreaterThanOrEqual(l.par);
     expect(solve(l).solvable).toBe(true);
+    // Antes del nivel de enseñanza no hay secado
+    for (let n = 1; n < difficultyConfig.teach.dryingLevel; n++) {
+      expect(getLevelDef(n)!.rules.drying, `nivel ${n}`).toEqual([]);
+    }
+  });
+
+  it('la mezcla aparece desde el nivel de enseñanza y no antes', () => {
+    for (let n = 1; n < difficultyConfig.teach.mixLevel; n++) {
+      expect(getLevelDef(n)!.rules.mixes, `nivel ${n}`).toEqual([]);
+    }
+    for (let n = 7; n <= 9; n++) expect(getLevelDef(n)!.rules.mixes).toEqual(['blue+yellow']);
   });
 
   it('niveles 1–3 según §8: frascos y par', () => {
@@ -59,7 +72,7 @@ describe('niveles hechos a mano (§4.4) y precalculados', () => {
   });
 
   it('muestra de niveles precalculados: el par guardado es el del solver', () => {
-    for (const n of [4, 10, 21, 33, 50, 77, 120, 250, 400, 500]) {
+    for (const n of [4, 10, 24, 33, 50, 77, 120, 250, 400, 500]) {
       const l = getLevelDef(n)!;
       const r = solve(l);
       expect(r.solvable, `nivel ${n}`).toBe(true);

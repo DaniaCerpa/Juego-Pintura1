@@ -154,22 +154,26 @@ Los niveles se serializan a JSON con exactamente esos campos (`rules.mixes` = id
 | Niveles | Pigmentos (C) | Vacíos (E) | Par objetivo | Mezclas | Secado | Nota |
 |---|---|---|---|---|---|---|
 | 1–3 | 2 | 2 | 2–4 | no | no | Hechos a mano. Enseñan verter. |
-| 4–10 | 3 | 2 | 5–9 | no | no | |
-| 11–20 | 4 | 2 | 8–14 | no | no | |
-| 21 | — | — | — | **hecho a mano**, enseña la mezcla | no | Irresoluble sin mezclar |
-| 22–30 | 5 | 2 | 12–18 | 1 receta | no | |
-| 31–50 | 5–6 | 2 | 15–24 | 1–2 recetas | no | |
-| 51 | — | — | — | sí | **hecho a mano**, enseña el secado | Mecha generosa (12) |
-| 52–80 | 6–7 | 2 | 20–30 | 1–2 | 1 frasco | |
+| 4–5 | 3 | 2 | 5–9 | no | no | |
+| 6 | — | — | — | **hecho a mano**, enseña la mezcla azul+amarillo | no | Irresoluble sin mezclar. Hint de brillo tras 6 s sin mover |
+| 7–9 | 3 | 2 | 5–10 | 1 receta | no | |
+| 10 | — | — | — | 1 receta | no | **Encargo**: termina el primer cuadro |
+| 10–13 | 4 | 2 | 8–14 | 1 receta | no | |
+| 14–24 | 4–5 | 2 | 10–16 | 1–2 recetas | no | rojo+amarillo desde el 14, rojo+azul desde el 18 |
+| 25 | — | — | — | sí | **hecho a mano**, enseña el secado | Mecha generosa |
+| 26–50 | 5–6 | 2 | 15–24 | 1–2 recetas | 1 frasco | |
+| 51–80 | 6–7 | 2 | 20–30 | 1–2 | 1 frasco | |
 | 81–150 | 7–9 | 2 | 25–40 | sí | 1 frasco | |
-| 151–300 | 8–10 | 1–2 | 30–55 | sí | 1–2 | |
-| 301+ | 9–12 | 1–2 | 40–70 | sí | 0–2 | |
+| 151–300 | 8–10 | 1–2 | 26–45 | sí | 1–2 | |
+| 301+ | 9–12 | 1–2 | 28–55 | sí | 0–2 | |
+
+*(F1.5: la mecánica única se adelanta al nivel 6 y el secado al 25; antes la mezcla se enseñaba en el 21 y el secado en el 51.)*
 
 **Respiro:** cada 5 niveles, uno es un escalón más fácil. Cada 10 niveles (10, 20, 30…) un **Encargo**: nivel hecho a mano con solución elegante; al ganarlo se completa el cuadro de esa decena (§7.3).
 
 ### 4.4 Niveles hechos a mano
 
-`src/data/levels/handmade.json` con `"handmade": true`; tienen prioridad sobre el generador para ese id. Un test los valida con el solver y falla si alguno no es resoluble o si el 21 es resoluble sin mezclar.
+`src/data/levels/handmade.json` con `"handmade": true`; tienen prioridad sobre el generador para ese id. Un test los valida con el solver y falla si alguno no es resoluble o si el nivel de enseñanza de mezcla (el 6) es resoluble sin mezclar.
 
 ---
 
@@ -190,14 +194,14 @@ Al verter el pigmento **A** sobre un frasco cuya capa superior es **B**, si exis
 
 | Reactivos | Producto | Se desbloquea en |
 |---|---|---|
-| blue + yellow | green | nivel 21 |
-| red + yellow | orange | nivel 35 |
-| red + blue | purple | nivel 45 |
-| red + white | pink | nivel 60 |
-| blue + white | sky | nivel 75 |
-| blue + green | teal | nivel 90 |
-| yellow + white | cream | nivel 110 |
-| orange + purple | brown | nivel 140 |
+| blue + yellow | green | nivel 6 |
+| red + yellow | orange | nivel 14 |
+| red + blue | purple | nivel 18 |
+| red + white | pink | nivel 30 |
+| blue + white | sky | nivel 45 |
+| blue + green | teal | nivel 60 |
+| yellow + white | cream | nivel 75 |
+| orange + purple | brown | nivel 90 |
 
 Un nivel solo usa recetas ya desbloqueadas (`rules.mixes`). Las recetas siguen teoría del color real para que el jugador las anticipe sin aprenderlas.
 
@@ -219,7 +223,7 @@ Un frasco **abierto** tiene pintura que se seca: muestra una **mecha** F (6–12
 - Al llegar a 0 la pintura **se seca**: derrota. Pantalla con "Diluir (ver anuncio)" (rewarded: repone F y continúa) o "Lienzo nuevo".
 - Cuando el frasco queda resuelto, la mecha se apaga.
 - Deshacer repone 1 punto (consistente: revierte el estado completo).
-- El generador marca como abierto el frasco cuyo pigmento requiere más movimientos según el solver y fija `F = par_de_ese_frasco + 3` (configurable).
+- El generador marca como abierto el frasco cuyo pigmento requiere más movimientos según el solver y fija `F = par_de_ese_frasco + margen`, con el margen en `difficulty.json` (F1.5: +2 en niveles 25–80, +1 desde el 81; mínimo configurable). El solver verifica que el nivel sigue siendo ganable dentro de la mecha. Objetivo de calibración: que el 15–25 % de los intentos en niveles con secado terminen en derrota (`level_fail`).
 
 ---
 
@@ -273,8 +277,8 @@ Balance objetivo: 10 niveles/día con 2★ promedio ≈ 450 monedas/día. Ajusta
 - **Nivel 1:** 2 pigmentos, 3 frascos, par 2. El frasco origen pulsa suavemente; al seleccionarlo, pulsa el destino. Solo aquí.
 - **Nivel 2:** 2 pigmentos, 4 frascos, par 3. Sin hints.
 - **Nivel 3:** enseña que se vierten varias capas juntas.
-- **Nivel 21:** mezcla obligatoria. Tras 8 s sin movimiento, los dos frascos involucrados brillan.
-- **Nivel 51:** secado con mecha 12.
+- **Nivel 6:** mezcla obligatoria (azul+amarillo). Tras 6 s sin movimiento, los dos frascos involucrados brillan.
+- **Nivel 25:** secado con mecha generosa.
 - Cada acción de ayuda muestra un tooltip de una línea la primera vez que está disponible.
 
 ---
@@ -337,7 +341,7 @@ Si el jugador toca durante una animación, la animación termina instantáneamen
 | `rw_daily_coins` | +100 monedas | Galería, 1/día |
 | `rw_double_reward` | Duplica monedas del nivel | Victoria, solo con ★★ o ★★★ |
 
-Sin fill → el botón se oculta. Ad cerrado antes de tiempo → sin recompensa ni castigo.
+Sin fill → el botón se oculta. Ad cerrado antes de tiempo → sin recompensa ni castigo. **Primera sesión protegida (F1.5):** `ads.json` → `minLevelForRewardedOffers` (5): antes de ese nivel no se muestra "Duplicar (ver anuncio)" ni ninguna oferta de rewarded opcional; las ayudas funcionan gratis hasta entonces.
 
 ### 11.2 Intersticiales
 
@@ -514,8 +518,8 @@ pointerdown(jar_i)
 
 ### F1 — Profundidad (Alcance 0, parte 2)
 
-1. Mezclas (§5) en `rules`, solver y generador con tests; nivel 21 a mano; test de que el 21 es irresoluble sin mezclar.
-2. Secado (§6) + nivel 51 a mano; `DefeatScene`.
+1. Mezclas (§5) en `rules`, solver y generador con tests; nivel de enseñanza a mano (F1.5: el 6); test de que es irresoluble sin mezclar.
+2. Secado (§6) + nivel de enseñanza a mano (F1.5: el 25); `DefeatScene`.
 3. Regenerar niveles 1–500 con la tabla completa.
 4. Estrellas, monedas, costos de ayudas, regalo diario (§7).
 5. `core/painting.ts` + `PaintingCanvas`: cuadros procedurales, revelado por 10 %, animación de pincelada y firma en Encargos.

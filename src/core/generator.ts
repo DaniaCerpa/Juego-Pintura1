@@ -1,5 +1,6 @@
 import {
   difficultyConfig,
+  dryingExtraFor,
   easierParams,
   estimateDifficulty,
   paramsForLevel,
@@ -137,13 +138,14 @@ export function resolutionIndex(
 
 /**
  * Secado (§6): marca como abiertos los frascos que más movimientos requieren según el
- * solver y fija `F = movimientos_de_ese_frasco + extra` (mínimo `dryingFuseMin`).
+ * solver y fija `F = movimientos_de_ese_frasco + margen(nivel)` (mínimo `dryingFuseMin`).
  */
 export function chooseDrying(
   def: Pick<LevelDef, 'jars' | 'capacity' | 'rules'>,
   solution: Pour[],
   count: number,
   cfg: DifficultyConfig,
+  extra: number,
 ): DryingRule[] {
   if (count <= 0) return [];
   const idx = resolutionIndex(def, solution);
@@ -154,7 +156,7 @@ export function chooseDrying(
     .slice(0, count);
   return candidates.map((c) => ({
     jar: c.jar,
-    fuse: Math.max(cfg.dryingFuseMin, c.v + cfg.dryingFuseExtra),
+    fuse: Math.max(cfg.dryingFuseMin, c.v + extra),
   }));
 }
 
@@ -225,7 +227,7 @@ function tryParams(
       const def0 = { jars: cand.jars, capacity: cfg.capacity, rules: cand.rules };
       cand.rules = {
         mixes: cand.rules.mixes,
-        drying: chooseDrying(def0, result.solution, dryCount, cfg),
+        drying: chooseDrying(def0, result.solution, dryCount, cfg, dryingExtraFor(level, cfg)),
       };
       result = solve(
         { jars: cand.jars, capacity: cfg.capacity, rules: cand.rules },

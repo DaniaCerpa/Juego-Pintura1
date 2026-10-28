@@ -1,5 +1,9 @@
 {
-  "canvas": { "width": 1080, "height": 1920, "desktopMaxWidth": 480 },
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "desktopMaxWidth": 480
+  },
   "anim": {
     "selectMs": 120,
     "pourMs": 325,
@@ -12,7 +16,7 @@
     "debounceMs": 80,
     "liftPx": 20,
     "hintPulseMs": 900,
-    "hintAfterIdleMs": 8000
+    "hintAfterIdleMs": 6000
   },
   "board": {
     "maxPerRow": 5,
@@ -22,8 +26,17 @@
     "rowGapPx": 70,
     "maxJarWidthPx": 200
   },
-  "fx": { "particleCap": 200, "pourParticles": 14, "mixParticles": 70, "confettiParticles": 120 },
-  "haptics": { "completeMs": 10, "mixMs": 30, "errorMs": 0 },
+  "fx": {
+    "particleCap": 200,
+    "pourParticles": 14,
+    "mixParticles": 70,
+    "confettiParticles": 120
+  },
+  "haptics": {
+    "completeMs": 10,
+    "mixMs": 30,
+    "errorMs": 0
+  },
   "colors": {
     "background": "#2A2621",
     "backgroundLight": "#3A342C",
@@ -36,5 +49,8 @@
     "danger": "#E2473F",
     "success": "#6CC070"
   },
-  "font": { "family": "Nunito", "fallback": "Arial, sans-serif" }
+  "font": {
+    "family": "Nunito",
+    "fallback": "Arial, sans-serif"
+  }
 }

@@ -21,9 +21,11 @@ describe('mezclas (§5.1)', () => {
   });
 
   it('desbloqueos por nivel (§5.2)', () => {
-    expect(recipesUnlockedAt(20)).toHaveLength(0);
-    expect(recipesUnlockedAt(21).map((r) => r.id)).toEqual(['blue+yellow']);
-    expect(recipesUnlockedAt(140)).toHaveLength(8);
+    expect(recipesUnlockedAt(5)).toHaveLength(0);
+    expect(recipesUnlockedAt(6).map((r) => r.id)).toEqual(['blue+yellow']);
+    expect(recipesUnlockedAt(14).map((r) => r.id)).toEqual(['blue+yellow', 'red+yellow']);
+    expect(recipesUnlockedAt(18)).toHaveLength(3);
+    expect(recipesUnlockedAt(90)).toHaveLength(8);
   });
 
   it('A sobre B con receta: consume 1 de A y 1 de B, produce 2 de P y detiene el vertido', () => {

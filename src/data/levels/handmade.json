@@ -40,7 +40,7 @@
       "seed": 3
     },
     {
-      "id": 21,
+      "id": 6,
       "capacity": 4,
       "jars": [["red", "red", "red", "blue"], ["green", "green", "red", "yellow"], [], []],
       "par": 4,
@@ -50,17 +50,17 @@
         "drying": []
       },
       "handmade": true,
-      "seed": 21
+      "seed": 6
     },
     {
-      "id": 51,
+      "id": 25,
       "capacity": 4,
       "jars": [
-        ["orange", "pink", "cream", "sky"],
-        ["cream", "cream", "pink", "sky"],
-        ["yellow", "pink", "orange", "sky"],
-        ["pink", "orange", "blue", "orange"],
-        ["yellow", "blue", "cream", "sky"],
+        ["sky", "purple", "sky", "white"],
+        ["white", "brown", "yellow", "brown"],
+        ["white", "blue", "sky", "white"],
+        ["brown", "purple", "purple", "blue"],
+        ["purple", "brown", "sky", "yellow"],
         [],
         []
       ],
@@ -70,13 +70,13 @@
         "mixes": ["blue+yellow"],
         "drying": [
           {
-            "jar": 1,
-            "fuse": 12
+            "jar": 0,
+            "fuse": 20
           }
         ]
       },
       "handmade": true,
-      "seed": 51
+      "seed": 25
     }
   ]
 }

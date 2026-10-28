@@ -3,10 +3,11 @@
   "breatherEvery": 5,
   "commissionEvery": 10,
   "maxAttempts": 50,
-  "solver": { "maxStates": 300000, "maxMs": 2000 },
-  "dryingFuseExtra": 3,
-  "dryingFuseMin": 6,
-  "dryingFuseMax": 12,
+  "solver": {
+    "maxStates": 300000,
+    "maxMs": 2000
+  },
+  "dryingFuseMin": 4,
   "rows": [
     {
       "from": 1,
@@ -16,11 +17,12 @@
       "par": [2, 4],
       "mixes": [0, 0],
       "drying": [0, 0],
+      "handmade": true,
       "note": "Hechos a mano. Enseñan verter."
     },
     {
       "from": 4,
-      "to": 10,
+      "to": 5,
       "pigments": [3, 3],
       "empties": [2, 2],
       "par": [5, 9],
@@ -28,54 +30,65 @@
       "drying": [0, 0]
     },
     {
-      "from": 11,
-      "to": 20,
+      "from": 6,
+      "to": 6,
+      "pigments": [3, 3],
+      "empties": [2, 2],
+      "par": [3, 9],
+      "mixes": [1, 1],
+      "drying": [0, 0],
+      "handmade": true,
+      "note": "Hecho a mano, enseña la mezcla azul+amarillo."
+    },
+    {
+      "from": 7,
+      "to": 9,
+      "pigments": [3, 3],
+      "empties": [2, 2],
+      "par": [5, 10],
+      "mixes": [1, 1],
+      "drying": [0, 0]
+    },
+    {
+      "from": 10,
+      "to": 13,
       "pigments": [4, 4],
       "empties": [2, 2],
       "par": [8, 14],
-      "mixes": [0, 0],
-      "drying": [0, 0]
-    },
-    {
-      "from": 21,
-      "to": 21,
-      "pigments": [3, 3],
-      "empties": [2, 2],
-      "par": [4, 9],
-      "mixes": [1, 1],
-      "drying": [0, 0],
-      "note": "Hecho a mano, enseña la mezcla."
-    },
-    {
-      "from": 22,
-      "to": 30,
-      "pigments": [5, 5],
-      "empties": [2, 2],
-      "par": [12, 18],
       "mixes": [1, 1],
       "drying": [0, 0]
     },
     {
-      "from": 31,
-      "to": 50,
-      "pigments": [5, 6],
+      "from": 14,
+      "to": 24,
+      "pigments": [4, 5],
       "empties": [2, 2],
-      "par": [15, 24],
+      "par": [10, 16],
       "mixes": [1, 2],
       "drying": [0, 0]
     },
     {
-      "from": 51,
-      "to": 51,
+      "from": 25,
+      "to": 25,
       "pigments": [5, 5],
       "empties": [2, 2],
       "par": [10, 18],
       "mixes": [1, 1],
       "drying": [1, 1],
-      "note": "Hecho a mano, enseña el secado. Mecha 12."
+      "handmade": true,
+      "note": "Hecho a mano, enseña el secado. Mecha generosa."
     },
     {
-      "from": 52,
+      "from": 26,
+      "to": 50,
+      "pigments": [5, 6],
+      "empties": [2, 2],
+      "par": [15, 24],
+      "mixes": [1, 2],
+      "drying": [1, 1]
+    },
+    {
+      "from": 51,
       "to": 80,
       "pigments": [6, 7],
       "empties": [2, 2],
@@ -110,5 +123,22 @@
       "mixes": [1, 4],
       "drying": [0, 2]
     }
-  ]
+  ],
+  "dryingMargin": [
+    {
+      "from": 1,
+      "to": 80,
+      "extra": 2
+    },
+    {
+      "from": 81,
+      "to": 100000,
+      "extra": 1
+    }
+  ],
+  "teach": {
+    "mixLevel": 6,
+    "dryingLevel": 25,
+    "dryingTeachExtra": 6
+  }
 }

@@ -1,22 +1,52 @@
 {
   "recipes": [
-    { "id": "blue+yellow", "reagents": ["blue", "yellow"], "product": "green", "unlockLevel": 21 },
-    { "id": "red+yellow", "reagents": ["red", "yellow"], "product": "orange", "unlockLevel": 35 },
-    { "id": "red+blue", "reagents": ["red", "blue"], "product": "purple", "unlockLevel": 45 },
-    { "id": "red+white", "reagents": ["red", "white"], "product": "pink", "unlockLevel": 60 },
-    { "id": "blue+white", "reagents": ["blue", "white"], "product": "sky", "unlockLevel": 75 },
-    { "id": "blue+green", "reagents": ["blue", "green"], "product": "teal", "unlockLevel": 90 },
+    {
+      "id": "blue+yellow",
+      "reagents": ["blue", "yellow"],
+      "product": "green",
+      "unlockLevel": 6
+    },
+    {
+      "id": "red+yellow",
+      "reagents": ["red", "yellow"],
+      "product": "orange",
+      "unlockLevel": 14
+    },
+    {
+      "id": "red+blue",
+      "reagents": ["red", "blue"],
+      "product": "purple",
+      "unlockLevel": 18
+    },
+    {
+      "id": "red+white",
+      "reagents": ["red", "white"],
+      "product": "pink",
+      "unlockLevel": 30
+    },
+    {
+      "id": "blue+white",
+      "reagents": ["blue", "white"],
+      "product": "sky",
+      "unlockLevel": 45
+    },
+    {
+      "id": "blue+green",
+      "reagents": ["blue", "green"],
+      "product": "teal",
+      "unlockLevel": 60
+    },
     {
       "id": "yellow+white",
       "reagents": ["yellow", "white"],
       "product": "cream",
-      "unlockLevel": 110
+      "unlockLevel": 75
     },
     {
       "id": "orange+purple",
       "reagents": ["orange", "purple"],
       "product": "brown",
-      "unlockLevel": 140
+      "unlockLevel": 90
     }
   ],
   "discoverReward": 100,

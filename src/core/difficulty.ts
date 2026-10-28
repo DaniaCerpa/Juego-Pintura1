@@ -8,7 +8,20 @@ export interface DifficultyRow {
   par: [number, number];
   mixes: [number, number];
   drying: [number, number];
+  handmade?: boolean;
   note?: string;
+}
+
+export interface DryingMargin {
+  from: number;
+  to: number;
+  extra: number;
+}
+
+export interface TeachConfig {
+  mixLevel: number;
+  dryingLevel: number;
+  dryingTeachExtra: number;
 }
 
 export interface DifficultyConfig {
@@ -17,9 +30,9 @@ export interface DifficultyConfig {
   commissionEvery: number;
   maxAttempts: number;
   solver: { maxStates: number; maxMs: number };
-  dryingFuseExtra: number;
   dryingFuseMin: number;
-  dryingFuseMax: number;
+  dryingMargin: DryingMargin[];
+  teach: TeachConfig;
   rows: DifficultyRow[];
 }
 
@@ -41,6 +54,10 @@ export interface LevelParams {
 
 export const difficultyConfig: DifficultyConfig = difficultyData as DifficultyConfig;
 
+export function isHandmadeRow(row: DifficultyRow): boolean {
+  return row.handmade === true || row.from === row.to;
+}
+
 export function rowIndexFor(level: number, cfg: DifficultyConfig = difficultyConfig): number {
   const idx = cfg.rows.findIndex((r) => level >= r.from && level <= r.to);
   if (idx < 0) throw new Error(`Sin fila de dificultad para el nivel ${level}`);
@@ -58,26 +75,30 @@ export function paramsForLevel(
   if (!Number.isInteger(level) || level < 1) throw new Error(`Nivel inválido: ${level}`);
   const rowIndex = rowIndexFor(level, cfg);
   const commission = level % cfg.commissionEvery === 0;
-  const breather = !commission && level % cfg.breatherEvery === 0;
-  const handmadeRow = cfg.rows[rowIndex].from === cfg.rows[rowIndex].to || level <= 3;
-  if (breather && rowIndex > 0 && !handmadeRow) {
+  const handmadeRow = isHandmadeRow(cfg.rows[rowIndex]);
+  let breather = !commission && !handmadeRow && level % cfg.breatherEvery === 0;
+  if (breather) {
     // Un escalón más fácil, pero sin perder las reglas (mezclas/secado) que la fila enseña.
+    // Las filas hechas a mano no sirven de escalón; si no hay fila anterior usable, no hay respiro.
     const own = cfg.rows[rowIndex];
     let prev = rowIndex - 1;
-    while (prev > 0 && cfg.rows[prev].from === cfg.rows[prev].to) prev--;
-    const easier = cfg.rows[prev];
-    return {
-      level,
-      rowIndex,
-      pigments: [...easier.pigments],
-      empties: [...own.empties],
-      par: [...easier.par],
-      mixes: [...own.mixes],
-      drying: [...own.drying],
-      breather,
-      commission,
-      handmadeRow,
-    };
+    while (prev >= 0 && isHandmadeRow(cfg.rows[prev])) prev--;
+    if (prev >= 0) {
+      const easier = cfg.rows[prev];
+      return {
+        level,
+        rowIndex,
+        pigments: [...easier.pigments],
+        empties: [...own.empties],
+        par: [...easier.par],
+        mixes: [...own.mixes],
+        drying: [...own.drying],
+        breather,
+        commission,
+        handmadeRow,
+      };
+    }
+    breather = false;
   }
   const row = cfg.rows[rowIndex];
   return {
@@ -100,10 +121,16 @@ export function easierParams(
   cfg: DifficultyConfig = difficultyConfig,
 ): LevelParams {
   let prev = p.rowIndex - 1;
-  while (prev > 0 && cfg.rows[prev].from === cfg.rows[prev].to) prev--;
+  while (prev >= 0 && isHandmadeRow(cfg.rows[prev])) prev--;
   if (prev < 0) return p;
   const row = cfg.rows[prev];
   return { ...p, rowIndex: prev, pigments: [...row.pigments], par: [...row.par] };
+}
+
+/** Margen de la mecha de secado para un nivel (§6): F = movimientos del frasco + margen. */
+export function dryingExtraFor(level: number, cfg: DifficultyConfig = difficultyConfig): number {
+  const m = cfg.dryingMargin.find((x) => level >= x.from && level <= x.to);
+  return m ? m.extra : (cfg.dryingMargin[cfg.dryingMargin.length - 1]?.extra ?? 2);
 }
 
 /**
