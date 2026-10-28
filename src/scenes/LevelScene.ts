@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import adsData from '../data/ads.json';
+import { difficultyConfig } from '../core/difficulty';
 import { economyConfig } from '../core/economy';
 import { getLevelDef } from '../core/levels';
 import { getPigment } from '../core/pigments';
@@ -186,7 +188,9 @@ export class LevelScene extends Phaser.Scene {
 
   private refreshBar(): void {
     this.undoBtn.setEnabledState(this.history.length > 0);
-    this.undoBtn.setText(t('level.undoLeft', { n: this.undosLeft }));
+    this.undoBtn.setText(
+      this.freeHelpers() ? t('level.undo') : t('level.undoLeft', { n: this.undosLeft }),
+    );
     this.extraBtn.setEnabledState(!this.extraJarUsed);
     this.restartBtn.setEnabledState(this.history.length > 0 || this.extraJarUsed);
     this.maybeTip('undo', this.history.length > 0, t('level.tooltip.undo'));
@@ -546,7 +550,8 @@ export class LevelScene extends Phaser.Scene {
   private undo(): void {
     if (this.finished || this.defeated) return;
     if (this.history.length === 0) return;
-    if (this.undosLeft <= 0) {
+    // Primera sesión protegida (ads.json): antes de `minLevelForRewardedOffers` las ayudas son gratis.
+    if (this.undosLeft <= 0 && !this.freeHelpers()) {
       this.offer('rw_undo_pack', t('offer.undoPack'), economyConfig.costs.undoPack, (paid) => {
         if (!paid) return;
         this.undosLeft += economyConfig.helpers.undoRewardedPack;
@@ -562,7 +567,7 @@ export class LevelScene extends Phaser.Scene {
     this.selected = null;
     this.state = prev;
     this.undoUsed = true;
-    this.undosLeft -= 1;
+    if (!this.freeHelpers()) this.undosLeft -= 1;
     this.syncVisuals();
     this.refreshBar();
     services().audio.play('tap');
@@ -608,7 +613,7 @@ export class LevelScene extends Phaser.Scene {
     if (this.finished || this.defeated || this.extraJarUsed) return;
     if (this.state.jars.length - this.def.jars.length >= economyConfig.helpers.extraJarsPerLevel)
       return;
-    this.offer('rw_extra_jar', t('offer.extraJar'), economyConfig.costs.extraJar, (paid) => {
+    const apply = (paid: 'rewarded' | 'coins' | 'free' | null) => {
       if (!paid) return;
       this.finishAnimations();
       this.pushHistory();
@@ -621,7 +626,14 @@ export class LevelScene extends Phaser.Scene {
       this.refreshBar();
       services().audio.play('select');
       services().analytics.log('booster_used', { type: 'extra_jar', paid_with: paid });
-    });
+    };
+    if (this.freeHelpers()) apply('free');
+    else this.offer('rw_extra_jar', t('offer.extraJar'), economyConfig.costs.extraJar, apply);
+  }
+
+  /** Antes de `minLevelForRewardedOffers` no hay ofertas de rewarded: las ayudas son gratis. */
+  private freeHelpers(): boolean {
+    return this.def.id < adsData.minLevelForRewardedOffers;
   }
 
   /** Abre la elección de pago (anuncio o monedas) como overlay. */
@@ -683,11 +695,11 @@ export class LevelScene extends Phaser.Scene {
     for (const j of this.jars) j.setScale(1);
   }
 
-  /** Nivel 21: tras 8 s sin movimiento, brillan los dos frascos que pueden mezclarse. */
+  /** Nivel de enseñanza de mezcla: tras unos segundos sin mover, brillan los dos frascos que pueden mezclarse. */
   private armMixHint(): void {
     this.mixHintTimer?.remove();
     this.mixHintTimer = null;
-    if (this.def.id !== 21 || this.finished || this.defeated) return;
+    if (this.def.id !== difficultyConfig.teach.mixLevel || this.finished || this.defeated) return;
     this.mixHintTimer = this.time.delayedCall(UI.anim.hintAfterIdleMs, () => {
       const pair = this.findMixPair();
       if (!pair) return;

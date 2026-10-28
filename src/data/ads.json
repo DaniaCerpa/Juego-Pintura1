@@ -6,5 +6,6 @@
     "notAfterRewarded": true
   },
   "stubDurationMs": 2000,
-  "placements": ["rw_extra_jar", "rw_undo_pack", "rw_dilute", "rw_daily_coins", "rw_double_reward"]
+  "placements": ["rw_extra_jar", "rw_undo_pack", "rw_dilute", "rw_daily_coins", "rw_double_reward"],
+  "minLevelForRewardedOffers": 5
 }
