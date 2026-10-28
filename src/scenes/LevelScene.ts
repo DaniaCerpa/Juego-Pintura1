@@ -3,7 +3,8 @@ import adsData from '../data/ads.json';
 import { difficultyConfig } from '../core/difficulty';
 import { economyConfig } from '../core/economy';
 import { getLevelDef } from '../core/levels';
-import { getPigment } from '../core/pigments';
+import { getRecipe } from '../core/mixes';
+import { getPigment, pigmentsConfig } from '../core/pigments';
 import {
   addExtraJar,
   createState,
@@ -20,8 +21,15 @@ import { solve } from '../core/solver';
 import type { LevelDef, LevelState, PigmentId, PourResult } from '../core/types';
 import { Fx } from '../objects/Fx';
 import { Jar } from '../objects/Jar';
+import { glassFlashTinted } from '../objects/paintTextures';
+import {
+  ensureShelfTexture,
+  ensureTableTexture,
+  SHELF_SURFACE,
+  TABLE_SURFACE,
+} from '../objects/workshop';
+import { IconButton } from '../ui/IconButton';
 import { services } from '../services';
-import { Button } from '../ui/Button';
 import { t } from '../ui/i18n';
 import { showToast } from '../ui/Toast';
 import { COLORS, drawBackdrop, hexToNum, shade, textStyle, UI, W } from '../ui/theme';
@@ -53,9 +61,10 @@ export class LevelScene extends Phaser.Scene {
   private fx!: Fx;
   private movesText!: Phaser.GameObjects.Text;
   private coinsText!: Phaser.GameObjects.Text;
-  private undoBtn!: Button;
-  private extraBtn!: Button;
-  private restartBtn!: Button;
+  private undoBtn!: IconButton;
+  private extraBtn!: IconButton;
+  private restartBtn!: IconButton;
+  private tableLayer!: Phaser.GameObjects.Container;
   private boardLayer!: Phaser.GameObjects.Container;
   private hintTweens: Phaser.Tweens.Tween[] = [];
   private hintSolution: { from: number; to: number } | null = null;
@@ -94,6 +103,7 @@ export class LevelScene extends Phaser.Scene {
   create(): void {
     const { audio, analytics, ads } = services();
     drawBackdrop(this);
+    this.tableLayer = this.add.container(0, 0);
     this.boardLayer = this.add.container(0, 0);
     this.stream = this.add.graphics().setDepth(40);
     this.fx = new Fx(this);
@@ -129,14 +139,7 @@ export class LevelScene extends Phaser.Scene {
     panel.lineStyle(2, COLORS.accent, 0.25);
     panel.strokeRoundedRect(40, 60, W - 80, 170, 36);
 
-    const pause = new Button(this, 130, 145, '❚❚', {
-      width: 120,
-      height: 110,
-      fontSize: 40,
-      color: COLORS.backgroundLight,
-      textColor: UI.colors.text,
-      radius: 26,
-    });
+    const pause = new IconButton(this, 120, 140, 'pause', { size: 104 });
     pause.onPress = () => this.openPause();
 
     this.add.text(W / 2, 112, t('level.title', { n: this.def.id }), textStyle(52)).setOrigin(0.5);
@@ -168,18 +171,20 @@ export class LevelScene extends Phaser.Scene {
   }
 
   private buildBar(): void {
-    const y = 1780;
-    const opts = {
-      width: 320,
-      height: 130,
-      fontSize: 30,
-      color: COLORS.backgroundLight,
-      textColor: UI.colors.text,
-      radius: 30,
-    };
-    this.undoBtn = new Button(this, 190, y, t('level.undo'), { ...opts, icon: '↶' });
-    this.extraBtn = new Button(this, W / 2, y, t('level.extraJar'), { ...opts, icon: '＋' });
-    this.restartBtn = new Button(this, W - 190, y, t('level.restart'), { ...opts, icon: '⟲' });
+    const y = 1760;
+    const opts = { size: 132 };
+    this.undoBtn = new IconButton(this, W / 2 - 300, y, 'undo', {
+      ...opts,
+      label: t('level.undo'),
+    });
+    this.extraBtn = new IconButton(this, W / 2, y, 'jarPlus', {
+      ...opts,
+      label: t('level.extraJar'),
+    });
+    this.restartBtn = new IconButton(this, W / 2 + 300, y, 'restart', {
+      ...opts,
+      label: t('level.restart'),
+    });
     this.undoBtn.onPress = () => this.undo();
     this.extraBtn.onPress = () => this.useExtraJar();
     this.restartBtn.onPress = () => this.restart();
@@ -188,10 +193,10 @@ export class LevelScene extends Phaser.Scene {
 
   private refreshBar(): void {
     this.undoBtn.setEnabledState(this.history.length > 0);
-    this.undoBtn.setText(
-      this.freeHelpers() ? t('level.undo') : t('level.undoLeft', { n: this.undosLeft }),
-    );
-    this.extraBtn.setEnabledState(!this.extraJarUsed);
+    // Insignia: trapos que quedan (sin insignia mientras las ayudas son gratis).
+    this.undoBtn.setBadge(this.freeHelpers() ? null : this.undosLeft);
+    const extraLeft = this.extraJarUsed ? 0 : economyConfig.helpers.extraJarsPerLevel;
+    this.extraBtn.setEnabledState(!this.extraJarUsed).setBadge(extraLeft > 0 ? extraLeft : null);
     this.restartBtn.setEnabledState(this.history.length > 0 || this.extraJarUsed);
     this.maybeTip('undo', this.history.length > 0, t('level.tooltip.undo'));
   }
@@ -204,17 +209,24 @@ export class LevelScene extends Phaser.Scene {
   }
 
   // ---------- Tablero ----------
+  /**
+   * Distribución del tablero (B1): los frascos ocupan el máximo espacio útil entre el HUD
+   * y la barra inferior (descontando el anillo de secado arriba y la mesa abajo), con un
+   * tope de tamaño para que no se vean caricaturescos, y el bloque se centra en ese espacio.
+   */
   private layoutFor(count: number): { width: number; positions: { x: number; y: number }[] } {
     const { maxPerRow, marginPx, rowGapPx, maxJarWidthPx, jarAspect } = UI.board;
     const rows = count <= maxPerRow ? 1 : count <= maxPerRow * 2 ? 2 : Math.ceil(count / maxPerRow);
     const perRow = Math.ceil(count / rows);
     const gap = 28;
+    const usefulTop = HUD_BOTTOM + UI.board.topReservePx;
+    const usefulBottom = BAR_TOP - UI.board.bottomReservePx;
     const availW = W - marginPx * 2 - gap * (perRow - 1);
-    const availH = BAR_TOP - HUD_BOTTOM - marginPx * 2 - rowGapPx * (rows - 1);
-    const width = Math.min(maxJarWidthPx, availW / perRow, availH / rows / jarAspect);
+    const availH = usefulBottom - usefulTop - rowGapPx * (rows - 1);
+    const width = Math.floor(Math.min(maxJarWidthPx, availW / perRow, availH / rows / jarAspect));
     const height = width * jarAspect;
     const totalH = rows * height + (rows - 1) * rowGapPx;
-    const top = HUD_BOTTOM + (BAR_TOP - HUD_BOTTOM - totalH) / 2;
+    const top = usefulTop + (usefulBottom - usefulTop - totalH) / 2;
     const positions: { x: number; y: number }[] = [];
     for (let r = 0; r < rows; r++) {
       const inRow = Math.min(perRow, count - r * perRow);
@@ -230,11 +242,37 @@ export class LevelScene extends Phaser.Scene {
     return { width, positions };
   }
 
+  /** Mesa bajo la última fila y estantes bajo las superiores (B2). */
+  private buildTables(width: number, positions: { x: number; y: number }[]): void {
+    this.tableLayer.removeAll(true);
+    const height = Math.round(width * UI.board.jarAspect);
+    const rowYs = [...new Set(positions.map((p) => Math.round(p.y)))].sort((a, b) => a - b);
+    rowYs.forEach((ry, i) => {
+      const base = ry + height / 2; // apoyo de los frascos
+      if (i === rowYs.length - 1) {
+        const key = ensureTableTexture(this, BAR_TOP - base);
+        // Los frascos se apoyan a ~55 % de la profundidad de la superficie.
+        const img = this.add.image(W / 2, base - TABLE_SURFACE * 0.55, key).setOrigin(0.5, 0);
+        this.tableLayer.add(img);
+      } else {
+        const img = this.add
+          .image(W / 2, base - SHELF_SURFACE * 0.5, ensureShelfTexture(this))
+          .setOrigin(0.5, 0);
+        this.tableLayer.add(img);
+      }
+    });
+  }
+
   private buildBoard(): void {
     for (const j of this.jars) j.destroy();
     this.jars = [];
     const { width, positions } = this.layoutFor(this.state.jars.length);
-    const symbols = services().state.settings.accessibility;
+    this.buildTables(width, positions);
+    // Símbolos (§10): ajuste de accesibilidad, o por defecto en tableros con muchos pigmentos.
+    const pigmentCount = new Set(this.def.jars.flat()).size;
+    const symbols =
+      services().state.settings.accessibility ||
+      pigmentCount >= pigmentsConfig.symbolsFromPigmentCount;
     this.state.jars.forEach((layers, i) => {
       const jar = new Jar(this, i, positions[i].x, positions[i].y, width, this.state.capacity);
       jar.setLayers(layers);
@@ -481,6 +519,9 @@ export class LevelScene extends Phaser.Scene {
     const dst = this.jars[to];
     this.travelAndPour(src, dst, UI.anim.pourMs, r.pigment, (pouring) => {
       this.track(dst.animateAdd(r.pigment, r.layers, pouring));
+      this.time.delayedCall(pouring, () => {
+        if (this.activeTweens.length) this.track(dst.rippleSurface(UI.anim.rippleMs));
+      });
       this.track(src.animateRemove(r.layers, pouring));
     });
   }
@@ -505,8 +546,11 @@ export class LevelScene extends Phaser.Scene {
         dst.replaceTop(1, product, 2);
         dst.setLayers(dst.getLayers()); // normaliza alturas
         const flash = this.add
-          .image(dst.x, dst.y, `jar-glass-${dst.jarWidth}`)
-          .setTintFill(hexToNum(getPigment(product).hex))
+          .image(
+            dst.x,
+            dst.y,
+            glassFlashTinted(this, dst.jarWidth, dst.jarHeight, getPigment(product).hex),
+          )
           .setAlpha(0.7)
           .setDepth(45);
         this.track(
@@ -725,6 +769,13 @@ export class LevelScene extends Phaser.Scene {
         );
         if (o?.kind === 'mix') return [i, j];
       }
+    }
+    // Si aún no hay espacio para mezclar, brillan los frascos con los dos colores de la receta.
+    for (const id of this.def.rules.mixes) {
+      const [a, b] = getRecipe(id).reagents;
+      const ia = jars.findIndex((j) => topOf(j) === a);
+      const ib = jars.findIndex((j) => topOf(j) === b);
+      if (ia >= 0 && ib >= 0) return [ia, ib];
     }
     return null;
   }

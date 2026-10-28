@@ -8,6 +8,8 @@ export interface ButtonOptions {
   textColor?: string;
   fontSize?: number;
   icon?: string; // texto/emoji opcional a la izquierda
+  /** Textura de ícono (ui/icons) a la izquierda del texto. */
+  iconKey?: string;
   radius?: number;
   outline?: boolean;
 }
@@ -19,7 +21,8 @@ export interface ButtonOptions {
 export class Button extends Phaser.GameObjects.Container {
   private bg: Phaser.GameObjects.Image;
   private label: Phaser.GameObjects.Text;
-  private opts: Required<Omit<ButtonOptions, 'icon'>> & { icon?: string };
+  private opts: Required<Omit<ButtonOptions, 'icon' | 'iconKey'>> & { icon?: string };
+  private dot: Phaser.GameObjects.Arc | null = null;
   private enabledState = true;
   onPress: (() => void) | null = null;
 
@@ -48,6 +51,16 @@ export class Button extends Phaser.GameObjects.Container {
       .text(0, -3, full, textStyle(this.opts.fontSize, this.opts.textColor))
       .setOrigin(0.5);
     this.add([this.bg, this.label]);
+    if (options.iconKey) {
+      const isz = Math.round(this.opts.fontSize * 1.35);
+      const gapPx = 16;
+      const totalW = isz + gapPx + this.label.width;
+      const ic = scene.add
+        .image(-totalW / 2 + isz / 2, -3, options.iconKey)
+        .setDisplaySize(isz, isz);
+      this.label.setX(-totalW / 2 + isz + gapPx + this.label.width / 2);
+      this.add(ic);
+    }
     this.setSize(this.opts.width, this.opts.height + 8);
     this.setInteractive({ useHandCursor: true });
     this.on('pointerdown', () => {
@@ -62,7 +75,7 @@ export class Button extends Phaser.GameObjects.Container {
 
   private static ensureTexture(
     scene: Phaser.Scene,
-    o: Required<Omit<ButtonOptions, 'icon'>>,
+    o: Required<Omit<ButtonOptions, 'icon' | 'iconKey'>>,
   ): string {
     const key = `btn-${o.width}x${o.height}-${o.color.toString(16)}-${o.radius}-${o.outline ? 'o' : 'f'}`;
     if (scene.textures.exists(key)) return key;
@@ -92,6 +105,22 @@ export class Button extends Phaser.GameObjects.Container {
 
   setText(text: string): this {
     this.label.setText(this.opts.icon ? `${this.opts.icon}  ${text}` : text);
+    return this;
+  }
+
+  /** Punto rojo de aviso en la esquina superior derecha. */
+  setDot(on: boolean): this {
+    if (!this.dot) {
+      this.dot = this.scene.add.circle(
+        this.opts.width / 2 - 14,
+        -this.opts.height / 2 + 10,
+        14,
+        Phaser.Display.Color.HexStringToColor(UI.colors.danger).color,
+      );
+      this.dot.setStrokeStyle(4, Phaser.Display.Color.HexStringToColor(UI.colors.panel).color);
+      this.add(this.dot);
+    }
+    this.dot.setVisible(on);
     return this;
   }
 
