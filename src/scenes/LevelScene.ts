@@ -388,8 +388,13 @@ export class LevelScene extends Phaser.Scene {
     this.clearHints();
     this.updateMoves();
     this.refreshBar();
-    if (r.kind === 'mix') this.animateMix(from, to, r);
-    else this.animatePour(from, to, r);
+    if (r.kind === 'mix') {
+      // El descubrimiento se registra con el movimiento, no con la animación: un toque que
+      // interrumpe la animación no debe hacer perder la receta ni sus monedas.
+      const reagentB = topOf(this.history[this.history.length - 1].jars[to])!;
+      this.onMixUsed(r.recipeId!, r.pigment, reagentB, r.product!);
+      this.animateMix(from, to, r);
+    } else this.animatePour(from, to, r);
 
     const targetResolved = isJarResolved(this.state.jars[to], this.state.capacity);
     const solved = isSolved(this.state);
@@ -571,7 +576,6 @@ export class LevelScene extends Phaser.Scene {
             repeat: 1,
           }),
         );
-        this.onMixUsed(r.recipeId!, r.pigment, reagentB, product);
       });
     });
   }
