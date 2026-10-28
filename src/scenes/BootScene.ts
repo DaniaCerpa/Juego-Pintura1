@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { services } from '../services';
-import { COLORS, H, textStyle, UI, W } from '../ui/theme';
-import { t } from '../ui/i18n';
+import { H, UI, W } from '../ui/theme';
+import { addWordmark } from '../ui/wordmark';
 
 /**
  * Carga de datos y generación de texturas por código: punto para partículas, confeti,
@@ -17,22 +17,18 @@ export class BootScene extends Phaser.Scene {
     this.makeDot();
     this.makeConfetti();
     this.makeCanvasNoise();
-    this.makeVignette();
-
-    const label = this.add
-      .text(W / 2, H / 2, t('app.name'), textStyle(96, UI.colors.accent))
-      .setOrigin(0.5)
-      .setAlpha(0);
-    this.tweens.add({ targets: label, alpha: 1, duration: 250 });
 
     const fontReady = (document as Document & { fonts?: FontFaceSet }).fonts?.load(
       `800 40px "${UI.font.family}"`,
     );
     const timeout = new Promise<void>((r) => setTimeout(r, 1500));
     Promise.race([fontReady ?? Promise.resolve(), timeout]).then(() => {
-      // Redibujar el texto una vez que la fuente está lista y pasar a la galería.
-      label.setStyle(textStyle(96, UI.colors.accent));
-      this.time.delayedCall(150, () => this.scene.start('Gallery'));
+      // Splash con el wordmark (B8) una vez que la fuente está lista.
+      const mark = addWordmark(this, W / 2, H / 2 - 40, 150)
+        .setAlpha(0)
+        .setScale(0.92);
+      this.tweens.add({ targets: mark, alpha: 1, scale: 1, duration: 320, ease: 'Back.Out' });
+      this.time.delayedCall(520, () => this.scene.start('Gallery'));
     });
   }
 
@@ -77,24 +73,5 @@ export class BootScene extends Phaser.Scene {
     }
     ctx.putImageData(img, 0, 0);
     this.textures.addCanvas('canvas-noise', canvas);
-  }
-
-  /** Viñeta radial cálida: centro claro, bordes oscuros. */
-  private makeVignette(): void {
-    const w = 270;
-    const h = 480;
-    const canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const grad = ctx.createRadialGradient(w / 2, h * 0.42, 40, w / 2, h / 2, h * 0.7);
-    const light = Phaser.Display.Color.IntegerToColor(COLORS.backgroundLight);
-    grad.addColorStop(0, `rgba(${light.red},${light.green},${light.blue},0.9)`);
-    grad.addColorStop(0.55, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.55)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
-    this.textures.addCanvas('vignette', canvas);
   }
 }

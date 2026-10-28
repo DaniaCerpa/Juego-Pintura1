@@ -1,6 +1,7 @@
 import type { PaintingSpec, Shape } from '../core/painting';
 import { t } from './i18n';
 import { UI } from './theme';
+import { drawWordmark2D } from './wordmark';
 
 const W = 1080;
 const H = 1350;
@@ -85,10 +86,7 @@ export function gameUrl(): string {
  * Imagen para compartir (A5): PNG 1080×1350 con el cuadro enmarcado, el título,
  * "Pintado en Pigmento" y la URL del juego. Todo dibujado en un canvas 2D fuera de pantalla.
  */
-export async function renderShareImage(
-  spec: PaintingSpec,
-  drawWordmark?: (ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number) => void,
-): Promise<Blob> {
+export async function renderShareImage(spec: PaintingSpec): Promise<Blob> {
   const canvas = document.createElement('canvas');
   canvas.width = W;
   canvas.height = H;
@@ -129,12 +127,7 @@ export async function renderShareImage(
   ctx.fillStyle = UI.colors.textDim;
   ctx.font = `600 38px ${font}`;
   ctx.fillText(t('share.caption'), W / 2, 1075);
-  if (drawWordmark) drawWordmark(ctx, W / 2, 150, 110);
-  else {
-    ctx.fillStyle = UI.colors.accent;
-    ctx.font = `800 110px ${font}`;
-    ctx.fillText('Pigmento', W / 2, 160);
-  }
+  drawWordmark2D(ctx, W / 2, 130, 120);
   ctx.fillStyle = UI.colors.accent;
   ctx.font = `600 34px ${font}`;
   ctx.fillText(gameUrl().replace(/^https?:\/\//, ''), W / 2, 1250);

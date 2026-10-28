@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getLevelDef } from '../core/levels';
 import { mixesConfig } from '../core/mixes';
 import { getPigment } from '../core/pigments';
 import { services } from '../services';
@@ -33,6 +34,11 @@ export class PaletteScene extends Phaser.Scene {
     drawBackdrop(this);
     this.add.text(W / 2, 150, t('palette.title'), textStyle(76, UI.colors.accent)).setOrigin(0.5);
     const recipes = mixesConfig.recipes;
+    // Pigmentos que el jugador ya vio en niveles jugados (para sugerir mezclas).
+    const seen = new Set<string>();
+    for (let l = 1; l < state.currentLevel; l++) {
+      for (const p of getLevelDef(l)?.jars.flat() ?? []) seen.add(p);
+    }
     const discovered = state.data.mixes.length;
     this.add
       .text(
@@ -95,10 +101,23 @@ export class PaletteScene extends Phaser.Scene {
         g.fillCircle(0, 0, 70);
         g.lineStyle(3, COLORS.textDim, 0.4);
         g.strokeCircle(0, 0, 70);
+        // Pista (B8): si el jugador ya usó ambos colores padres, se muestran como dos círculos.
+        if (r.reagents.every((p) => seen.has(p))) {
+          r.reagents.forEach((p, k) => {
+            const px = (k === 0 ? -1 : 1) * 30;
+            g.fillStyle(0x000000, 0.35);
+            g.fillCircle(px + 2, 44, 17);
+            g.fillStyle(hexToNum(getPigment(p).hex), 1);
+            g.fillCircle(px, 42, 16);
+          });
+          g.fillStyle(COLORS.textDim, 0.8);
+          g.fillRect(-6, 40, 12, 4);
+          g.fillRect(-2, 36, 4, 12);
+        }
         node.add(g);
         node.add(
           this.add
-            .text(0, 0, t('palette.unknown'), textStyle(60, UI.colors.textDim))
+            .text(0, -12, t('palette.unknown'), textStyle(60, UI.colors.textDim))
             .setOrigin(0.5),
         );
       }

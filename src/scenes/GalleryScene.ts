@@ -9,6 +9,9 @@ import { showToast } from '../ui/Toast';
 import { COLORS, drawBackdrop, H, shade, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
 import { sharePaintingFromScene } from '../ui/share';
+import { IconButton } from '../ui/IconButton';
+import { iconKey } from '../ui/icons';
+import { addWordmark } from '../ui/wordmark';
 
 /**
  * Galería (§7.3, §9.1.2): pared con los últimos cuadros colgados, caballete con el cuadro
@@ -27,20 +30,13 @@ export class GalleryScene extends Phaser.Scene {
     this.input.once('pointerdown', () => audio.unlock());
     analytics.log('session_start', { level: state.currentLevel });
 
-    // Cabecera: monedas, título, ajustes
+    // Cabecera: monedas, wordmark, ajustes
     this.drawCoins();
-    this.add.text(W / 2, 140, t('app.name'), textStyle(96, UI.colors.accent)).setOrigin(0.5);
+    addWordmark(this, W / 2, 140, 104);
     this.add
-      .text(W / 2, 222, t('gallery.subtitle'), textStyle(36, UI.colors.textDim, '600'))
+      .text(W / 2, 228, t('gallery.subtitle'), textStyle(34, UI.colors.textDim, '600'))
       .setOrigin(0.5);
-    const settings = new Button(this, W - 110, 140, '⚙', {
-      width: 120,
-      height: 110,
-      fontSize: 52,
-      color: COLORS.backgroundLight,
-      textColor: UI.colors.text,
-      radius: 26,
-    });
+    const settings = new IconButton(this, W - 110, 140, 'gear', { size: 104 });
     settings.onPress = () => goTo(this, 'Settings', { from: 'Gallery' });
 
     const level = state.currentLevel;
@@ -76,32 +72,25 @@ export class GalleryScene extends Phaser.Scene {
         .setOrigin(0.5);
     }
 
-    // Fila secundaria: Paleta y Regalo diario
-    const palette = new Button(this, W / 2 - 190, 1680, t('gallery.palette'), {
+    // Fila secundaria (B7): Paleta y Regalo, mismo estilo; el regalo resalta con un punto rojo.
+    const secondary = {
       width: 340,
       height: 120,
       fontSize: 36,
       color: COLORS.backgroundLight,
       textColor: UI.colors.text,
-      icon: '🎨',
+    };
+    const palette = new Button(this, W / 2 - 190, 1680, t('gallery.palette'), {
+      ...secondary,
+      iconKey: iconKey(this, 'palette'),
     });
     palette.onPress = () => goTo(this, 'Palette', { from: 'Gallery' });
     const offer = state.dailyOffer();
-    const daily = new Button(
-      this,
-      W / 2 + 190,
-      1680,
-      offer.claimable ? t('gallery.daily') : t('gallery.dailyTomorrow'),
-      {
-        width: 340,
-        height: 120,
-        fontSize: offer.claimable ? 36 : 30,
-        color: offer.claimable ? COLORS.accent : COLORS.backgroundLight,
-        textColor: offer.claimable ? UI.colors.panel : UI.colors.text,
-        icon: '🎁',
-      },
-    );
-    daily.setEnabledState(offer.claimable);
+    const daily = new Button(this, W / 2 + 190, 1680, t('gallery.daily'), {
+      ...secondary,
+      iconKey: iconKey(this, 'gift'),
+    });
+    daily.setDot(offer.claimable).setEnabledState(offer.claimable);
     daily.onPress = () => {
       const got = state.claimDaily();
       if (got <= 0) return;
@@ -109,7 +98,7 @@ export class GalleryScene extends Phaser.Scene {
       analytics.log('daily_gift_claimed', { day });
       audio.play('victory');
       showToast(this, t('gallery.dailyClaimed', { n: got, day }), 1380);
-      daily.setText(t('gallery.dailyTomorrow')).setEnabledState(false);
+      daily.setDot(false).setEnabledState(false);
     };
 
     this.add
@@ -135,7 +124,11 @@ export class GalleryScene extends Phaser.Scene {
     this.events.once('shutdown', off);
   }
 
-  /** Listón con los últimos cuadros completados (hasta `slotsPerWall`). */
+  /**
+   * Pared con una "página" de `slotsPerWall` marcos que incluye el cuadro actual. Los
+   * terminados se cuelgan (tocar = compartir); los pendientes son siluetas de marco con
+   * un "?" tenue y el nivel que los completa (B8).
+   */
   private drawWall(currentPainting: number): void {
     const { state } = services();
     const g = this.add.graphics();
@@ -144,14 +137,16 @@ export class GalleryScene extends Phaser.Scene {
     g.fillStyle(shade(COLORS.accentDark, -0.4), 1);
     g.fillRoundedRect(70, 590, W - 140, 14, 6);
     const slots = galleryData.slotsPerWall;
+    const per = galleryData.levelsPerPainting;
+    const first = Math.floor(currentPainting / slots) * slots;
     const slotW = 185;
     const slotH = 230;
     const gap = (W - 100 - slots * slotW) / (slots + 1);
     for (let i = 0; i < slots; i++) {
       const x = 50 + gap + i * (slotW + gap) + slotW / 2;
       const y = 300 + slotH / 2 + 20;
-      const idx = currentPainting - slots + i;
-      if (idx >= 0 && state.paintingPercent(idx) >= 100) {
+      const idx = first + i;
+      if (state.paintingPercent(idx) >= 100) {
         const hung = new PaintingCanvas(
           this,
           x,
@@ -159,9 +154,37 @@ export class GalleryScene extends Phaser.Scene {
           slotW - 40,
           slotH - 50,
           idx,
-          paintingPigments(idx, galleryData.levelsPerPainting),
+          paintingPigments(idx, per),
           100,
         );
+        // Recién terminado (Encargo): vuela desde el caballete a su marco (B6).
+        if (this.registry.get('justHung') === idx) {
+          this.registry.remove('justHung');
+          const fromScale = 560 / (slotW - 40);
+          hung
+            .setPosition(W / 2, 970)
+            .setScale(fromScale)
+            .setDepth(20);
+          this.tweens.add({
+            targets: hung,
+            x,
+            y,
+            scale: 1,
+            delay: 350,
+            duration: 750,
+            ease: 'Cubic.InOut',
+            onComplete: () => {
+              hung.setDepth(0);
+              services().audio.play('complete');
+              this.tweens.add({
+                targets: hung,
+                angle: { from: -3, to: 0 },
+                duration: 400,
+                ease: 'Elastic.Out',
+              });
+            },
+          });
+        }
         // Tocar un cuadro colgado lo comparte (A5)
         hung.setSize(slotW, slotH).setInteractive({ useHandCursor: true });
         hung.on('pointerdown', () => {
@@ -169,11 +192,26 @@ export class GalleryScene extends Phaser.Scene {
           void sharePaintingFromScene(this, hung.spec);
         });
       } else {
-        // Marco vacío a la espera
-        g.fillStyle(shade(COLORS.panel, 0.08), 1);
-        g.fillRoundedRect(x - slotW / 2 + 10, y - slotH / 2 + 10, slotW - 20, slotH - 20, 8);
-        g.fillStyle(COLORS.background, 1);
-        g.fillRect(x - slotW / 2 + 26, y - slotH / 2 + 26, slotW - 52, slotH - 52);
+        // Silueta de marco a la espera
+        const fx = x - slotW / 2 + 12;
+        const fy = y - slotH / 2 + 10;
+        g.lineStyle(6, COLORS.accentDark, idx === currentPainting ? 0.75 : 0.4);
+        g.strokeRoundedRect(fx, fy, slotW - 24, slotH - 40, 8);
+        g.lineStyle(2, COLORS.accent, idx === currentPainting ? 0.4 : 0.18);
+        g.strokeRoundedRect(fx + 12, fy + 12, slotW - 48, slotH - 64, 4);
+        this.add
+          .text(x, y - 18, '?', textStyle(64, UI.colors.textDim))
+          .setOrigin(0.5)
+          .setAlpha(idx === currentPainting ? 0.5 : 0.3);
+        this.add
+          .text(
+            x,
+            y + 52,
+            t('gallery.level', { n: (idx + 1) * per }),
+            textStyle(24, UI.colors.textDim, '600'),
+          )
+          .setOrigin(0.5)
+          .setAlpha(0.7);
       }
     }
   }
