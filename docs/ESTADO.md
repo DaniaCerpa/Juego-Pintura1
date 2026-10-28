@@ -68,7 +68,33 @@ Ver `docs/DECISIONES.md` (sección 2026-10-24 F0).
 
 Ver `docs/DECISIONES.md` (sección 2026-10-24 F1).
 
-## F1.5 — Ronda para testers (en curso)
+## F1.5 — Ronda para testers · cerrada el 2026-10-28
+
+Objetivo: dejar el Alcance 0 listo para testers (medible, con la mecánica única temprano y aspecto de producto terminado). Sin nada de F2.
+
+### Qué cambió
+
+**Bloque A — Negocio**
+
+- **A1 Analytics remotos:** `PostHogAnalytics` con `posthog-js` (host US), cargado bajo demanda solo si hay `VITE_POSTHOG_KEY`; sin clave cae a `ConsoleAnalytics`. Buffer offline en `localStorage`, reenvío al volver la red con el timestamp original. Sin PII; `distinct_id` = id anónimo del guardado. Sin autocapture, pageviews, grabación, encuestas ni configuración remota. El workflow de Pages lee `secrets.VITE_POSTHOG_KEY` (y la variable opcional `VITE_POSTHOG_HOST`).
+- **A2 Curva:** niveles 1–3 a mano; 4–5 con 3 pigmentos; **6 a mano enseña azul+amarillo=verde** (irresoluble sin mezclar; pista de brillo tras 6 s); 7–9 una receta; **10 Encargo**; rojo+amarillo en 14, rojo+azul en 18, el resto en 30/45/60/75/90; **secado enseñado en el 25** (a mano, mecha generosa). 500 niveles regenerados. GDD §4.3, §5.2, §6, §8, §11.1 y §15 actualizados.
+- **A3 Secado:** `F = movimientos del frasco en la solución óptima + margen` (`dryingMargin` en `difficulty.json`: +2 hasta el 80, +1 desde el 81; mínimo 4). El solver verifica cada nivel con la mecha puesta. `level_fail{reason: 'dried'}` mide el objetivo del 15–25 %.
+- **A4 Primera sesión:** `ads.json.minLevelForRewardedOffers = 5`: antes del 5, sin "Duplicar" ni ofertas de rewarded; ayudas gratis.
+- **A5 Compartir:** al completar un cuadro (botón en el marco de la victoria) y tocando un cuadro colgado en la galería. PNG 1080×1350 con wordmark, cuadro enmarcado, título, "Pintado en Pigmento" y la URL; `navigator.share` con archivo o descarga. Evento `share_painting{painting_id, method}`.
+- **A6 Idioma:** primer arranque según el dispositivo (es* → español, resto → inglés); luego manda Ajustes. Títulos de cuadros por i18n. Test que falla si una clave existe en un idioma y no en el otro (y si los parámetros `{x}` no coinciden).
+
+**Bloque B — Visual**
+
+- **B1** Frascos hasta 270 px de ancho (antes 200), tablero centrado en el espacio útil entre HUD y barra.
+- **B2** Mesa de madera con vetas bajo la última fila y estantes bajo las superiores; sombras suaves hacia abajo-derecha; luz cálida desde arriba a la izquierda + viñeta. Todo generado por código.
+- **B3** Pintura por bloques (sin líneas entre capas iguales), gradiente, brillo especular, menisco; ondulación de 200 ms al verter; corcho que cae + destello al completar.
+- **B4** Paleta de pintor con test ΔE2000 ≥ 20 entre todos los pares y ≥ 12 con deuteranopia; símbolos por defecto con ≥ 7 pigmentos.
+- **B5** Secado: anillo de progreso en la boca, costra que se forma y agrieta; número rojo con pulso solo con ≤ 3.
+- **B6** Cuadros en 10 regiones (cielo, sol, nubes, montañas lejanas, montañas, agua, colinas, pradera, árboles, casas); cada victoria revela una con un pincel (600 ms). En el Encargo: firma y el cuadro vuela del caballete a su marco en la galería.
+- **B7** Barra de íconos dibujados por código con insignias (trapos restantes, frasco extra), inactivos al 40 %; galería con "Pintar nivel N" primario y Paleta/Regalo secundarios (punto rojo si hay regalo).
+- **B8** Wordmark multicolor con gota en la "i" (splash, galería, imagen de compartir); marcos pendientes con "?" y el nivel que los completa; en la paleta, los "?" muestran los colores padres si el jugador ya los vio.
+
+**Correcciones encontradas al verificar:** la mezcla se registraba en el callback de la animación y se perdía si el jugador tocaba antes (ahora se registra con el movimiento); la generación dependía del reloj (ahora es determinista por número de estados); la pista del nivel 6 no aparecía porque al inicio no hay espacio para mezclar (ahora brillan los frascos con los colores de la receta).
 
 ### Cómo configurar `VITE_POSTHOG_KEY`
 
@@ -78,3 +104,17 @@ Ver `docs/DECISIONES.md` (sección 2026-10-24 F1).
 4. (Opcional) _Variables → New repository variable_ `VITE_POSTHOG_HOST` si se usa otra región (por defecto `https://us.i.posthog.com`).
 5. Relanzar el workflow **Deploy a GitHub Pages** (o hacer push a `main`). Sin la clave, el juego usa `ConsoleAnalytics` con buffer local y no se rompe nada.
 6. Desarrollo local: `VITE_POSTHOG_KEY=phc_... npm run dev`.
+
+### Verificación
+
+- `npm run lint && npm test && npm run build` en verde: 100 tests. Bundle 1,8 MB (Phaser 1,48 MB + juego 0,30 MB; `posthog-js` va en un chunk aparte que solo se descarga con clave).
+- **Jugado del 1 al 12 desde un guardado vacío** (E2E con Playwright): la mezcla azul+amarillo se descubre en el nivel 6 y el primer cuadro llega al 100 % en el nivel 10; "Colgar en la galería" lleva a la galería y el cuadro vuela a su marco.
+- **Eventos verificados en la red** (interceptando `https://us.i.posthog.com/e/` con una clave de prueba, cuerpo gzip): `session_start`, `level_start`, `level_win` con propiedades (`level`, `moves`, `par`, `stars`, `undo_used`, …) y el `distinct_id` anónimo del guardado. El resto de eventos de §12.2 (`session_end`, `level_fail`, `level_quit`, `mix_discovered`, `booster_used`, `ad_shown`, `ad_rewarded`, `daily_gift_claimed`, `painting_completed`, `share_painting`) pasa por el mismo `log()` → buffer → `capture`.
+- Capturas a 1080×1920 y 1080×2400 en `docs/capturas/`: galería sin progreso y con un cuadro, nivel 1, nivel 6 (enseñanza de mezcla, con la pista), nivel con secado a 2 movimientos, nivel con 10 frascos, victoria (normal y Encargo), paleta, ajustes, y `compartir_1080x1350.png`. **Antes (F1):** `docs/capturas/antes_f1/`.
+
+### Pendiente
+
+- Configurar el secret `VITE_POSTHOG_KEY` (pasos arriba) y relanzar el deploy.
+- Habilitar Pages (Settings → Pages → Source: GitHub Actions) si aún no está: el primer deploy falló por permisos al crear el sitio.
+- Reclutar 10–20 testers y medir 7 días: embudo por nivel, % de derrotas en niveles con secado (meta 15–25 %), comprensión de la mezcla en el nivel 6.
+- Medir 60 fps en un Android medio real (en este entorno solo hay renderizado por software).
