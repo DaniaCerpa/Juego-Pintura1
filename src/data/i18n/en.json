@@ -118,5 +118,6 @@
   "deadEnd.undo": "Undo (free)",
   "deadEnd.extraJar": "Add empty jar",
   "deadEnd.restart": "Start over",
-  "victory.painting": "{title} · {pct}% painted"
+  "victory.painting": "{title} · {pct}% painted",
+  "level.hint.sortedMix": "Almost! {counts} can't fill a jar.\nMix them: {a} + {b} = {p}"
 }

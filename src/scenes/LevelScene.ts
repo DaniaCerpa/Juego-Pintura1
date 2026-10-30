@@ -3,13 +3,14 @@ import adsData from '../data/ads.json';
 import { difficultyConfig } from '../core/difficulty';
 import { economyConfig } from '../core/economy';
 import { getLevelDef } from '../core/levels';
-import { getRecipe } from '../core/mixes';
+import { findMix, getRecipe } from '../core/mixes';
 import { getPigment, pigmentsConfig } from '../core/pigments';
 import {
   addExtraJar,
   createState,
   dilute,
   isJarResolved,
+  isJarUniform,
   isSolved,
   mixTableFor,
   pourOutcome,
@@ -17,7 +18,7 @@ import {
   topRun,
   tryPour,
 } from '../core/rules';
-import { analyzeDeadEnd } from '../core/deadEnd';
+import { analyzeDeadEnd, incompletePigments } from '../core/deadEnd';
 import { solve } from '../core/solver';
 import type { LevelDef, LevelState, PigmentId, PourResult } from '../core/types';
 import { Fx } from '../objects/Fx';
@@ -122,6 +123,7 @@ export class LevelScene extends Phaser.Scene {
     this.buildHud();
     this.buildBar();
     this.buildPainting();
+    this.buildRecipeLegend();
     this.buildBoard();
     audio.resetScale();
     ads.onLevelStart(this.def.id);
@@ -254,6 +256,60 @@ export class LevelScene extends Phaser.Scene {
       { revealedLevels: won, hintLevel: this.def.id },
     );
     this.painting.setDepth(5);
+  }
+
+  /**
+   * Recetas del nivel siempre a la vista (en los niveles con mezcla hay que mezclar para
+   * ganar): "● azul + ● amarillo = ● verde", sobre el borde inferior del cuadro.
+   */
+  private buildRecipeLegend(): void {
+    const ids = this.def.rules.mixes;
+    if (ids.length === 0) return;
+    const y = this.painting
+      ? this.painting.y + this.painting.ph / 2 + 10
+      : HUD_BOTTOM + UI.board.topReservePx / 2;
+    const c = this.add.container(W / 2, y).setDepth(6);
+    const parts: Phaser.GameObjects.GameObject[] = [];
+    let x = 0;
+    const dot = (p: PigmentId) => {
+      const col = hexToNum(getPigment(p).hex);
+      const g = this.add.graphics();
+      g.fillStyle(col, 1);
+      g.fillCircle(x + 17, 0, 17);
+      g.lineStyle(2, 0xffffff, 0.6);
+      g.strokeCircle(x + 17, 0, 17);
+      parts.push(g);
+      x += 44;
+      const tx = this.add.text(x, 0, t(`pigment.${p}`), textStyle(36, UI.colors.text, '600'));
+      tx.setOrigin(0, 0.5);
+      parts.push(tx);
+      x += tx.width + 10;
+    };
+    const sym = (str: string) => {
+      const tx = this.add.text(x, 0, str, textStyle(40, UI.colors.accent)).setOrigin(0, 0.5);
+      parts.push(tx);
+      x += tx.width + 10;
+    };
+    ids.forEach((id, i) => {
+      if (i > 0) sym('  ·  ');
+      const r = getRecipe(id);
+      dot(r.reagents[0]);
+      sym('+');
+      dot(r.reagents[1]);
+      sym('=');
+      dot(r.product);
+    });
+    const w = x + 30;
+    const bg = this.add.graphics();
+    bg.fillStyle(COLORS.panel, 0.88);
+    bg.fillRoundedRect(-w / 2, -38, w, 76, 38);
+    bg.lineStyle(2, COLORS.accent, 0.45);
+    bg.strokeRoundedRect(-w / 2, -38, w, 76, 38);
+    c.add(bg);
+    for (const p of parts) (p as unknown as { x: number }).x -= x / 2 - 5;
+    c.add(parts);
+    // Si no cabe en el ancho, se achica.
+    if (w > W - 60) c.setScale((W - 60) / w);
   }
 
   // ---------- Tablero ----------
@@ -484,7 +540,10 @@ export class LevelScene extends Phaser.Scene {
       if (this.finished || this.defeated || this.state.moveCount !== moveAt) return;
       const extraAvailable = !this.extraJarUsed;
       const d = analyzeDeadEnd(this.state, this.def.rules, { checkExtraJar: extraAvailable });
-      if (d.kind === 'none') return;
+      if (d.kind === 'none') {
+        this.maybeSortedHint();
+        return;
+      }
       services().analytics.log('level_dead_end', {
         level: this.def.id,
         moves: this.state.moveCount,
@@ -502,6 +561,39 @@ export class LevelScene extends Phaser.Scene {
       };
       this.scene.launch('DeadEnd', data);
       this.scene.pause();
+    });
+  }
+
+  /**
+   * Todo ordenado pero sin ganar: casi siempre faltan colores por mezclar (en los niveles
+   * con mezcla los reactivos vienen en cantidades que solo cierran mezclándolos). Se dice
+   * cuál mezcla falta y brillan los dos frascos.
+   */
+  private maybeSortedHint(): void {
+    const { jars } = this.state;
+    if (!jars.every((j) => isJarUniform(j))) return;
+    const incomplete = incompletePigments(this.state);
+    if (incomplete.length === 0) return;
+    const pair = this.findMixPair();
+    if (!pair) return;
+    const a = topOf(jars[pair[0]]);
+    const b = topOf(jars[pair[1]]);
+    if (!a || !b) return;
+    const mix = findMix(mixTableFor(this.def.rules), a, b);
+    if (!mix) return;
+    const name = (x: PigmentId) => t(`pigment.${x}`);
+    const counts = incomplete.map((i) => `${name(i.pigment)} (${i.count})`).join(', ');
+    this.clearHints();
+    this.pulse(pair);
+    showToast(
+      this,
+      t('level.hint.sortedMix', { counts, a: name(a), b: name(b), p: name(mix.product) }),
+      1540,
+      5200,
+    );
+    services().analytics.log('hint_sorted_mix', {
+      level: this.def.id,
+      moves: this.state.moveCount,
     });
   }
 

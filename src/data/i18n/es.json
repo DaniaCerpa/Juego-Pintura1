@@ -118,5 +118,6 @@
   "deadEnd.undo": "Deshacer (gratis)",
   "deadEnd.extraJar": "Agregar frasco vacío",
   "deadEnd.restart": "Empezar de nuevo",
-  "victory.painting": "{title} · {pct} % pintado"
+  "victory.painting": "{title} · {pct} % pintado",
+  "level.hint.sortedMix": "¡Casi! {counts} no llenan un frasco.\nMézclalos: {a} + {b} = {p}"
 }
