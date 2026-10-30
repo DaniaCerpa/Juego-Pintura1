@@ -10,6 +10,7 @@ import { AdOverlayScene } from './scenes/AdOverlayScene';
 import { PaletteScene } from './scenes/PaletteScene';
 import { DefeatScene } from './scenes/DefeatScene';
 import { OfferScene } from './scenes/OfferScene';
+import { DeadEndScene } from './scenes/DeadEndScene';
 import { services } from './services';
 import { registerSW } from 'virtual:pwa-register';
 import { solve } from './core/solver';
@@ -52,6 +53,7 @@ const config: Phaser.Types.Core.GameConfig = {
     PaletteScene,
     DefeatScene,
     OfferScene,
+    DeadEndScene,
     AdOverlayScene,
   ],
 };

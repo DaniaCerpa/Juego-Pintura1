@@ -17,6 +17,7 @@ import {
   topRun,
   tryPour,
 } from '../core/rules';
+import { analyzeDeadEnd } from '../core/deadEnd';
 import { solve } from '../core/solver';
 import type { LevelDef, LevelState, PigmentId, PourResult } from '../core/types';
 import { Fx } from '../objects/Fx';
@@ -34,6 +35,7 @@ import { t } from '../ui/i18n';
 import { showToast } from '../ui/Toast';
 import { COLORS, drawBackdrop, hexToNum, shade, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
+import type { DeadEndData } from './DeadEndScene';
 import type { VictoryData } from './VictoryScene';
 
 export interface LevelSceneData {
@@ -74,6 +76,7 @@ export class LevelScene extends Phaser.Scene {
   private extraJarAny = false;
   private finished = false;
   private defeated = false;
+  private deadEndTimer: Phaser.Time.TimerEvent | null = null;
 
   constructor() {
     super('Level');
@@ -97,6 +100,7 @@ export class LevelScene extends Phaser.Scene {
     this.undoUsed = false;
     this.finished = false;
     this.defeated = false;
+    this.deadEndTimer = null;
     this.startedAt = Date.now();
   }
 
@@ -312,6 +316,8 @@ export class LevelScene extends Phaser.Scene {
 
   /** Sincroniza los frascos con el modelo y resetea transformaciones. */
   private syncVisuals(): void {
+    // Defensa: si el número de frascos del modelo y de la vista difieren, se reconstruye.
+    if (this.jars.length !== this.state.jars.length) this.buildBoard();
     this.state.jars.forEach((layers, i) => {
       const jar = this.jars[i];
       if (!jar) return;
@@ -417,7 +423,58 @@ export class LevelScene extends Phaser.Scene {
     } else if (r.dried.length > 0) {
       this.defeated = true;
       this.time.delayedCall(animMs + 200, () => this.defeat());
+    } else {
+      this.scheduleDeadEndCheck(animMs + 150);
     }
+  }
+
+  /** Tras cada movimiento, si la partida quedó sin salida se avisa (no se deja al jugador atascado). */
+  private scheduleDeadEndCheck(delayMs: number): void {
+    this.deadEndTimer?.remove();
+    const moveAt = this.state.moveCount;
+    this.deadEndTimer = this.time.delayedCall(delayMs, () => {
+      this.deadEndTimer = null;
+      if (this.finished || this.defeated || this.state.moveCount !== moveAt) return;
+      const extraAvailable = !this.extraJarUsed;
+      const d = analyzeDeadEnd(this.state, this.def.rules, { checkExtraJar: extraAvailable });
+      if (d.kind === 'none') return;
+      services().analytics.log('level_dead_end', {
+        level: this.def.id,
+        moves: this.state.moveCount,
+        kind: d.kind,
+        incomplete: d.incomplete.length,
+      });
+      this.finishAnimations();
+      this.deselect();
+      const data: DeadEndData = {
+        from: 'Level',
+        kind: d.kind,
+        incomplete: d.incomplete,
+        canUndo: this.history.length > 0,
+        offerExtraJar: extraAvailable && d.extraJarHelps,
+      };
+      this.scene.launch('DeadEnd', data);
+      this.scene.pause();
+    });
+  }
+
+  /** Deshacer desde el aviso de "sin salida": gratis, no gasta trapos. */
+  undoFromDeadEnd(): void {
+    const prev = this.history.pop();
+    if (!prev) return;
+    this.finishAnimations();
+    this.selected = null;
+    this.state = prev;
+    this.undoUsed = true;
+    this.syncVisuals();
+    this.refreshBar();
+    services().audio.play('tap');
+    services().analytics.log('booster_used', { type: 'undo', paid_with: 'dead_end' });
+  }
+
+  /** Pide el frasco vacío (con su costo normal) desde el aviso de "sin salida". */
+  requestExtraJar(): void {
+    this.useExtraJar();
   }
 
   // ---------- Animaciones ----------
@@ -664,7 +721,9 @@ export class LevelScene extends Phaser.Scene {
     const apply = (paid: 'rewarded' | 'coins' | 'free' | null) => {
       if (!paid) return;
       this.finishAnimations();
-      this.pushHistory();
+      // El frasco extra no es un movimiento: se agrega también a todo el historial para que
+      // "deshacer" nunca lo quite (antes el modelo perdía el frasco y la vista no).
+      this.history = this.history.map((h) => addExtraJar(h));
       this.state = addExtraJar(this.state);
       this.extraJarUsed = true;
       this.extraJarAny = true;

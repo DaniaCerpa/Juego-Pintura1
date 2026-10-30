@@ -108,5 +108,14 @@
   "share.done": "Imagen lista para compartir",
   "share.saved": "Imagen guardada",
   "share.error": "No se pudo compartir",
-  "victory.hang": "Colgar en la galería"
+  "victory.hang": "Colgar en la galería",
+  "deadEnd.title": "Sin salida",
+  "deadEnd.noMoves": "No queda ningún movimiento posible.",
+  "deadEnd.unsolvable": "Con este tablero ya no se puede completar el nivel.",
+  "deadEnd.incomplete": "No alcanza para llenar frascos de 4: {list}.",
+  "deadEnd.count": "{pigment} ({n})",
+  "deadEnd.extraJarHelps": "Un frasco vacío extra te puede salvar.",
+  "deadEnd.undo": "Deshacer (gratis)",
+  "deadEnd.extraJar": "Agregar frasco vacío",
+  "deadEnd.restart": "Empezar de nuevo"
 }

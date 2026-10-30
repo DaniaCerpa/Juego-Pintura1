@@ -7,6 +7,10 @@
     "maxStates": 300000,
     "maxMs": 2000
   },
+  "deadEnd": {
+    "maxStates": 40000,
+    "maxMs": 250
+  },
   "dryingFuseMin": 4,
   "rows": [
     {
