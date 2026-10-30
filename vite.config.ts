@@ -44,6 +44,16 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         runtimeCaching: [
           {
+            // Cuadros: se descargan al jugar su decena y quedan disponibles sin conexión.
+            urlPattern: /\/paintings\/[\w-]+\.jpg$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'paintings',
+              expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
             handler: 'CacheFirst',
             options: {

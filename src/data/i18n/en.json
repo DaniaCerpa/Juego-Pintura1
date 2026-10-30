@@ -117,5 +117,6 @@
   "deadEnd.extraJarHelps": "An extra empty jar can save you.",
   "deadEnd.undo": "Undo (free)",
   "deadEnd.extraJar": "Add empty jar",
-  "deadEnd.restart": "Start over"
+  "deadEnd.restart": "Start over",
+  "victory.painting": "{title} · {pct}% painted"
 }

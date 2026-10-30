@@ -2,63 +2,123 @@
   "source": "Wikimedia Commons (obras de dominio público)",
   "displayMaxPx": 1000,
   "analysisWidthPx": 220,
-  "segments": { "min": 16, "max": 64, "iterations": 7, "spatialWeight": 38, "smoothPasses": 2 },
+  "segments": {
+    "min": 16,
+    "max": 64,
+    "iterations": 7,
+    "spatialWeight": 38,
+    "smoothPasses": 2
+  },
   "paintings": [
     {
-      "id": "gran-ola",
-      "file": "Tsunami_by_hokusai_19th_century.jpg",
-      "title": { "es": "La gran ola de Kanagawa", "en": "The Great Wave off Kanagawa" },
+      "id": "fuji-rojo",
+      "file": "Red_Fuji_southern_wind_clear_morning.jpg",
+      "title": {
+        "es": "Fuji rojo",
+        "en": "Fine Wind, Clear Morning"
+      },
       "artist": "Katsushika Hokusai",
       "year": "c. 1831"
     },
     {
-      "id": "noche-estrellada",
-      "file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
-      "title": { "es": "La noche estrellada", "en": "The Starry Night" },
-      "artist": "Vincent van Gogh",
-      "year": "1889"
+      "id": "gran-ola",
+      "file": "Tsunami_by_hokusai_19th_century.jpg",
+      "title": {
+        "es": "La gran ola de Kanagawa",
+        "en": "The Great Wave off Kanagawa"
+      },
+      "artist": "Katsushika Hokusai",
+      "year": "c. 1831"
     },
     {
       "id": "girasoles",
       "file": "Vincent_Willem_van_Gogh_127.jpg",
-      "title": { "es": "Los girasoles", "en": "Sunflowers" },
+      "title": {
+        "es": "Los girasoles",
+        "en": "Sunflowers"
+      },
       "artist": "Vincent van Gogh",
       "year": "1888"
     },
     {
-      "id": "sombrilla",
-      "file": "Claude_Monet_-_Woman_with_a_Parasol_-_Madame_Monet_and_Her_Son_-_Google_Art_Project.jpg",
-      "title": { "es": "Mujer con sombrilla", "en": "Woman with a Parasol" },
-      "artist": "Claude Monet",
-      "year": "1875"
-    },
-    {
-      "id": "fuji-rojo",
-      "file": "Red_Fuji_southern_wind_clear_morning.jpg",
-      "title": { "es": "Fuji rojo", "en": "Fine Wind, Clear Morning" },
-      "artist": "Katsushika Hokusai",
-      "year": "c. 1831"
-    },
-    {
-      "id": "sol-naciente",
-      "file": "Monet_-_Impression,_Sunrise.jpg",
-      "title": { "es": "Impresión, sol naciente", "en": "Impression, Sunrise" },
-      "artist": "Claude Monet",
-      "year": "1872"
-    },
-    {
-      "id": "lirios",
-      "file": "Irises-Vincent_van_Gogh.jpg",
-      "title": { "es": "Lirios", "en": "Irises" },
+      "id": "noche-estrellada",
+      "file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+      "title": {
+        "es": "La noche estrellada",
+        "en": "The Starry Night"
+      },
       "artist": "Vincent van Gogh",
       "year": "1889"
     },
     {
+      "id": "lirios",
+      "file": "Irises-Vincent_van_Gogh.jpg",
+      "title": {
+        "es": "Lirios",
+        "en": "Irises"
+      },
+      "artist": "Vincent van Gogh",
+      "year": "1889"
+    },
+    {
+      "id": "sombrilla",
+      "file": "Claude_Monet_-_Woman_with_a_Parasol_-_Madame_Monet_and_Her_Son_-_Google_Art_Project.jpg",
+      "title": {
+        "es": "Mujer con sombrilla",
+        "en": "Woman with a Parasol"
+      },
+      "artist": "Claude Monet",
+      "year": "1875"
+    },
+    {
       "id": "beso",
       "file": "The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
-      "title": { "es": "El beso", "en": "The Kiss" },
+      "title": {
+        "es": "El beso",
+        "en": "The Kiss"
+      },
       "artist": "Gustav Klimt",
       "year": "1907–1908"
+    },
+    {
+      "id": "trigo-cipreses",
+      "file": "Wheat-Field-with-Cypresses-(1889)-Vincent-van-Gogh-Met.jpg",
+      "title": {
+        "es": "Campo de trigo con cipreses",
+        "en": "Wheat Field with Cypresses"
+      },
+      "artist": "Vincent van Gogh",
+      "year": "1889"
+    },
+    {
+      "id": "nenufares",
+      "file": "Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg",
+      "title": {
+        "es": "El estanque de los nenúfares",
+        "en": "Water Lilies and Japanese Bridge"
+      },
+      "artist": "Claude Monet",
+      "year": "1899"
+    },
+    {
+      "id": "joven-perla",
+      "file": "1665_Girl_with_a_Pearl_Earring.jpg",
+      "title": {
+        "es": "La joven de la perla",
+        "en": "Girl with a Pearl Earring"
+      },
+      "artist": "Johannes Vermeer",
+      "year": "c. 1665"
+    },
+    {
+      "id": "sol-naciente",
+      "file": "Monet_-_Impression,_Sunrise.jpg",
+      "title": {
+        "es": "Impresión, sol naciente",
+        "en": "Impression, Sunrise"
+      },
+      "artist": "Claude Monet",
+      "year": "1872"
     },
     {
       "id": "grande-jatte",
@@ -71,53 +131,34 @@
       "year": "1884–1886"
     },
     {
-      "id": "nenufares",
-      "file": "Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg",
-      "title": { "es": "El estanque de los nenúfares", "en": "Water Lilies and Japanese Bridge" },
-      "artist": "Claude Monet",
-      "year": "1899"
-    },
-    {
-      "id": "joven-perla",
-      "file": "1665_Girl_with_a_Pearl_Earring.jpg",
-      "title": { "es": "La joven de la perla", "en": "Girl with a Pearl Earring" },
-      "artist": "Johannes Vermeer",
-      "year": "c. 1665"
-    },
-    {
       "id": "moulin-galette",
       "file": "Pierre-Auguste_Renoir,_Le_Moulin_de_la_Galette.jpg",
-      "title": { "es": "Baile en el Moulin de la Galette", "en": "Bal du moulin de la Galette" },
+      "title": {
+        "es": "Baile en el Moulin de la Galette",
+        "en": "Bal du moulin de la Galette"
+      },
       "artist": "Pierre-Auguste Renoir",
       "year": "1876"
     },
     {
-      "id": "trigo-cipreses",
-      "file": "Wheat-Field-with-Cypresses-(1889)-Vincent-van-Gogh-Met.jpg",
-      "title": { "es": "Campo de trigo con cipreses", "en": "Wheat Field with Cypresses" },
-      "artist": "Vincent van Gogh",
-      "year": "1889"
-    },
-    {
-      "id": "temerario",
-      "file": "The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
-      "title": { "es": "El Temerario", "en": "The Fighting Temeraire" },
-      "artist": "J. M. W. Turner",
-      "year": "1839"
-    },
-    {
       "id": "carreta-heno",
       "file": "John_Constable_The_Hay_Wain.jpg",
-      "title": { "es": "La carreta de heno", "en": "The Hay Wain" },
+      "title": {
+        "es": "La carreta de heno",
+        "en": "The Hay Wain"
+      },
       "artist": "John Constable",
       "year": "1821"
     },
     {
-      "id": "terraza-cafe",
-      "file": "Vincent_van_Gogh_-_Café_Terrace_at_Night_(Yorck).jpg",
-      "title": { "es": "Terraza de café por la noche", "en": "Café Terrace at Night" },
-      "artist": "Vincent van Gogh",
-      "year": "1888"
+      "id": "temerario",
+      "file": "The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
+      "title": {
+        "es": "El Temerario",
+        "en": "The Fighting Temeraire"
+      },
+      "artist": "J. M. W. Turner",
+      "year": "1839"
     }
   ]
 }

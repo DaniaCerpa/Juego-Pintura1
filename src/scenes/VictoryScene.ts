@@ -5,6 +5,9 @@ import { MAX_PRECOMPUTED_LEVEL, paintingPigments } from '../core/levels';
 import type { PigmentId } from '../core/types';
 import { Fx } from '../objects/Fx';
 import { PaintingCanvas } from '../objects/PaintingCanvas';
+import { MasterpieceCanvas, masterpieceTitle } from '../objects/MasterpieceCanvas';
+import { masterpieceFor } from '../core/masterpiece';
+import { shareSourceFromSpec } from '../ui/sharePainting';
 import { services } from '../services';
 import type { LevelResult } from '../state/gameState';
 import { Button } from '../ui/Button';
@@ -28,7 +31,8 @@ export class VictoryScene extends Phaser.Scene {
   private fx!: Fx;
   private intro: Phaser.Tweens.Tween[] = [];
   private timers: Phaser.Time.TimerEvent[] = [];
-  private canvas!: PaintingCanvas;
+  private canvas: PaintingCanvas | null = null;
+  private mcanvas: MasterpieceCanvas | null = null;
   private coinsLabel!: Phaser.GameObjects.Text;
   private doubled = false;
 
@@ -128,41 +132,82 @@ export class VictoryScene extends Phaser.Scene {
       this.tweens.add({ targets: this.coinsLabel, alpha: 1, duration: 300, delay: 900 }),
     );
 
-    // La pincelada: el cuadro de la decena se pinta un 10 % más (600 ms)
-    const pw = 520;
-    const ph = 400;
-    this.canvas = new PaintingCanvas(
-      this,
-      W / 2,
-      880,
-      pw,
-      ph,
-      r.paintingIndex,
-      paintingPigments(r.paintingIndex, galleryData.levelsPerPainting),
-      r.paintingBefore,
-    );
-    const caption = this.add
-      .text(
+    // El cuadro de la decena: lo ganado se ve pintado (se pintó durante el nivel).
+    const mp = masterpieceFor(r.paintingIndex);
+    let caption: Phaser.GameObjects.Text;
+    if (mp) {
+      const won = services().state.wonLevelsInPainting(r.paintingIndex);
+      const mc = new MasterpieceCanvas(this, W / 2, 880, 620, 430, r.paintingIndex, {
+        revealedLevels: won,
+        complete: r.paintingAfter >= 100,
+      });
+      this.mcanvas = mc;
+      caption = this.add
+        .text(
+          W / 2,
+          880 + mc.ph / 2 + 50,
+          t('victory.painting', { title: masterpieceTitle(mp), pct: r.paintingAfter }),
+          textStyle(30, UI.colors.onWallDim, '600'),
+        )
+        .setOrigin(0.5)
+        .setAlpha(0)
+        .setWordWrapWidth(900);
+      this.timers.push(
+        this.time.delayedCall(1000, () => {
+          this.intro.push(
+            this.tweens.add({
+              targets: mc,
+              scale: { from: 1, to: 1.04 },
+              duration: 220,
+              yoyo: true,
+            }),
+          );
+          this.intro.push(this.tweens.add({ targets: caption, alpha: 1, duration: 200 }));
+          if (r.paintingCompleted) {
+            this.time.delayedCall(300, () => {
+              mc.sign();
+              analytics.log('painting_completed', { painting_id: r.paintingIndex });
+              caption.setText(t('victory.commission')).setColor(UI.colors.accentDark);
+            });
+          }
+        }),
+      );
+    } else {
+      // Respaldo: cuadro procedural.
+      const pc = new PaintingCanvas(
+        this,
         W / 2,
-        1130,
-        t('victory.brush', { pct: r.paintingAfter }),
-        textStyle(30, UI.colors.onWallDim, '600'),
-      )
-      .setOrigin(0.5)
-      .setAlpha(0);
-    this.timers.push(
-      this.time.delayedCall(1000, () => {
-        this.intro.push(this.canvas.animateTo(r.paintingAfter));
-        this.intro.push(this.tweens.add({ targets: caption, alpha: 1, duration: 200 }));
-        if (r.paintingCompleted) {
-          this.time.delayedCall(UI.anim.brushMs, () => {
-            this.canvas.sign();
-            analytics.log('painting_completed', { painting_id: r.paintingIndex });
-            caption.setText(t('victory.commission')).setColor(UI.colors.accent);
-          });
-        }
-      }),
-    );
+        880,
+        520,
+        400,
+        r.paintingIndex,
+        paintingPigments(r.paintingIndex, galleryData.levelsPerPainting),
+        r.paintingBefore,
+      );
+      this.canvas = pc;
+      caption = this.add
+        .text(
+          W / 2,
+          1130,
+          t('victory.brush', { pct: r.paintingAfter }),
+          textStyle(30, UI.colors.onWallDim, '600'),
+        )
+        .setOrigin(0.5)
+        .setAlpha(0);
+      this.timers.push(
+        this.time.delayedCall(1000, () => {
+          this.intro.push(pc.animateTo(r.paintingAfter));
+          this.intro.push(this.tweens.add({ targets: caption, alpha: 1, duration: 200 }));
+          if (r.paintingCompleted) {
+            this.time.delayedCall(UI.anim.brushMs, () => {
+              pc.sign();
+              analytics.log('painting_completed', { painting_id: r.paintingIndex });
+              caption.setText(t('victory.commission')).setColor(UI.colors.accentDark);
+            });
+          }
+        }),
+      );
+    }
 
     // Confeti
     const pigs = this.params.pigments;
@@ -203,7 +248,7 @@ export class VictoryScene extends Phaser.Scene {
         fontSize: 36,
         color: COLORS.accent,
         outline: true,
-        textColor: UI.colors.text,
+        textColor: UI.colors.onWall,
         icon: '▶',
       });
       dbl.onPress = async () => {
@@ -234,7 +279,14 @@ export class VictoryScene extends Phaser.Scene {
       this.time.delayedCall(1000 + UI.anim.brushMs + 300, () => {
         this.tweens.add({ targets: share, alpha: 1, duration: 250 });
       });
-      share.onPress = () => void sharePaintingFromScene(this, this.canvas.spec);
+      share.onPress = () => {
+        const src = this.mcanvas
+          ? this.mcanvas.shareSource()
+          : this.canvas
+            ? shareSourceFromSpec(this.canvas.spec)
+            : null;
+        if (src) void sharePaintingFromScene(this, src);
+      };
     }
     const replay = new Button(this, W / 2 - 170, 1640, t('victory.replay'), {
       width: 300,
@@ -267,7 +319,10 @@ export class VictoryScene extends Phaser.Scene {
     this.timers = [];
     for (const tw of this.intro) tw.complete();
     this.intro = [];
-    this.canvas.setPercent(r.paintingAfter);
-    if (r.paintingCompleted) this.canvas.sign(1);
+    this.canvas?.setPercent(r.paintingAfter);
+    if (r.paintingCompleted) {
+      this.canvas?.sign(1);
+      this.mcanvas?.sign(1);
+    }
   }
 }

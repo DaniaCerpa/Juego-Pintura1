@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import galleryData from '../data/gallery.json';
 import { MAX_PRECOMPUTED_LEVEL, paintingPigments } from '../core/levels';
 import { PaintingCanvas } from '../objects/PaintingCanvas';
+import { MasterpieceCanvas, masterpieceTitle } from '../objects/MasterpieceCanvas';
+import { masterpieceFor } from '../core/masterpiece';
+import { shareSourceFromSpec, type ShareSource } from '../ui/sharePainting';
 import { services } from '../services';
 import { Button } from '../ui/Button';
 import { t } from '../ui/i18n';
@@ -152,16 +155,28 @@ export class GalleryScene extends Phaser.Scene {
       const y = 300 + slotH / 2 + 20;
       const idx = first + i;
       if (state.paintingPercent(idx) >= 100) {
-        const hung = new PaintingCanvas(
-          this,
-          x,
-          y,
-          slotW - 40,
-          slotH - 50,
-          idx,
-          paintingPigments(idx, per),
-          100,
-        );
+        let hung: PaintingCanvas | MasterpieceCanvas;
+        let shareSrc: () => ShareSource;
+        if (masterpieceFor(idx)) {
+          const mc = new MasterpieceCanvas(this, x, y, slotW - 40, slotH - 50, idx, {
+            complete: true,
+          });
+          hung = mc;
+          shareSrc = () => mc.shareSource();
+        } else {
+          const pc = new PaintingCanvas(
+            this,
+            x,
+            y,
+            slotW - 40,
+            slotH - 50,
+            idx,
+            paintingPigments(idx, per),
+            100,
+          );
+          hung = pc;
+          shareSrc = () => shareSourceFromSpec(pc.spec);
+        }
         // Recién terminado (Encargo): vuela desde el caballete a su marco (B6).
         if (this.registry.get('justHung') === idx) {
           this.registry.remove('justHung');
@@ -194,7 +209,7 @@ export class GalleryScene extends Phaser.Scene {
         hung.setSize(slotW, slotH).setInteractive({ useHandCursor: true });
         hung.on('pointerdown', () => {
           this.tweens.add({ targets: hung, scale: { from: 0.94, to: 1 }, duration: 160 });
-          void sharePaintingFromScene(this, hung.spec);
+          void sharePaintingFromScene(this, shareSrc());
         });
       } else {
         // Silueta de marco a la espera
@@ -236,17 +251,27 @@ export class GalleryScene extends Phaser.Scene {
     const w = 560;
     const h = 440;
     const pct = state.paintingPercent(paintingIdx);
-    const canvas = new PaintingCanvas(
-      this,
-      cx,
-      cy - 30,
-      w,
-      h,
-      paintingIdx,
-      paintingPigments(paintingIdx, galleryData.levelsPerPainting),
-      pct,
-    );
-    const title = t(canvas.spec.titleKey);
+    const mp = masterpieceFor(paintingIdx);
+    let title: string;
+    if (mp) {
+      new MasterpieceCanvas(this, cx, cy - 30, w, h, paintingIdx, {
+        revealedLevels: state.wonLevelsInPainting(paintingIdx),
+        complete: pct >= 100,
+      });
+      title = masterpieceTitle(mp);
+    } else {
+      const canvas = new PaintingCanvas(
+        this,
+        cx,
+        cy - 30,
+        w,
+        h,
+        paintingIdx,
+        paintingPigments(paintingIdx, galleryData.levelsPerPainting),
+        pct,
+      );
+      title = t(canvas.spec.titleKey);
+    }
     // Placa con el título y el progreso (tapa el cruce de las patas)
     g.fillStyle(COLORS.panel, 0.92);
     g.fillRoundedRect(cx - 330, cy + 236, 660, 64, 20);

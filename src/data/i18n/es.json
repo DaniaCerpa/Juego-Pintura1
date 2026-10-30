@@ -117,5 +117,6 @@
   "deadEnd.extraJarHelps": "Un frasco vacío extra te puede salvar.",
   "deadEnd.undo": "Deshacer (gratis)",
   "deadEnd.extraJar": "Agregar frasco vacío",
-  "deadEnd.restart": "Empezar de nuevo"
+  "deadEnd.restart": "Empezar de nuevo",
+  "victory.painting": "{title} · {pct} % pintado"
 }

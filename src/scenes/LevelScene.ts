@@ -22,6 +22,9 @@ import { solve } from '../core/solver';
 import type { LevelDef, LevelState, PigmentId, PourResult } from '../core/types';
 import { Fx } from '../objects/Fx';
 import { Jar } from '../objects/Jar';
+import { MasterpieceCanvas } from '../objects/MasterpieceCanvas';
+import { masterpieceFor } from '../core/masterpiece';
+import { paintingIndexFor } from '../core/painting';
 import { glassFlashTinted } from '../objects/paintTextures';
 import {
   ensureShelfTexture,
@@ -77,6 +80,9 @@ export class LevelScene extends Phaser.Scene {
   private finished = false;
   private defeated = false;
   private deadEndTimer: Phaser.Time.TimerEvent | null = null;
+  private painting: MasterpieceCanvas | null = null;
+  /** Alto reservado arriba del tablero para el cuadro (0 si no hay cuadro). */
+  private paintingSpace = 0;
 
   constructor() {
     super('Level');
@@ -101,6 +107,8 @@ export class LevelScene extends Phaser.Scene {
     this.finished = false;
     this.defeated = false;
     this.deadEndTimer = null;
+    this.painting = null;
+    this.paintingSpace = 0;
     this.startedAt = Date.now();
   }
 
@@ -113,6 +121,7 @@ export class LevelScene extends Phaser.Scene {
     this.fx = new Fx(this);
     this.buildHud();
     this.buildBar();
+    this.buildPainting();
     this.buildBoard();
     audio.resetScale();
     ads.onLevelStart(this.def.id);
@@ -212,6 +221,41 @@ export class LevelScene extends Phaser.Scene {
     showToast(this, text);
   }
 
+  // ---------- Cuadro (se pinta al completar frascos) ----------
+  /** Filas del tablero: hasta 5 por fila; con más de 10 frascos, filas de 6 (deja aire al cuadro). */
+  private rowsFor(count: number): number {
+    const { maxPerRow, maxPerRowWide } = UI.board;
+    if (count <= maxPerRow) return 1;
+    if (count <= maxPerRow * 2) return 2;
+    return Math.ceil(count / maxPerRowWide);
+  }
+
+  /**
+   * El cuadro de la decena va arriba del tablero: lo ya ganado se ve pintado, lo de este
+   * nivel lleva un velo del color que lo pinta y se pinta al completar cada frasco.
+   */
+  private buildPainting(): void {
+    const index = paintingIndexFor(this.def.id);
+    if (!masterpieceFor(index)) return;
+    // El tamaño se fija al empezar; si el frasco extra agrega una fila, el tablero se ajusta.
+    const rows = this.rowsFor(this.def.jars.length);
+    const boxH = UI.board.paintingBoxH[Math.min(rows, UI.board.paintingBoxH.length) - 1];
+    this.paintingSpace = boxH + UI.board.paintingGapPx;
+    const won = services()
+      .state.wonLevelsInPainting(index)
+      .filter((l) => l !== this.def.id);
+    this.painting = new MasterpieceCanvas(
+      this,
+      W / 2,
+      HUD_BOTTOM + 8 + boxH / 2,
+      UI.board.paintingMaxW,
+      boxH - 24,
+      index,
+      { revealedLevels: won, hintLevel: this.def.id },
+    );
+    this.painting.setDepth(5);
+  }
+
   // ---------- Tablero ----------
   /**
    * Distribución del tablero (B1): los frascos ocupan el máximo espacio útil entre el HUD
@@ -219,11 +263,11 @@ export class LevelScene extends Phaser.Scene {
    * tope de tamaño para que no se vean caricaturescos, y el bloque se centra en ese espacio.
    */
   private layoutFor(count: number): { width: number; positions: { x: number; y: number }[] } {
-    const { maxPerRow, marginPx, rowGapPx, maxJarWidthPx, jarAspect } = UI.board;
-    const rows = count <= maxPerRow ? 1 : count <= maxPerRow * 2 ? 2 : Math.ceil(count / maxPerRow);
+    const { marginPx, rowGapPx, maxJarWidthPx, jarAspect } = UI.board;
+    const rows = this.rowsFor(count);
     const perRow = Math.ceil(count / rows);
     const gap = 28;
-    const usefulTop = HUD_BOTTOM + UI.board.topReservePx;
+    const usefulTop = HUD_BOTTOM + this.paintingSpace + UI.board.topReservePx;
     const usefulBottom = BAR_TOP - UI.board.bottomReservePx;
     const availW = W - marginPx * 2 - gap * (perRow - 1);
     const availH = usefulBottom - usefulTop - rowGapPx * (rows - 1);
@@ -410,6 +454,9 @@ export class LevelScene extends Phaser.Scene {
         if (!isJarResolved(this.state.jars[to] ?? [], this.state.capacity)) return;
         audio.play('complete');
         haptics.vibrate('complete');
+        // El color del frasco completado se pinta en el cuadro.
+        const done = this.state.jars[to][0];
+        if (done) this.painting?.revealPigment(this.def.id, done);
         const jar = this.jars[to];
         this.track(jar.celebrate(UI.anim.completeMs));
         this.fx.sparkle(jar.x, jar.y - jar.jarHeight / 2, r.product ?? r.pigment);
@@ -695,6 +742,7 @@ export class LevelScene extends Phaser.Scene {
     this.state = createState(this.def);
     this.history = [];
     this.extraJarUsed = false;
+    this.painting?.resetLevel(this.def.id);
     this.buildBoard();
     this.syncVisuals();
     this.refreshBar();
@@ -846,6 +894,12 @@ export class LevelScene extends Phaser.Scene {
   // ---------- Fin de nivel ----------
   private async win(): Promise<void> {
     const { state, analytics, ads } = services();
+    if (this.painting) {
+      // Lo que quede del nivel (p. ej. colores que se usaron para mezclar) se pinta ahora.
+      this.painting.finishAnimations();
+      this.painting.revealLevel(this.def.id, UI.anim.paintingFinishMs);
+      await new Promise<void>((r) => this.time.delayedCall(UI.anim.paintingFinishMs + 250, r));
+    }
     const moves = this.state.moveCount;
     const result = state.completeLevel(this.def.id, moves, this.def.par);
     analytics.log('level_win', {

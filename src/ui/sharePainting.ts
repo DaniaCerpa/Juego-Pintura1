@@ -82,11 +82,32 @@ export function gameUrl(): string {
   return `${location.origin}${base}`;
 }
 
+/** Lo que se comparte: un cuadro que sabe dibujarse en un rectángulo. */
+export interface ShareSource {
+  id: number;
+  title: string;
+  /** Línea secundaria (p. ej. autor y año de la obra). */
+  subtitle?: string;
+  /** Ancho / alto del cuadro. */
+  aspect: number;
+  draw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void;
+}
+
+/** Fuente de un cuadro procedural (respaldo cuando no hay obras descargadas). */
+export function shareSourceFromSpec(spec: PaintingSpec): ShareSource {
+  return {
+    id: spec.id,
+    title: t(spec.titleKey),
+    aspect: 880 / 680,
+    draw: (ctx, x, y, w, h) => paintSpecTo2D(ctx, spec, x, y, w, h),
+  };
+}
+
 /**
  * Imagen para compartir (A5): PNG 1080×1350 con el cuadro enmarcado, el título,
  * "Pintado en Pigmento" y la URL del juego. Todo dibujado en un canvas 2D fuera de pantalla.
  */
-export async function renderShareImage(spec: PaintingSpec): Promise<Blob> {
+export async function renderShareImage(src: ShareSource): Promise<Blob> {
   const canvas = document.createElement('canvas');
   canvas.width = W;
   canvas.height = H;
@@ -94,16 +115,20 @@ export async function renderShareImage(spec: PaintingSpec): Promise<Blob> {
   if (!ctx) throw new Error('canvas 2d no disponible');
   // Fondo de taller con luz cálida
   const bg = ctx.createRadialGradient(W * 0.3, H * 0.2, 80, W / 2, H / 2, H * 0.8);
-  bg.addColorStop(0, UI.colors.backgroundLight);
-  bg.addColorStop(1, UI.colors.background);
+  bg.addColorStop(0, UI.colors.wall);
+  bg.addColorStop(1, UI.colors.wallShade);
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Marco
-  const pw = 880;
-  const ph = 680;
+  // Marco (el cuadro se ajusta a la caja respetando su proporción)
+  let pw = 880;
+  let ph = pw / src.aspect;
+  if (ph > 680) {
+    ph = 680;
+    pw = ph * src.aspect;
+  }
   const px = (W - pw) / 2;
-  const py = 230;
+  const py = 230 + (680 - ph) / 2;
   const fw = 34;
   ctx.fillStyle = 'rgba(0,0,0,0.35)';
   roundRect(ctx, px - fw + 10, py - fw + 16, pw + fw * 2, ph + fw * 2, 14);
@@ -116,19 +141,23 @@ export async function renderShareImage(spec: PaintingSpec): Promise<Blob> {
   ctx.fill();
   ctx.fillStyle = 'rgba(0,0,0,0.25)';
   ctx.fillRect(px - 6, py - 6, pw + 12, ph + 12);
-  paintSpecTo2D(ctx, spec, px, py, pw, ph);
+  src.draw(ctx, px, py, pw, ph);
 
   // Textos
   const font = `"${UI.font.family}", ${UI.font.fallback}`;
   ctx.textAlign = 'center';
-  ctx.fillStyle = UI.colors.text;
-  ctx.font = `800 64px ${font}`;
-  ctx.fillText(t(spec.titleKey), W / 2, 1010);
-  ctx.fillStyle = UI.colors.textDim;
-  ctx.font = `600 38px ${font}`;
-  ctx.fillText(t('share.caption'), W / 2, 1075);
+  ctx.fillStyle = UI.colors.onWall;
+  ctx.font = `800 ${src.title.length > 30 ? 46 : 60}px ${font}`;
+  ctx.fillText(src.title, W / 2, 1010);
+  ctx.fillStyle = UI.colors.onWallDim;
+  ctx.font = `600 36px ${font}`;
+  ctx.fillText(
+    src.subtitle ? `${src.subtitle} · ${t('share.caption')}` : t('share.caption'),
+    W / 2,
+    1072,
+  );
   drawWordmark2D(ctx, W / 2, 130, 120);
-  ctx.fillStyle = UI.colors.accent;
+  ctx.fillStyle = UI.colors.accentDark;
   ctx.font = `600 34px ${font}`;
   ctx.fillText(gameUrl().replace(/^https?:\/\//, ''), W / 2, 1250);
 

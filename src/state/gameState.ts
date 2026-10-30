@@ -118,6 +118,14 @@ export class GameState {
   }
 
   /** Niveles ganados dentro de la decena del cuadro `index`. */
+  /** Niveles ganados de la decena de un cuadro (para saber qué manchas ya están pintadas). */
+  wonLevelsInPainting(index: number): number[] {
+    const per = galleryData.levelsPerPainting;
+    const out: number[] = [];
+    for (let l = index * per + 1; l <= (index + 1) * per; l++) if (this.starsOf(l) > 0) out.push(l);
+    return out;
+  }
+
   levelsWonInPainting(index: number): number {
     const per = galleryData.levelsPerPainting;
     let n = 0;

@@ -21,7 +21,8 @@
     "liftPx": 20,
     "hintPulseMs": 900,
     "hintAfterIdleMs": 6000,
-    "rippleMs": 200
+    "rippleMs": 200,
+    "paintingFinishMs": 550
   },
   "board": {
     "maxPerRow": 5,
@@ -31,7 +32,11 @@
     "rowGapPx": 70,
     "maxJarWidthPx": 270,
     "topReservePx": 56,
-    "bottomReservePx": 120
+    "bottomReservePx": 120,
+    "paintingBoxH": [470, 400, 260],
+    "paintingMaxW": 940,
+    "paintingGapPx": 26,
+    "maxPerRowWide": 6
   },
   "fx": {
     "particleCap": 200,
