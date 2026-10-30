@@ -1,17 +1,16 @@
-Cuadros descargados: 15 de 16
-OK  gran-ola  1000x672  Public domain
-OK  noche-estrellada  1000x792  Public domain
-OK  girasoles  792x1000  Public domain
-OK  sombrilla  805x1000  Public domain
+Cuadros descargados: 15 de 15
 OK  fuji-rojo  1000x668  Public domain
-OK  sol-naciente  1000x776  Public domain
+OK  gran-ola  1000x672  Public domain
+OK  girasoles  792x1000  Public domain
+OK  noche-estrellada  1000x792  Public domain
 OK  lirios  1000x764  Public domain
+OK  sombrilla  805x1000  Public domain
 OK  beso  996x1000  Public domain
-OK  grande-jatte  1000x666  Public domain
+OK  trigo-cipreses  1000x783  Public domain
 OK  nenufares  1000x955  Public domain
 OK  joven-perla  844x1000  Public domain
+OK  sol-naciente  1000x776  Public domain
+OK  grande-jatte  1000x666  Public domain
 OK  moulin-galette  1000x745  Public domain
-OK  trigo-cipreses  1000x783  Public domain
-OK  temerario  1000x743  Public domain
 OK  carreta-heno  1000x690  Public domain
-ERR terraza-cafe: no existe en Commons (missing)
+OK  temerario  1000x743  Public domain
