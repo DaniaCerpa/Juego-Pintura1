@@ -1,4 +1,5 @@
 import { difficultyConfig } from './difficulty';
+import { getRecipe } from './mixes';
 import { addExtraJar, isSolved, mixTableFor, pourOutcome, topOf, topRun } from './rules';
 import { solve } from './solver';
 import type { LevelRules, LevelState, PigmentId } from './types';
@@ -33,25 +34,76 @@ export interface DeadEndOptions {
 
 const cfg = difficultyConfig.deadEnd;
 
-/** ¿Queda al menos un vertido o mezcla válida? */
-export function hasAnyMove(state: LevelState, rules: LevelRules): boolean {
+/** Cantidad de vertidos o mezclas válidas (se detiene al llegar a `cap`). */
+export function countMoves(state: LevelState, rules: LevelRules, cap = Infinity): number {
   const table = mixTableFor(rules);
   const { jars, capacity } = state;
+  let n = 0;
   for (let i = 0; i < jars.length; i++) {
     if (jars[i].length === 0) continue;
     for (let j = 0; j < jars.length; j++) {
       if (i === j) continue;
-      if (
-        pourOutcome(
-          topOf(jars[i]),
-          topRun(jars[i]),
-          topOf(jars[j]),
-          jars[j].length,
-          capacity,
-          table,
-        )
-      )
-        return true;
+      const o = pourOutcome(
+        topOf(jars[i]),
+        topRun(jars[i]),
+        topOf(jars[j]),
+        jars[j].length,
+        capacity,
+        table,
+      );
+      if (o && ++n >= cap) return n;
+    }
+  }
+  return n;
+}
+
+/** ¿Queda al menos un vertido o mezcla válida? */
+export function hasAnyMove(state: LevelState, rules: LevelRules): boolean {
+  return countMoves(state, rules, 1) > 0;
+}
+
+/**
+ * Condición necesaria sobre cantidades: ¿existe alguna secuencia de mezclas que deje cada
+ * pigmento en múltiplos de la capacidad? Cada mezcla A+B→P resta 1 a A y B y suma 2 a P.
+ * Si no existe, la partida es imposible sin importar la posición de las capas. Si la
+ * búsqueda se pasa del límite, se asume que sí (nunca declara "sin salida" por error).
+ */
+export function countsCanComplete(state: LevelState, rules: LevelRules, limit = 5000): boolean {
+  const ids: PigmentId[] = [];
+  const idx = new Map<PigmentId, number>();
+  const add = (p: PigmentId) => {
+    if (!idx.has(p)) {
+      idx.set(p, ids.length);
+      ids.push(p);
+    }
+  };
+  for (const jar of state.jars) for (const p of jar) add(p);
+  const recipes = rules.mixes.map((id) => {
+    const r = getRecipe(id);
+    r.reagents.forEach(add);
+    add(r.product);
+    return [idx.get(r.reagents[0])!, idx.get(r.reagents[1])!, idx.get(r.product)!] as const;
+  });
+  const start = new Array<number>(ids.length).fill(0);
+  for (const jar of state.jars) for (const p of jar) start[idx.get(p)!]++;
+  const cap = state.capacity;
+  const ok = (c: number[]) => c.every((v) => v % cap === 0);
+  const seen = new Set<string>([start.join(',')]);
+  const queue: number[][] = [start];
+  while (queue.length > 0) {
+    const c = queue.pop()!;
+    if (ok(c)) return true;
+    for (const [a, b, p] of recipes) {
+      if (c[a] === 0 || c[b] === 0) continue;
+      const n = c.slice();
+      n[a]--;
+      n[b]--;
+      n[p] += 2;
+      const key = n.join(',');
+      if (seen.has(key)) continue;
+      if (seen.size >= limit) return true;
+      seen.add(key);
+      queue.push(n);
     }
   }
   return false;
@@ -89,16 +141,22 @@ export function analyzeDeadEnd(
   const maxStates = options.maxStates ?? cfg.maxStates;
   const maxMs = options.maxMs ?? cfg.maxMs;
   let kind: 'noMoves' | 'unsolvable';
-  if (!hasAnyMove(state, rules)) kind = 'noMoves';
-  else {
+  const incomplete = incompletePigments(state);
+  const moves = countMoves(state, rules, cfg.searchWhenMovesAtMost + 1);
+  if (moves === 0) kind = 'noMoves';
+  else if (incomplete.length > 0 && !countsCanComplete(state, rules)) {
+    // Ninguna combinación de mezclas deja los colores en frascos completos.
+    kind = 'unsolvable';
+  } else if (moves <= cfg.searchWhenMovesAtMost) {
+    // Con pocos movimientos el espacio es chico: el solver puede demostrarlo rápido.
     const r = solveFrom(state, rules, maxStates, maxMs);
     if (!r.verified || r.solvable) return { kind: 'none' };
     kind = 'unsolvable';
-  }
+  } else return { kind: 'none' };
   let extraJarHelps = false;
   if (options.checkExtraJar) {
     const r = solveFrom(addExtraJar(state), rules, maxStates, maxMs);
     extraJarHelps = r.solvable;
   }
-  return { kind, incomplete: incompletePigments(state), extraJarHelps };
+  return { kind, incomplete, extraJarHelps };
 }

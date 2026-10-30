@@ -8,8 +8,9 @@
     "maxMs": 2000
   },
   "deadEnd": {
-    "maxStates": 40000,
-    "maxMs": 250
+    "maxStates": 20000,
+    "maxMs": 60,
+    "searchWhenMovesAtMost": 4
   },
   "dryingFuseMin": 4,
   "rows": [

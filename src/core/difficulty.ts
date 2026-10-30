@@ -31,7 +31,7 @@ export interface DifficultyConfig {
   maxAttempts: number;
   solver: { maxStates: number; maxMs: number };
   /** Presupuesto del solver para detectar partidas sin salida en juego. */
-  deadEnd: { maxStates: number; maxMs: number };
+  deadEnd: { maxStates: number; maxMs: number; searchWhenMovesAtMost: number };
   dryingFuseMin: number;
   dryingMargin: DryingMargin[];
   teach: TeachConfig;

@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { analyzeDeadEnd, hasAnyMove, incompletePigments } from '../src/core/deadEnd';
+import {
+  analyzeDeadEnd,
+  countsCanComplete,
+  hasAnyMove,
+  incompletePigments,
+} from '../src/core/deadEnd';
 import { addExtraJar, tryPour } from '../src/core/rules';
 import { EMPTY_RULES, type LevelRules, type LevelState } from '../src/core/types';
 
@@ -85,6 +90,33 @@ describe('analyzeDeadEnd', () => {
     const s = state([['red', 'blue', 'red', 'blue'], ['blue', 'red', 'blue', 'red'], [], []]);
     const r = analyzeDeadEnd(s, EMPTY_RULES, { maxStates: 1 });
     expect(r.kind).toBe('none');
+  });
+});
+
+describe('countsCanComplete', () => {
+  it('sin mezclas, cantidades que no llenan frascos son imposibles', () => {
+    expect(countsCanComplete(state([['red', 'red', 'red'], ['blue']]), EMPTY_RULES)).toBe(false);
+    expect(countsCanComplete(state([['red', 'red', 'red', 'red'], []]), EMPTY_RULES)).toBe(true);
+  });
+
+  it('con mezclas busca alguna cantidad de mezclas que cuadre', () => {
+    // 3 azules + 3 amarillos + 2 verdes: 3 mezclas → 8 verdes. Posible.
+    const ok = state([
+      ['blue', 'blue', 'blue'],
+      ['yellow', 'yellow', 'yellow'],
+      ['green', 'green'],
+    ]);
+    expect(countsCanComplete(ok, MIX)).toBe(true);
+    // 3 azules + 1 amarillo + 6 verdes: ninguna cantidad de mezclas cuadra.
+    const bad = state(
+      [
+        ['blue', 'blue', 'blue'],
+        ['yellow'],
+        ['green', 'green', 'green', 'green', 'green', 'green'],
+      ],
+      8,
+    );
+    expect(countsCanComplete({ ...bad, capacity: 4 }, MIX)).toBe(false);
   });
 });
 

@@ -118,3 +118,23 @@ Objetivo: dejar el Alcance 0 listo para testers (medible, con la mecánica únic
 - Habilitar Pages (Settings → Pages → Source: GitHub Actions) si aún no está: el primer deploy falló por permisos al crear el sitio.
 - Reclutar 10–20 testers y medir 7 días: embudo por nivel, % de derrotas en niveles con secado (meta 15–25 %), comprensión de la mezcla en el nivel 6.
 - Medir 60 fps en un Android medio real (en este entorno solo hay renderizado por software).
+
+## Ronda 2026-10-30 — jugabilidad, fondo claro y cuadros reales
+
+### Qué se hizo
+
+- **Bug:** deshacer después de pedir el frasco vacío dejaba la pantalla con un frasco que el modelo ya no tenía; lo que se completaba ahí no contaba y el nivel no se ganaba. Corregido (el frasco extra no se puede deshacer).
+- **Sin salida:** aviso cuando no quedan movimientos o los colores ya no alcanzan para llenar frascos de 4 (típico tras una mezcla accidental), con deshacer gratis, frasco vacío o empezar de nuevo.
+- **Español por defecto** y migración de guardado v1 → v2.
+- **Pared clara** en vez del café oscuro.
+- **Cuadros reales en la partida:** 15 obras de dominio público. El cuadro de la decena aparece sobre el tablero; cada frasco completado pinta las manchas de su color con un barrido de pincel. Victoria, caballete, marcos y la imagen para compartir usan la obra (con título y autor).
+
+### Verificación
+
+- `npm run lint && npm test && npm run build` en verde (tests nuevos: `deadEnd.test.ts`, `masterpiece.test.ts`, migración en `save.test.ts`).
+- Playwright (renderer Canvas): regresión del frasco extra + deshacer + victoria; aviso de sin salida; niveles 2, 6 (mezcla) y 10 (Encargo) jugados con la solución del solver viendo el cuadro pintarse; galería con el cuadro colgado; imagen de compartir.
+
+### Pendiente
+
+- Probar en teléfono real el costo del análisis del cuadro (≈ 0,5 s en escritorio al abrir el primer nivel de cada decena; queda en caché durante la sesión).
+- Con 50 decenas y 15 obras, las obras se repiten a partir del nivel 151; agregar más obras a `masterpieces.json` (el workflow las descarga solo).
