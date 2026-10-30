@@ -59,7 +59,7 @@ export class IconButton extends Phaser.GameObjects.Container {
             0,
             size / 2 + 34,
             opts.label,
-            textStyle(26, opts.labelColor ?? UI.colors.textDim, '600'),
+            textStyle(26, opts.labelColor ?? UI.colors.onWall, '600'),
           )
           .setOrigin(0.5),
       );

@@ -4,6 +4,10 @@
     "height": 1920,
     "desktopMaxWidth": 480
   },
+  "lang": {
+    "default": "es",
+    "autoDetect": false
+  },
   "anim": {
     "selectMs": 120,
     "pourMs": 325,
@@ -42,6 +46,10 @@
   },
   "colors": {
     "background": "#2A2621",
+    "wall": "#EFE6D6",
+    "wallShade": "#D8C9B1",
+    "onWall": "#3D3128",
+    "onWallDim": "#7A6A58",
     "backgroundLight": "#3A342C",
     "panel": "#1F1B17",
     "text": "#F4EDE1",

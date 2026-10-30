@@ -36,6 +36,20 @@ describe('save.ts', () => {
     expect(d.mixes).toEqual([]);
   });
 
+  it('migración v1 → v2: deja el juego en español conservando el progreso', () => {
+    const s = new MemoryStorage();
+    s.set(
+      SAVE_KEY,
+      JSON.stringify({ schema: 1, level: 9, coins: 40, settings: { lang: 'en', sound: false } }),
+    );
+    const d = loadSave(s);
+    expect(d.schema).toBe(2);
+    expect(d.settings.lang).toBe('es');
+    expect(d.settings.sound).toBe(false);
+    expect(d.level).toBe(9);
+    expect(d.coins).toBe(40);
+  });
+
   it('usa la clave única pigmento.save.v1', () => {
     const s = new MemoryStorage();
     new GameState(s);

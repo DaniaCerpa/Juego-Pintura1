@@ -85,7 +85,7 @@ export function ensureTableTexture(scene: Phaser.Scene, bodyH: number): string {
       const y0 = TABLE_SURFACE + TABLE_EDGE;
       const b = ctx.createLinearGradient(0, y0, 0, h);
       b.addColorStop(0, shadeHexStr(WOOD, -0.5));
-      b.addColorStop(1, rgba(UI.colors.background, 0));
+      b.addColorStop(1, rgba(UI.colors.wallShade, 0));
       ctx.fillStyle = b;
       ctx.fillRect(0, y0, w, h - y0);
       ctx.globalAlpha = 0.5;
@@ -144,15 +144,15 @@ export function ensureSoftShadow(scene: Phaser.Scene, w: number): string {
 export function ensureWorkshopLight(scene: Phaser.Scene): string {
   return canvasTexture(scene, 'workshop-light', 270, 480, (ctx, w, h) => {
     const g = ctx.createRadialGradient(w * 0.18, h * 0.04, 10, w * 0.3, h * 0.2, h * 0.85);
-    g.addColorStop(0, 'rgba(255,205,140,0.34)');
-    g.addColorStop(0.35, 'rgba(255,190,120,0.12)');
+    g.addColorStop(0, 'rgba(255,236,200,0.55)');
+    g.addColorStop(0.35, 'rgba(255,225,180,0.18)');
     g.addColorStop(0.7, 'rgba(0,0,0,0)');
-    g.addColorStop(1, 'rgba(0,0,0,0.5)');
+    g.addColorStop(1, 'rgba(60,40,20,0.14)');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
     const v = ctx.createRadialGradient(w / 2, h * 0.5, h * 0.35, w / 2, h * 0.5, h * 0.75);
     v.addColorStop(0, 'rgba(0,0,0,0)');
-    v.addColorStop(1, 'rgba(0,0,0,0.45)');
+    v.addColorStop(1, 'rgba(70,45,20,0.16)');
     ctx.fillStyle = v;
     ctx.fillRect(0, 0, w, h);
   });

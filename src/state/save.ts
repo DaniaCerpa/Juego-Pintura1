@@ -1,7 +1,7 @@
 import type { StorageService } from '../services/storage/StorageService';
 
 export const SAVE_KEY = 'pigmento.save.v1';
-export const CURRENT_SCHEMA = 1;
+export const CURRENT_SCHEMA = 2;
 
 export interface Settings {
   sound: boolean;
@@ -57,7 +57,14 @@ export function createDefaultSave(distinctId: string, settings = defaultSettings
 type Migration = (raw: Record<string, unknown>) => Record<string, unknown>;
 
 /** Migraciones por número de esquema: migrations[n] lleva de n a n+1. */
-const migrations: Record<number, Migration> = {};
+const migrations: Record<number, Migration> = {
+  // v1 → v2: el juego queda en español por defecto (antes se elegía inglés según el
+  // dispositivo). El jugador puede volver a cambiarlo en Ajustes.
+  1: (raw) => ({
+    ...raw,
+    settings: { ...((raw.settings as Record<string, unknown>) ?? {}), lang: 'es' },
+  }),
+};
 
 function generateId(): string {
   const bytes = new Uint8Array(16);

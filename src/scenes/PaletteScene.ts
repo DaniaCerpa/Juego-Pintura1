@@ -32,7 +32,9 @@ export class PaletteScene extends Phaser.Scene {
   create(): void {
     const { state, audio } = services();
     drawBackdrop(this);
-    this.add.text(W / 2, 150, t('palette.title'), textStyle(76, UI.colors.accent)).setOrigin(0.5);
+    this.add
+      .text(W / 2, 150, t('palette.title'), textStyle(76, UI.colors.accentDark))
+      .setOrigin(0.5);
     const recipes = mixesConfig.recipes;
     // Pigmentos que el jugador ya vio en niveles jugados (para sugerir mezclas).
     const seen = new Set<string>();
@@ -45,7 +47,7 @@ export class PaletteScene extends Phaser.Scene {
         W / 2,
         230,
         t('palette.discovered', { n: discovered, total: recipes.length }),
-        textStyle(34, UI.colors.textDim, '600'),
+        textStyle(34, UI.colors.onWallDim, '600'),
       )
       .setOrigin(0.5);
 

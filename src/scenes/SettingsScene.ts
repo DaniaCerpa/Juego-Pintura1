@@ -25,7 +25,9 @@ export class SettingsScene extends Phaser.Scene {
   create(): void {
     const { state, audio } = services();
     drawBackdrop(this);
-    this.add.text(W / 2, 180, t('settings.title'), textStyle(84, UI.colors.accent)).setOrigin(0.5);
+    this.add
+      .text(W / 2, 180, t('settings.title'), textStyle(84, UI.colors.accentDark))
+      .setOrigin(0.5);
 
     const rows: Array<{ key: string; label: string; get: () => string; toggle: () => void }> = [
       {
@@ -98,7 +100,7 @@ export class SettingsScene extends Phaser.Scene {
         W / 2,
         1760,
         t('settings.version', { v: __APP_VERSION__ }),
-        textStyle(28, UI.colors.textDim, '600'),
+        textStyle(28, UI.colors.onWallDim, '600'),
       )
       .setOrigin(0.5);
     fadeIn(this);

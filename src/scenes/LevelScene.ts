@@ -138,7 +138,7 @@ export class LevelScene extends Phaser.Scene {
   private buildHud(): void {
     const { state } = services();
     const panel = this.add.graphics();
-    panel.fillStyle(COLORS.panel, 0.55);
+    panel.fillStyle(COLORS.panel, 0.82);
     panel.fillRoundedRect(40, 60, W - 80, 170, 36);
     panel.lineStyle(2, COLORS.accent, 0.25);
     panel.strokeRoundedRect(40, 60, W - 80, 170, 36);

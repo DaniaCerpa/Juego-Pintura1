@@ -8,7 +8,8 @@ import { AudioService } from './audio';
 import { HapticsService } from './haptics';
 import { GameState } from '../state/gameState';
 import { defaultSettings } from '../state/save';
-import { detectLang, setLang } from '../ui/i18n';
+import { detectLang, setLang, type Lang } from '../ui/i18n';
+import { UI } from '../ui/theme';
 
 /** Contenedor de servicios (una sola instancia por juego). */
 export interface Services {
@@ -31,7 +32,10 @@ export function services(): Services {
     window.matchMedia?.('(forced-colors: active)').matches;
   const state = new GameState(
     storage,
-    defaultSettings(detectLang(navigator.language), prefersSymbols),
+    defaultSettings(
+      UI.lang.autoDetect ? detectLang(navigator.language) : (UI.lang.default as Lang),
+      prefersSymbols,
+    ),
   );
   setLang(state.settings.lang);
   const audio = new AudioService();

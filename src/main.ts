@@ -28,7 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
   parent: 'game',
   width: uiData.canvas.width,
   height: uiData.canvas.height,
-  backgroundColor: uiData.colors.background,
+  backgroundColor: uiData.colors.wall,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,

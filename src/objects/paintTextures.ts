@@ -187,9 +187,10 @@ export function glassBackKey(scene: Phaser.Scene, w: number, h: number): string 
     ctx.translate(PAD, PAD);
     roundRectPath(ctx, 0, 10, w, h - 10, { tl: 10, tr: 10, br: r, bl: r });
     const g = ctx.createLinearGradient(0, 0, w, 0);
-    g.addColorStop(0, rgba(COLORS.glass, 0.1));
-    g.addColorStop(0.5, rgba(COLORS.glass, 0.04));
-    g.addColorStop(1, rgba(COLORS.glass, 0.12));
+    // Sobre la pared clara el vidrio necesita un poco de cuerpo: velo azul grisáceo.
+    g.addColorStop(0, 'rgba(120,145,165,0.22)');
+    g.addColorStop(0.5, 'rgba(150,170,185,0.12)');
+    g.addColorStop(1, 'rgba(110,135,155,0.26)');
     ctx.fillStyle = g;
     ctx.fill();
   });
@@ -200,6 +201,13 @@ export function glassFrontKey(scene: Phaser.Scene, w: number, h: number): string
   return canvasTexture(scene, `glassfront-${w}`, w + PAD * 2, h + PAD * 2, (ctx) => {
     const r = w * 0.22;
     ctx.translate(PAD, PAD);
+    // Contorno oscuro fino (se lee sobre la pared clara) bajo el borde iluminado
+    ctx.strokeStyle = 'rgba(60,75,88,0.55)';
+    ctx.lineWidth = 7;
+    roundRectPath(ctx, 0, 10, w, h - 10, { tl: 10, tr: 10, br: r, bl: r });
+    ctx.stroke();
+    roundRectPath(ctx, -6, 0, w + 12, 18, 8);
+    ctx.stroke();
     // Borde del vidrio con más luz arriba-izquierda
     const edge = ctx.createLinearGradient(0, 0, w, h);
     edge.addColorStop(0, rgba(COLORS.glass, 0.85));

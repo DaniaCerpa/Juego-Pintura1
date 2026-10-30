@@ -53,14 +53,14 @@ export class VictoryScene extends Phaser.Scene {
 
     const perfect = r.moves <= r.par;
     this.add
-      .text(W / 2, 150, t('level.title', { n: r.level }), textStyle(38, UI.colors.textDim, '600'))
+      .text(W / 2, 150, t('level.title', { n: r.level }), textStyle(38, UI.colors.onWallDim, '600'))
       .setOrigin(0.5);
     const title = this.add
       .text(
         W / 2,
         250,
         perfect ? t('victory.perfect') : t('victory.title'),
-        textStyle(84, UI.colors.accent),
+        textStyle(84, UI.colors.accentDark),
       )
       .setOrigin(0.5)
       .setScale(0.6)
@@ -85,7 +85,7 @@ export class VictoryScene extends Phaser.Scene {
           W / 2 + (i - 1) * 150,
           starY,
           '★',
-          textStyle(120, i < r.stars ? UI.colors.accent : '#4a433b'),
+          textStyle(120, i < r.stars ? UI.colors.accent : '#D3C6B1'),
         )
         .setOrigin(0.5)
         .setScale(0)
@@ -110,7 +110,7 @@ export class VictoryScene extends Phaser.Scene {
         W / 2,
         480,
         t('victory.moves', { moves: r.moves, par: r.par }),
-        textStyle(36, UI.colors.text, '600'),
+        textStyle(36, UI.colors.onWall, '600'),
       )
       .setOrigin(0.5);
 
@@ -120,7 +120,7 @@ export class VictoryScene extends Phaser.Scene {
         W / 2,
         560,
         r.reward.total > 0 ? t('victory.coins', { n: r.reward.total }) : '',
-        textStyle(44, UI.colors.accent),
+        textStyle(44, UI.colors.accentDark),
       )
       .setOrigin(0.5)
       .setAlpha(0);
@@ -146,7 +146,7 @@ export class VictoryScene extends Phaser.Scene {
         W / 2,
         1130,
         t('victory.brush', { pct: r.paintingAfter }),
-        textStyle(30, UI.colors.textDim, '600'),
+        textStyle(30, UI.colors.onWallDim, '600'),
       )
       .setOrigin(0.5)
       .setAlpha(0);

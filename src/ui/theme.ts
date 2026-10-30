@@ -12,6 +12,8 @@ export function hexToNum(hex: string): number {
 
 export const COLORS = {
   background: hexToNum(uiData.colors.background),
+  wall: hexToNum(uiData.colors.wall),
+  wallShade: hexToNum(uiData.colors.wallShade),
   backgroundLight: hexToNum(uiData.colors.backgroundLight),
   panel: hexToNum(uiData.colors.panel),
   text: hexToNum(uiData.colors.text),
@@ -50,10 +52,11 @@ export function shade(color: number, factor: number): number {
   return Phaser.Display.Color.GetColor(r, g, b);
 }
 
-/** Fondo de taller: color base + textura de lienzo sutil + viñeta cálida. */
+/** Fondo de taller: pared clara + textura de lienzo sutil + luz cálida. */
 export function drawBackdrop(scene: Phaser.Scene): void {
   const g = scene.add.graphics();
-  g.fillStyle(COLORS.background, 1);
+  // Pared clara con un degradado suave hacia abajo (la mesa queda más en sombra).
+  g.fillGradientStyle(COLORS.wall, COLORS.wall, COLORS.wallShade, COLORS.wallShade, 1);
   g.fillRect(0, 0, W, H);
   // Con el renderer Canvas (respaldo) cada imagen a pantalla completa es un drawImage de
   // 2 MP por frame; se omite la textura de lienzo y se deja solo la viñeta.

@@ -34,7 +34,7 @@ export class GalleryScene extends Phaser.Scene {
     this.drawCoins();
     addWordmark(this, W / 2, 140, 104);
     this.add
-      .text(W / 2, 228, t('gallery.subtitle'), textStyle(34, UI.colors.textDim, '600'))
+      .text(W / 2, 228, t('gallery.subtitle'), textStyle(34, UI.colors.onWallDim, '600'))
       .setOrigin(0.5);
     const settings = new IconButton(this, W - 110, 140, 'gear', { size: 104 });
     settings.onPress = () => goTo(this, 'Settings', { from: 'Gallery' });
@@ -68,7 +68,12 @@ export class GalleryScene extends Phaser.Scene {
     });
     if (level % per === 0) {
       this.add
-        .text(W / 2, 1405, `★ ${t('gallery.commission')} ★`, textStyle(32, UI.colors.accent, '600'))
+        .text(
+          W / 2,
+          1405,
+          `★ ${t('gallery.commission')} ★`,
+          textStyle(32, UI.colors.accentDark, '600'),
+        )
         .setOrigin(0.5);
     }
 
@@ -102,7 +107,7 @@ export class GalleryScene extends Phaser.Scene {
     };
 
     this.add
-      .text(W / 2, H - 60, `v${__APP_VERSION__}`, textStyle(24, UI.colors.textDim, '600'))
+      .text(W / 2, H - 60, `v${__APP_VERSION__}`, textStyle(24, UI.colors.onWallDim, '600'))
       .setOrigin(0.5)
       .setAlpha(0.6);
     fadeIn(this);
