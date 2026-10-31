@@ -7,14 +7,6 @@
     "file": "Blue macaw (Unsplash).jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Blue_macaw_(Unsplash).jpg"
   },
-  "globos": {
-    "author": "Chinh Le Duc mero_dnt",
-    "width": 1000,
-    "height": 667,
-    "license": "CC0",
-    "file": "Temples and hot air balloons. (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Temples_and_hot_air_balloons._(Unsplash).jpg"
-  },
   "tulipanes": {
     "author": "Sylwia Forysińska jareth21st",
     "width": 1000,
@@ -55,13 +47,13 @@
     "file": "Peacock showing its beautiful feathers old.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Peacock_showing_its_beautiful_feathers_old.jpg"
   },
-  "loros": {
-    "author": "Dominik Lange the_real_napster",
-    "width": 665,
-    "height": 1000,
+  "dulces": {
+    "author": "Viktor Forgacs sonance",
+    "width": 1000,
+    "height": 666,
     "license": "CC0",
-    "file": "Blue Parrot (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Blue_Parrot_(Unsplash).jpg"
+    "file": "Colorful candy cupcakes (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_candy_cupcakes_(Unsplash).jpg"
   },
   "aurora": {
     "author": "Alan Labisch labisch",
@@ -70,14 +62,6 @@
     "license": "CC0",
     "file": "Colorful aurora borealis (Unsplash).jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Colorful_aurora_borealis_(Unsplash).jpg"
-  },
-  "flamencos": {
-    "author": "Fuzzsimp",
-    "width": 1000,
-    "height": 667,
-    "license": "CC0",
-    "file": "Flamingos at Lincoln park zoo.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Flamingos_at_Lincoln_park_zoo.jpg"
   },
   "macarons": {
     "author": "Tatiana Lapina veila",
@@ -111,13 +95,13 @@
     "file": "Butterfly on a flower in close-up (Unsplash).jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Butterfly_on_a_flower_in_close-up_(Unsplash).jpg"
   },
-  "fuegos": {
-    "author": "Warren Tobias wjtobias",
+  "paraguas": {
+    "author": "Austin Scherbarth ascherby",
     "width": 1000,
     "height": 667,
     "license": "CC0",
-    "file": "Fireworks (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Fireworks_(Unsplash).jpg"
+    "file": "Colorful Coincidence (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_Coincidence_(Unsplash).jpg"
   },
   "lavanda": {
     "author": "Robert Brink",
@@ -151,12 +135,12 @@
     "file": "Colored pencils lined up on pink surface.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
   },
-  "tucan": {
-    "author": "Diego PH jdiegoph",
+  "colibri": {
+    "author": "joel herzog joel_herzog",
     "width": 1000,
-    "height": 667,
+    "height": 652,
     "license": "CC0",
-    "file": "Toucan (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Toucan_(Unsplash).jpg"
+    "file": "Hummingbird over purple flowers (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hummingbird_over_purple_flowers_(Unsplash).jpg"
   }
 }

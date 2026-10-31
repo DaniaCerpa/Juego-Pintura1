@@ -1,21 +1,21 @@
-Cuadros descargados: 20 de 20
+Cuadros descargados: 18 de 20
 OK  guacamayo  662x1000  CC0  Blue macaw (Unsplash).jpg
-OK  globos  1000x667  CC0  Temples and hot air balloons. (Unsplash).jpg
 OK  tulipanes  1000x667  CC0  Tulip season (Unsplash).jpg
 OK  pez-payaso  1000x750  Public domain  Common clownfish.jpg
 OK  loris  800x1000  Public domain  Trichoglossus moluccanus, flowering Xanthorrhoea.jpg
 OK  burano  1000x706  Public domain  Burano - 1.JPG
 OK  pavo-real  667x1000  CC0  Peacock showing its beautiful feathers old.jpg
-OK  loros  665x1000  CC0  Blue Parrot (Unsplash).jpg
+OK  dulces  1000x666  CC0  Colorful candy cupcakes (Unsplash).jpg
 OK  aurora  1000x667  CC0  Colorful aurora borealis (Unsplash).jpg
-OK  flamencos  1000x667  CC0  Flamingos at Lincoln park zoo.jpg
 OK  macarons  1000x664  CC0  Colorful Macarons (Unsplash).jpg
 OK  koi  1000x672  CC0  Koi carp; March 2009.jpg
 OK  medusa  1000x750  CC0  Waikiki Aquarium Jellyfish.jpg
 OK  mariposa  1000x667  CC0  Butterfly on a flower in close-up (Unsplash).jpg
-OK  fuegos  1000x667  CC0  Fireworks (Unsplash).jpg
+OK  paraguas  1000x667  CC0  Colorful Coincidence (Unsplash).jpg
 OK  lavanda  1000x750  CC0  Lavender field in bloom.jpg
 OK  arrecife  1000x666  Public domain  Colorful underwater landscape of a coral reef.jpg
 OK  otono  667x1000  CC0  Swirling autumn leaves (Unsplash).jpg
 OK  lapices  1000x663  CC0  Colored pencils lined up on pink surface.jpg
-OK  tucan  1000x667  CC0  Toucan (Unsplash).jpg
+OK  colibri  1000x652  CC0  Hummingbird over purple flowers (Unsplash).jpg
+ERR globos: sin candidato válido (sin resultados)
+ERR atardecer: sin candidato válido (sin resultados)
