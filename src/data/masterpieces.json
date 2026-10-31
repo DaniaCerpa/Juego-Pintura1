@@ -29,10 +29,10 @@
     },
     {
       "id": "globos",
-      "search": "hot air balloons Unsplash",
+      "search": "colorful hot air balloon close up Unsplash",
       "title": {
-        "es": "Globos aerostáticos",
-        "en": "Hot Air Balloons"
+        "es": "Globo aerostático",
+        "en": "Hot Air Balloon"
       },
       "artist": "",
       "year": ""
@@ -88,11 +88,11 @@
       "year": ""
     },
     {
-      "id": "loros",
-      "search": "parrots colorful Unsplash",
+      "id": "dulces",
+      "search": "colorful candy Unsplash",
       "title": {
-        "es": "Loros",
-        "en": "Parrots"
+        "es": "Dulces de colores",
+        "en": "Colorful Candy"
       },
       "artist": "",
       "year": ""
@@ -108,11 +108,11 @@
       "year": ""
     },
     {
-      "id": "flamencos",
-      "search": "flamingos Phoenicopterus group",
+      "id": "atardecer",
+      "search": "sunset sea colorful Unsplash",
       "title": {
-        "es": "Flamencos",
-        "en": "Flamingos"
+        "es": "Atardecer",
+        "en": "Sunset"
       },
       "artist": "",
       "year": ""
@@ -158,11 +158,11 @@
       "year": ""
     },
     {
-      "id": "fuegos",
-      "search": "fireworks Unsplash",
+      "id": "paraguas",
+      "search": "colorful umbrellas Unsplash",
       "title": {
-        "es": "Fuegos artificiales",
-        "en": "Fireworks"
+        "es": "Paraguas de colores",
+        "en": "Colorful Umbrellas"
       },
       "artist": "",
       "year": ""
@@ -208,11 +208,11 @@
       "year": ""
     },
     {
-      "id": "tucan",
-      "search": "toucan Unsplash",
+      "id": "colibri",
+      "search": "hummingbird flower Unsplash",
       "title": {
-        "es": "Tucán",
-        "en": "Toucan"
+        "es": "Colibrí",
+        "en": "Hummingbird"
       },
       "artist": "",
       "year": ""
