@@ -138,6 +138,12 @@ export class LevelScene extends Phaser.Scene {
     });
     if (this.def.id === 1) this.setupOnboardingHints();
     this.armMixHint();
+    if (this.def.rules.drying.length > 0) {
+      // La primera vez que aparece un frasco que se seca, se explica qué es el anillo.
+      this.time.delayedCall(700, () =>
+        this.maybeTip('drying', true, t('level.tooltip.drying'), 6500),
+      );
+    }
     this.events.once('shutdown', () => {
       this.fx.clear();
       this.mixHintTimer?.remove();
@@ -216,11 +222,11 @@ export class LevelScene extends Phaser.Scene {
     this.maybeTip('undo', this.history.length > 0, t('level.tooltip.undo'));
   }
 
-  private maybeTip(id: string, available: boolean, text: string): void {
+  private maybeTip(id: string, available: boolean, text: string, durationMs?: number): void {
     const { state } = services();
     if (!available || state.hasSeenTip(id)) return;
     state.markTipSeen(id);
-    showToast(this, text);
+    showToast(this, text, undefined, durationMs);
   }
 
   // ---------- Cuadro (se pinta al completar frascos) ----------

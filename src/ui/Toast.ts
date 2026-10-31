@@ -4,7 +4,10 @@ import { COLORS, textStyle, W } from './theme';
 /** Mensaje breve de una línea (tooltips de ayudas, "¡Nueva mezcla!", etc.). */
 export function showToast(scene: Phaser.Scene, text: string, y = 1540, durationMs = 2200): void {
   const padding = 28;
-  const label = scene.add.text(0, 0, text, textStyle(34, '#F4EDE1', '600')).setOrigin(0.5);
+  const label = scene.add
+    .text(0, 0, text, { ...textStyle(34, '#F4EDE1', '600'), lineSpacing: 6 })
+    .setOrigin(0.5)
+    .setWordWrapWidth(W - 80 - padding * 2, true);
   const w = Math.min(W - 80, label.width + padding * 2);
   const h = label.height + padding;
   const bg = scene.add.graphics();

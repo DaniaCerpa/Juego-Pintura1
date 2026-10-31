@@ -117,10 +117,10 @@ export class Jar extends Phaser.GameObjects.Container {
     this.fuseRing = scene.add.graphics();
     this.fuseText = scene.add
       .text(
-        w / 2 + 6,
-        -h / 2 - 20,
+        w / 2 + 10,
+        -h / 2 - 22,
         '',
-        textStyle(Math.round(Math.max(28, w * 0.2)), UI.colors.danger),
+        textStyle(Math.round(Math.max(36, w * 0.26)), UI.colors.danger),
       )
       .setOrigin(0.5)
       .setVisible(false);
@@ -299,9 +299,14 @@ export class Jar extends Phaser.GameObjects.Container {
       // Empieza arriba (-π/2) y se consume en sentido horario.
       g.strokePoints(ring(-Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * frac), false);
     }
-    // Número solo al final: ≤ 3 movimientos, rojo y con pulso.
-    if (remaining <= 3) {
-      this.fuseText.setText(String(Math.max(0, remaining))).setVisible(true);
+    // Movimientos que le quedan a la pintura antes de secarse: siempre a la vista; en los
+    // últimos 3, rojo y con pulso.
+    const urgent = remaining <= 3;
+    this.fuseText
+      .setText(String(Math.max(0, remaining)))
+      .setColor(urgent ? UI.colors.danger : UI.colors.text)
+      .setVisible(true);
+    if (urgent) {
       this.fusePulse = this.scene.tweens.add({
         targets: this.fuseText,
         scale: { from: 1, to: 1.25 },
@@ -310,8 +315,6 @@ export class Jar extends Phaser.GameObjects.Container {
         repeat: -1,
         ease: 'Sine.InOut',
       });
-    } else {
-      this.fuseText.setVisible(false);
     }
     this.redraw();
   }

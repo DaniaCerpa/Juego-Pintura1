@@ -119,5 +119,6 @@
   "deadEnd.extraJar": "Add empty jar",
   "deadEnd.restart": "Start over",
   "victory.painting": "{title} · {pct}% painted",
-  "level.hint.sortedMix": "Almost! {counts} can't fill a jar.\nMix them: {a} + {b} = {p}"
+  "level.hint.sortedMix": "Almost! {counts} can't fill a jar.\nMix them: {a} + {b} = {p}",
+  "level.tooltip.drying": "The jar with a ring is drying: the number is how many moves it has left. Fill it with one color or empty it before it reaches 0."
 }
