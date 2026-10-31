@@ -9,13 +9,13 @@
     "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
   },
   "pez-payaso": {
-    "query": "clownfish anemone",
-    "author": "Bruxton",
+    "query": "Common clownfish.jpg",
+    "author": "Janderk",
     "width": 1000,
-    "height": 791,
-    "license": "CC0",
-    "file": "Cinnamon clownfish right.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Cinnamon_clownfish_right.jpg"
+    "height": 750,
+    "license": "Public domain",
+    "file": "Common clownfish.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_clownfish.jpg"
   },
   "tulipanes": {
     "query": "tulip field Netherlands",
@@ -54,13 +54,13 @@
     "source": "https://commons.wikimedia.org/wiki/File:Colorful_Macarons_(Unsplash).jpg"
   },
   "arrecife": {
-    "query": "coral reef fish colorful",
-    "author": "National Marine Sanctuaries",
+    "query": "Colorful underwater landscape of a coral reef.jpg",
+    "author": "Jim E Maragos, U.S. Fish and Wildlife Service",
     "width": 1000,
-    "height": 750,
+    "height": 666,
     "license": "Public domain",
-    "file": "NMSAS - Rose Atoll Fish (33304906425).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:NMSAS_-_Rose_Atoll_Fish_(33304906425).jpg"
+    "file": "Colorful underwater landscape of a coral reef.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_underwater_landscape_of_a_coral_reef.jpg"
   },
   "dulces": {
     "query": "colorful candy Unsplash",
@@ -81,22 +81,22 @@
     "source": "https://commons.wikimedia.org/wiki/File:Trichoglossus_moluccanus,_flowering_Xanthorrhoea.jpg"
   },
   "pavo-real": {
-    "query": "peacock displaying feathers",
-    "author": "Clara Driscoll",
-    "width": 778,
+    "query": "Peacock showing its beautiful feathers old.jpg",
+    "author": "Joselodos",
+    "width": 667,
     "height": 1000,
-    "license": "Public domain",
-    "file": "Peacock Table Lamp.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Peacock_Table_Lamp.jpg"
+    "license": "CC0",
+    "file": "Peacock showing its beautiful feathers old.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Peacock_showing_its_beautiful_feathers_old.jpg"
   },
   "mariposa": {
-    "query": "butterfly flower colorful macro",
-    "author": "Pablo Samuel",
+    "query": "Butterfly on a flower in close-up (Unsplash).jpg",
+    "author": "Tung Minh tshusi",
     "width": 1000,
     "height": 667,
     "license": "CC0",
-    "file": "Pit Stop (212590363).jpeg",
-    "source": "https://commons.wikimedia.org/wiki/File:Pit_Stop_(212590363).jpeg"
+    "file": "Butterfly on a flower in close-up (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Butterfly_on_a_flower_in_close-up_(Unsplash).jpg"
   },
   "aurora": {
     "query": "aurora borealis Unsplash",
