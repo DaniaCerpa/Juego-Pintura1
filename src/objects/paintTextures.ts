@@ -19,21 +19,23 @@ const PAINT_TEX_W = 48;
 
 function paintBodyGradient(ctx: CanvasRenderingContext2D, hex: string, h: number): CanvasGradient {
   const g = ctx.createLinearGradient(0, 0, 0, h);
-  g.addColorStop(0, shadeHexStr(hex, 0.14));
-  g.addColorStop(0.45, hex);
-  g.addColorStop(1, shadeHexStr(hex, -0.2));
+  g.addColorStop(0, shadeHexStr(hex, 0.2));
+  g.addColorStop(0.35, hex);
+  g.addColorStop(1, shadeHexStr(hex, -0.16));
   return g;
 }
 
 function specular(ctx: CanvasRenderingContext2D, w: number, h: number): void {
   // Brillo especular en el borde izquierdo y sombra suave a la derecha (volumen cilíndrico).
   const s = ctx.createLinearGradient(0, 0, w, 0);
-  s.addColorStop(0, 'rgba(255,255,255,0.05)');
-  s.addColorStop(0.1, 'rgba(255,255,255,0.38)');
-  s.addColorStop(0.2, 'rgba(255,255,255,0.08)');
-  s.addColorStop(0.55, 'rgba(255,255,255,0)');
-  s.addColorStop(0.85, 'rgba(0,0,0,0.06)');
-  s.addColorStop(1, 'rgba(0,0,0,0.2)');
+  // Pintura brillante: reflejo fuerte a la izquierda, luz de borde a la derecha.
+  s.addColorStop(0, 'rgba(255,255,255,0.08)');
+  s.addColorStop(0.1, 'rgba(255,255,255,0.55)');
+  s.addColorStop(0.18, 'rgba(255,255,255,0.12)');
+  s.addColorStop(0.5, 'rgba(255,255,255,0)');
+  s.addColorStop(0.8, 'rgba(0,0,0,0.08)');
+  s.addColorStop(0.9, 'rgba(255,255,255,0.14)');
+  s.addColorStop(1, 'rgba(0,0,0,0.18)');
   ctx.fillStyle = s;
   ctx.fillRect(0, 0, w, h);
 }
@@ -148,32 +150,139 @@ export function cracksKey(scene: Phaser.Scene, innerW: number): string {
   });
 }
 
-export function corkKey(scene: Phaser.Scene, jarW: number): string {
-  const cw = Math.round(jarW * 0.78);
-  const ch = Math.round(jarW * 0.36);
-  return canvasTexture(scene, `cork-${jarW}`, cw, ch, (ctx, w, h) => {
-    const rnd = texRng(jarW);
-    roundRectPath(ctx, 1, 1, w - 2, h - 2, { tl: 10, tr: 10, br: 6, bl: 6 });
-    const g = ctx.createLinearGradient(0, 0, w, 0);
-    g.addColorStop(0, '#D9A86A');
-    g.addColorStop(0.5, '#C08A4E');
-    g.addColorStop(1, '#8E6236');
-    ctx.fillStyle = g;
+/** Proporción vertical del labio del frasco dentro de la textura del corcho (origen Y). */
+export const CORK_LIP_Y = 0.6;
+
+/**
+ * Tapón del frasco completado: corcho cilíndrico visto en 3/4 (cara superior con anillos,
+ * cuerpo con poros) y un sello de cera del color de la pintura que chorrea por el labio.
+ */
+export function corkKey(scene: Phaser.Scene, jarW: number, id: PigmentId): string {
+  const hex = getPigment(id).hex;
+  const w = Math.round(jarW * 1.04 + 12);
+  const h = Math.round(jarW * 0.7);
+  return canvasTexture(scene, `cork2-${jarW}-${id}`, w, h, (ctx) => {
+    const rnd = texRng(jarW * 13 + 5);
+    const cx = w / 2;
+    const lip = h * CORK_LIP_Y;
+    const topW = jarW * 0.6;
+    const botW = jarW * 0.54;
+    const topY = h * 0.12;
+    const ry = topW * 0.17;
+    // Cuerpo del corcho (se angosta hacia abajo, entra en la boca)
+    ctx.beginPath();
+    ctx.moveTo(cx - topW / 2, topY);
+    ctx.lineTo(cx - botW / 2, lip + 6);
+    ctx.lineTo(cx + botW / 2, lip + 6);
+    ctx.lineTo(cx + topW / 2, topY);
+    ctx.closePath();
+    const body = ctx.createLinearGradient(cx - topW / 2, 0, cx + topW / 2, 0);
+    body.addColorStop(0, '#B07A45');
+    body.addColorStop(0.22, '#E2B47A');
+    body.addColorStop(0.55, '#C9945A');
+    body.addColorStop(1, '#7E5230');
+    ctx.fillStyle = body;
     ctx.fill();
     ctx.save();
     ctx.clip();
-    for (let i = 0; i < 70; i++) {
-      ctx.fillStyle = rnd() < 0.6 ? 'rgba(90,55,25,0.35)' : 'rgba(255,230,190,0.3)';
+    for (let i = 0; i < 90; i++) {
+      ctx.fillStyle = rnd() < 0.65 ? 'rgba(80,45,20,0.4)' : 'rgba(255,235,200,0.35)';
       ctx.beginPath();
-      ctx.arc(rnd() * w, rnd() * h, 0.8 + rnd() * 2, 0, Math.PI * 2);
+      ctx.ellipse(
+        cx + (rnd() - 0.5) * topW,
+        topY + rnd() * (lip - topY),
+        0.8 + rnd() * 1.8,
+        0.6 + rnd(),
+        0,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
     }
-    ctx.fillStyle = 'rgba(255,240,210,0.35)';
-    ctx.fillRect(0, 0, w, 4);
     ctx.restore();
-    ctx.strokeStyle = 'rgba(70,40,15,0.6)';
-    ctx.lineWidth = 2;
-    roundRectPath(ctx, 1, 1, w - 2, h - 2, { tl: 10, tr: 10, br: 6, bl: 6 });
+    // Cara superior: elipse más clara con anillos de crecimiento
+    const top = ctx.createRadialGradient(cx - topW * 0.12, topY - ry * 0.3, 2, cx, topY, topW / 2);
+    top.addColorStop(0, '#F3D3A1');
+    top.addColorStop(1, '#C6925A');
+    ctx.fillStyle = top;
+    ctx.beginPath();
+    ctx.ellipse(cx, topY, topW / 2, ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(120,75,35,0.35)';
+    ctx.lineWidth = 1;
+    for (let k = 1; k <= 3; k++) {
+      ctx.beginPath();
+      ctx.ellipse(cx, topY, (topW / 2) * (k / 4), ry * (k / 4), 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = 'rgba(90,55,25,0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(cx, topY, topW / 2, ry, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Sello de cera del color de la pintura: anillo sobre el labio + gotas que chorrean
+    const ringW = jarW * 0.98;
+    const ringH = jarW * 0.2;
+    const wax = (dark: number) => shadeHexStr(hex, dark);
+    ctx.fillStyle = wax(-0.12);
+    const drips = [
+      { x: -0.3, len: 0.2 },
+      { x: 0.05, len: 0.32 },
+      { x: 0.33, len: 0.16 },
+    ];
+    for (const d of drips) {
+      const dx = cx + d.x * ringW;
+      const dw = jarW * 0.11;
+      const dl = h * d.len;
+      ctx.beginPath();
+      ctx.moveTo(dx - dw / 2, lip);
+      ctx.lineTo(dx - dw / 2, lip + dl);
+      ctx.arc(dx, lip + dl, dw / 2, Math.PI, 0, true);
+      ctx.lineTo(dx + dw / 2, lip);
+      ctx.closePath();
+      ctx.fill();
+    }
+    const band = ctx.createLinearGradient(0, lip - ringH / 2, 0, lip + ringH / 2);
+    band.addColorStop(0, wax(0.25));
+    band.addColorStop(0.5, hex);
+    band.addColorStop(1, wax(-0.25));
+    ctx.fillStyle = band;
+    ctx.beginPath();
+    ctx.ellipse(cx, lip, ringW / 2, ringH / 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Abertura del anillo por donde entra el corcho (se ve el cuerpo detrás)
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(cx, lip - ringH * 0.12, botW / 2 + 2, ringH * 0.28, 0, Math.PI, 0);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(60,35,15,0.25)';
+    ctx.fill();
+    ctx.restore();
+    // Brillo de la cera
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(cx, lip - 1, ringW / 2 - 6, ringH / 2 - 4, 0, Math.PI * 1.08, Math.PI * 1.55);
+    ctx.stroke();
+    for (const d of drips) {
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.beginPath();
+      ctx.ellipse(
+        cx + d.x * ringW - jarW * 0.02,
+        lip + h * d.len * 0.55,
+        1.6,
+        h * d.len * 0.25,
+        0,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+    }
+    ctx.strokeStyle = wax(-0.4);
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.ellipse(cx, lip, ringW / 2, ringH / 2, 0, 0, Math.PI * 2);
     ctx.stroke();
   });
 }

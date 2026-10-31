@@ -3,6 +3,7 @@ import { getPigment } from '../core/pigments';
 import type { PigmentId } from '../core/types';
 import { COLORS, textStyle, UI } from '../ui/theme';
 import {
+  CORK_LIP_Y,
   corkKey,
   crustKey,
   cracksKey,
@@ -112,7 +113,10 @@ export class Jar extends Phaser.GameObjects.Container {
     }
     this.glassFront = scene.add.image(0, 0, glassFrontKey(scene, w, h));
     this.add(this.glassFront);
-    this.cork = scene.add.image(0, -h / 2 + 4, corkKey(scene, w)).setVisible(false);
+    this.cork = scene.add
+      .image(0, this.corkRestY(), corkKey(scene, w, 'red'))
+      .setOrigin(0.5, CORK_LIP_Y)
+      .setVisible(false);
     this.add(this.cork);
     this.fuseRing = scene.add.graphics();
     this.fuseText = scene.add
@@ -161,6 +165,16 @@ export class Jar extends Phaser.GameObjects.Container {
   // ---------- estado ----------
   getLayers(): PigmentId[] {
     return [...this.layers];
+  }
+
+  /** Altura del labio: el sello de cera del corcho se apoya ahí. */
+  private corkRestY(): number {
+    return -this.jarHeight / 2 + 9;
+  }
+
+  /** Capas llenas y de un solo pigmento (sin mirar alturas animadas). */
+  private layersFullUniform(): boolean {
+    return this.layers.length === this.capacity && this.layers.every((p) => p === this.layers[0]);
   }
 
   private isFullUniform(): boolean {
@@ -404,7 +418,11 @@ export class Jar extends Phaser.GameObjects.Container {
       this.cracks.setVisible(false);
     }
     // Corcho: solo mientras el frasco está lleno de un pigmento y ya se celebró.
-    if (!this.isFullUniform()) this.corked = false;
+    // (Solo las capas cuentan: mientras sube el nivel de la última capa el corcho no se pierde.)
+    if (!this.layersFullUniform()) this.corked = false;
+    if (this.corked && this.layers[0]) {
+      this.cork.setTexture(corkKey(this.scene, this.jarWidth, this.layers[0]));
+    }
     this.cork.setVisible(this.corked);
     // Símbolos de accesibilidad (por capa)
     for (let i = 0; i < this.symbols.length; i++) {
@@ -448,10 +466,7 @@ export class Jar extends Phaser.GameObjects.Container {
     this.setScale(1);
     this.setDepth(0);
     this.setShadowLift(0);
-    this.cork
-      .setPosition(0, -this.jarHeight / 2 + 4)
-      .setAngle(0)
-      .setAlpha(1);
+    this.cork.setPosition(0, this.corkRestY()).setAngle(0).setAlpha(1);
   }
 
   /** Rebote inválido (§3.2): sacudida horizontal breve. */
@@ -482,7 +497,8 @@ export class Jar extends Phaser.GameObjects.Container {
       onComplete: () => flash.destroy(),
     });
     this.corked = true;
-    const restY = -this.jarHeight / 2 + 4;
+    const restY = this.corkRestY();
+    if (this.layers[0]) this.cork.setTexture(corkKey(this.scene, this.jarWidth, this.layers[0]));
     this.cork
       .setVisible(true)
       .setPosition(0, restY - this.jarHeight * 0.35)

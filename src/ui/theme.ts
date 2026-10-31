@@ -23,6 +23,8 @@ export const COLORS = {
   glass: hexToNum(uiData.colors.glass),
   danger: hexToNum(uiData.colors.danger),
   success: hexToNum(uiData.colors.success),
+  btnPalette: hexToNum(uiData.colors.btnPalette),
+  btnGift: hexToNum(uiData.colors.btnGift),
 };
 
 export const FONT = `"${uiData.font.family}", ${uiData.font.fallback}`;

@@ -1,7 +1,7 @@
 import type { StorageService } from '../services/storage/StorageService';
 
 export const SAVE_KEY = 'pigmento.save.v1';
-export const CURRENT_SCHEMA = 2;
+export const CURRENT_SCHEMA = 3;
 
 export interface Settings {
   sound: boolean;
@@ -32,7 +32,7 @@ export interface SaveData {
   seenTips: string[];
 }
 
-export function defaultSettings(lang: 'es' | 'en' = 'es', accessibility = false): Settings {
+export function defaultSettings(lang: 'es' | 'en' = 'en', accessibility = false): Settings {
   return { sound: true, music: false, vibration: true, lang, accessibility };
 }
 
@@ -63,6 +63,11 @@ const migrations: Record<number, Migration> = {
   1: (raw) => ({
     ...raw,
     settings: { ...((raw.settings as Record<string, unknown>) ?? {}), lang: 'es' },
+  }),
+  // v2 → v3: el juego pasa a inglés por defecto (mercado global); español queda en Ajustes.
+  2: (raw) => ({
+    ...raw,
+    settings: { ...((raw.settings as Record<string, unknown>) ?? {}), lang: 'en' },
   }),
 };
 

@@ -2,73 +2,73 @@
   "pigments": [
     {
       "id": "red",
-      "hex": "#C2161D",
+      "hex": "#DA0417",
       "primary": true,
       "symbol": "●"
     },
     {
       "id": "blue",
-      "hex": "#2057B6",
+      "hex": "#1B5CD1",
       "primary": true,
       "symbol": "■"
     },
     {
       "id": "yellow",
-      "hex": "#FDF21F",
+      "hex": "#FFFE00",
       "primary": true,
       "symbol": "▲"
     },
     {
       "id": "white",
-      "hex": "#F3F0E8",
+      "hex": "#FBFAF6",
       "primary": true,
       "symbol": "○"
     },
     {
       "id": "green",
-      "hex": "#3C9F4D",
+      "hex": "#28B054",
       "primary": false,
       "symbol": "◆"
     },
     {
       "id": "orange",
-      "hex": "#EE5C09",
+      "hex": "#FA7100",
       "primary": false,
       "symbol": "★"
     },
     {
       "id": "purple",
-      "hex": "#A754D0",
+      "hex": "#BE2AF6",
       "primary": false,
       "symbol": "♦"
     },
     {
       "id": "pink",
-      "hex": "#EC77A1",
+      "hex": "#FE549E",
       "primary": false,
       "symbol": "♥"
     },
     {
       "id": "teal",
-      "hex": "#2B9593",
+      "hex": "#00A8A0",
       "primary": false,
       "symbol": "✚"
     },
     {
       "id": "brown",
-      "hex": "#6C4022",
+      "hex": "#834612",
       "primary": false,
       "symbol": "▼"
     },
     {
       "id": "sky",
-      "hex": "#7DD6F6",
+      "hex": "#4FCBFF",
       "primary": false,
       "symbol": "☁"
     },
     {
       "id": "cream",
-      "hex": "#E3B35F",
+      "hex": "#F9C16C",
       "primary": false,
       "symbol": "☼"
     }

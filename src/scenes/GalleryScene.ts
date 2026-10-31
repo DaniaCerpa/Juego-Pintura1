@@ -90,12 +90,14 @@ export class GalleryScene extends Phaser.Scene {
     };
     const palette = new Button(this, W / 2 - 190, 1680, t('gallery.palette'), {
       ...secondary,
+      color: COLORS.btnPalette,
       iconKey: iconKey(this, 'palette'),
     });
     palette.onPress = () => goTo(this, 'Palette', { from: 'Gallery' });
     const offer = state.dailyOffer();
     const daily = new Button(this, W / 2 + 190, 1680, t('gallery.daily'), {
       ...secondary,
+      color: COLORS.btnGift,
       iconKey: iconKey(this, 'gift'),
     });
     daily.setDot(offer.claimable).setEnabledState(offer.claimable);

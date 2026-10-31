@@ -5,7 +5,7 @@
     "desktopMaxWidth": 480
   },
   "lang": {
-    "default": "es",
+    "default": "en",
     "autoDetect": false
   },
   "anim": {
@@ -63,7 +63,12 @@
     "accentDark": "#B9842C",
     "glass": "#DCE8F0",
     "danger": "#E2473F",
-    "success": "#6CC070"
+    "success": "#6CC070",
+    "btnUndo": "#2F7BE5",
+    "btnExtra": "#22A65A",
+    "btnRestart": "#F2691E",
+    "btnPalette": "#A63BE0",
+    "btnGift": "#E83E7C"
   },
   "font": {
     "family": "Nunito",

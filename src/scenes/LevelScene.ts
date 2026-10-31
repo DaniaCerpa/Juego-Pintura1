@@ -196,14 +196,17 @@ export class LevelScene extends Phaser.Scene {
     const opts = { size: 132 };
     this.undoBtn = new IconButton(this, W / 2 - 300, y, 'undo', {
       ...opts,
+      color: UI.colors.btnUndo,
       label: t('level.undo'),
     });
     this.extraBtn = new IconButton(this, W / 2, y, 'jarPlus', {
       ...opts,
+      color: UI.colors.btnExtra,
       label: t('level.extraJar'),
     });
     this.restartBtn = new IconButton(this, W / 2 + 300, y, 'restart', {
       ...opts,
+      color: UI.colors.btnRestart,
       label: t('level.restart'),
     });
     this.undoBtn.onPress = () => this.undo();
@@ -512,7 +515,9 @@ export class LevelScene extends Phaser.Scene {
     const solved = isSolved(this.state);
     const { audio, haptics } = services();
     if (targetResolved) {
-      this.time.delayedCall(UI.anim.pourMs * 0.8, () => {
+      // Al terminar de llenarse (no antes: si no, la animación del nivel apagaba el corcho).
+      const fillMs = r.kind === 'mix' ? UI.anim.mixMs : UI.anim.pourMs;
+      this.time.delayedCall(fillMs, () => {
         if (!isJarResolved(this.state.jars[to] ?? [], this.state.capacity)) return;
         audio.play('complete');
         haptics.vibrate('complete');
