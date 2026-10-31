@@ -3,90 +3,140 @@
     "width": 1000,
     "height": 668,
     "license": "Public domain",
+    "file": "Red_Fuji_southern_wind_clear_morning.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Red_Fuji_southern_wind_clear_morning.jpg"
   },
   "gran-ola": {
     "width": 1000,
     "height": 672,
     "license": "Public domain",
+    "file": "Tsunami_by_hokusai_19th_century.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Tsunami_by_hokusai_19th_century.jpg"
+  },
+  "caballos-azules": {
+    "width": 749,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "Marc, Franz - Blue Horse I - Google Art Project.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Marc,_Franz_-_Blue_Horse_I_-_Google_Art_Project.jpg"
   },
   "girasoles": {
     "width": 792,
     "height": 1000,
     "license": "Public domain",
+    "file": "Vincent_Willem_van_Gogh_127.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_127.jpg"
+  },
+  "sueno": {
+    "width": 1000,
+    "height": 681,
+    "license": "Public domain",
+    "file": "Henri Rousseau - Le Rêve - Google Art Project.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Henri_Rousseau_-_Le_R%C3%AAve_-_Google_Art_Project.jpg"
   },
   "noche-estrellada": {
     "width": 1000,
     "height": 792,
     "license": "Public domain",
+    "file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
   },
-  "lirios": {
+  "composicion-7": {
     "width": 1000,
-    "height": 764,
+    "height": 665,
     "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:Irises-Vincent_van_Gogh.jpg"
+    "file": "Composition VII - Wassily Kandinsky, GAC.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Composition_VII_-_Wassily_Kandinsky,_GAC.jpg"
   },
-  "sombrilla": {
-    "width": 805,
-    "height": 1000,
+  "almendro": {
+    "width": 1000,
+    "height": 790,
     "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:Claude_Monet_-_Woman_with_a_Parasol_-_Madame_Monet_and_Her_Son_-_Google_Art_Project.jpg"
+    "file": "Amandelbloesem - s0176V1962 - Van Gogh Museum.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Amandelbloesem_-_s0176V1962_-_Van_Gogh_Museum.jpg"
   },
   "beso": {
     "width": 996,
     "height": 1000,
     "license": "Public domain",
+    "file": "The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg"
   },
-  "trigo-cipreses": {
-    "width": 1000,
-    "height": 783,
+  "terraza-cafe": {
+    "width": 803,
+    "height": 1000,
     "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:Wheat-Field-with-Cypresses-(1889)-Vincent-van-Gogh-Met.jpg"
+    "file": "Vincent van Gogh (1853-1890) Caféterras bij nacht (place du Forum) Kröller-Müller Museum Otterlo 23-8-2016 13-35-40.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_(1853-1890)_Caf%C3%A9terras_bij_nacht_(place_du_Forum)_Kr%C3%B6ller-M%C3%BCller_Museum_Otterlo_23-8-2016_13-35-40.JPG"
+  },
+  "vaca-amarilla": {
+    "width": 1000,
+    "height": 747,
+    "license": "Public domain",
+    "file": "Franz Marc-The Yellow Cow-1911.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Franz_Marc-The_Yellow_Cow-1911.jpg"
+  },
+  "ciruelos": {
+    "width": 680,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "De pruimenboomgaard te Kameido-Rijksmuseum RP-P-1956-743.jpeg",
+    "source": "https://commons.wikimedia.org/wiki/File:De_pruimenboomgaard_te_Kameido-Rijksmuseum_RP-P-1956-743.jpeg"
+  },
+  "tigre": {
+    "width": 1000,
+    "height": 799,
+    "license": "Public domain",
+    "file": "Surprised-Rousseau.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Surprised-Rousseau.jpg"
+  },
+  "noche-rodano": {
+    "width": 1000,
+    "height": 772,
+    "license": "Public domain",
+    "file": "Vincent van Gogh - Starry Night - Google Art Project.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+  },
+  "lirios": {
+    "width": 1000,
+    "height": 764,
+    "license": "Public domain",
+    "file": "Irises-Vincent_van_Gogh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Irises-Vincent_van_Gogh.jpg"
+  },
+  "castillo-sol": {
+    "width": 1000,
+    "height": 820,
+    "license": "Public domain",
+    "file": "Burg und Sonne - Klee.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Burg_und_Sonne_-_Klee.jpg"
+  },
+  "dama-verde": {
+    "width": 1000,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "А Маке Дама в зеленом жакете.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%90_%D0%9C%D0%B0%D0%BA%D0%B5_%D0%94%D0%B0%D0%BC%D0%B0_%D0%B2_%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%BE%D0%BC_%D0%B6%D0%B0%D0%BA%D0%B5%D1%82%D0%B5.jpg"
+  },
+  "arearea": {
+    "width": 1000,
+    "height": 788,
+    "license": "Public domain",
+    "file": "Paul Gauguin - Arearea - Google Art Project.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Paul_Gauguin_-_Arearea_-_Google_Art_Project.jpg"
   },
   "nenufares": {
     "width": 1000,
     "height": 955,
     "license": "Public domain",
+    "file": "Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg"
   },
-  "joven-perla": {
-    "width": 844,
-    "height": 1000,
-    "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:1665_Girl_with_a_Pearl_Earring.jpg"
-  },
-  "sol-naciente": {
+  "formas-luchando": {
     "width": 1000,
-    "height": 776,
+    "height": 691,
     "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:Monet_-_Impression,_Sunrise.jpg"
-  },
-  "grande-jatte": {
-    "width": 1000,
-    "height": 666,
-    "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:A_Sunday_on_La_Grande_Jatte,_Georges_Seurat,_1884.jpg"
-  },
-  "moulin-galette": {
-    "width": 1000,
-    "height": 745,
-    "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:Pierre-Auguste_Renoir,_Le_Moulin_de_la_Galette.jpg"
-  },
-  "carreta-heno": {
-    "width": 1000,
-    "height": 690,
-    "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:John_Constable_The_Hay_Wain.jpg"
-  },
-  "temerario": {
-    "width": 1000,
-    "height": 743,
-    "license": "Public domain",
-    "source": "https://commons.wikimedia.org/wiki/File:The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg"
+    "file": "Marc - Kämpfende Formen PA291382.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Marc_-_K%C3%A4mpfende_Formen_PA291382.jpg"
   }
 }
