@@ -1,21 +1,21 @@
-Cuadros descargados: 18 de 20
-OK  globos  1000x750  CC0  Aerial view of Cappadocia from hot air balloon 01.jpg
+Cuadros descargados: 20 de 20
+OK  guacamayo  662x1000  CC0  Blue macaw (Unsplash).jpg
+OK  globos  1000x667  CC0  Temples and hot air balloons. (Unsplash).jpg
 OK  tulipanes  1000x667  CC0  Tulip season (Unsplash).jpg
 OK  pez-payaso  1000x750  Public domain  Common clownfish.jpg
 OK  loris  800x1000  Public domain  Trichoglossus moluccanus, flowering Xanthorrhoea.jpg
 OK  burano  1000x706  Public domain  Burano - 1.JPG
 OK  pavo-real  667x1000  CC0  Peacock showing its beautiful feathers old.jpg
-OK  camaleon  1000x662  CC0  Furcifer pardalis 188577163.jpg
-OK  aurora  1000x673  Public domain  Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg
+OK  loros  665x1000  CC0  Blue Parrot (Unsplash).jpg
+OK  aurora  1000x667  CC0  Colorful aurora borealis (Unsplash).jpg
 OK  flamencos  1000x667  CC0  Flamingos at Lincoln park zoo.jpg
 OK  macarons  1000x664  CC0  Colorful Macarons (Unsplash).jpg
 OK  koi  1000x672  CC0  Koi carp; March 2009.jpg
 OK  medusa  1000x750  CC0  Waikiki Aquarium Jellyfish.jpg
 OK  mariposa  1000x667  CC0  Butterfly on a flower in close-up (Unsplash).jpg
-OK  fuegos  1000x563  Public domain  Northern Lights to Ring in the New Year (CIRA 2025-01-02 - 2 n21-snpp-n20 viirs dnb nyeaurora nolabels0).png
+OK  fuegos  1000x667  CC0  Fireworks (Unsplash).jpg
 OK  lavanda  1000x750  CC0  Lavender field in bloom.jpg
 OK  arrecife  1000x666  Public domain  Colorful underwater landscape of a coral reef.jpg
-OK  otono  1000x788  Public domain  Forest Heritage National Scenic Byway - Colorful Autumn Leaves at Looking Glass Falls - NARA - 7718474.jpg
+OK  otono  667x1000  CC0  Swirling autumn leaves (Unsplash).jpg
 OK  lapices  1000x663  CC0  Colored pencils lined up on pink surface.jpg
-ERR guacamayo: sin candidato válido (File:Wearing Colombia Colors.jpg: licencia "CC BY-SA 4.0")
-ERR tucan: sin candidato válido (File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg: licencia "CC BY-SA 4.0"; File:Toco Toucan (Ramphastos toco) - 48153967707.jpg: licencia "CC BY-SA 2.0"; File:Toco toucan (Ramphastos toco) drinking composite.jpg: licencia "CC BY-SA 4.0")
+OK  tucan  1000x667  CC0  Toucan (Unsplash).jpg

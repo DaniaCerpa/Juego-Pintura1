@@ -1,11 +1,19 @@
 {
-  "globos": {
-    "author": "Netha Hussain",
-    "width": 1000,
-    "height": 750,
+  "guacamayo": {
+    "author": "Nadine Burzler nadineburzler",
+    "width": 662,
+    "height": 1000,
     "license": "CC0",
-    "file": "Aerial view of Cappadocia from hot air balloon 01.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cappadocia_from_hot_air_balloon_01.jpg"
+    "file": "Blue macaw (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Blue_macaw_(Unsplash).jpg"
+  },
+  "globos": {
+    "author": "Chinh Le Duc mero_dnt",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Temples and hot air balloons. (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Temples_and_hot_air_balloons._(Unsplash).jpg"
   },
   "tulipanes": {
     "author": "Sylwia Forysińska jareth21st",
@@ -47,21 +55,21 @@
     "file": "Peacock showing its beautiful feathers old.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Peacock_showing_its_beautiful_feathers_old.jpg"
   },
-  "camaleon": {
-    "author": "Marius Burger",
-    "width": 1000,
-    "height": 662,
+  "loros": {
+    "author": "Dominik Lange the_real_napster",
+    "width": 665,
+    "height": 1000,
     "license": "CC0",
-    "file": "Furcifer pardalis 188577163.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Furcifer_pardalis_188577163.jpg"
+    "file": "Blue Parrot (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Blue_Parrot_(Unsplash).jpg"
   },
   "aurora": {
-    "author": "Frederic Edwin Church",
+    "author": "Alan Labisch labisch",
     "width": 1000,
-    "height": 673,
-    "license": "Public domain",
-    "file": "Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Frederic_Edwin_Church_-_Aurora_Borealis_-_Google_Art_Project.jpg"
+    "height": 667,
+    "license": "CC0",
+    "file": "Colorful aurora borealis (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_aurora_borealis_(Unsplash).jpg"
   },
   "flamencos": {
     "author": "Fuzzsimp",
@@ -104,12 +112,12 @@
     "source": "https://commons.wikimedia.org/wiki/File:Butterfly_on_a_flower_in_close-up_(Unsplash).jpg"
   },
   "fuegos": {
-    "author": "JPSS imagery: CSU/CIRA &amp; NOAA/NESDIS",
+    "author": "Warren Tobias wjtobias",
     "width": 1000,
-    "height": 563,
-    "license": "Public domain",
-    "file": "Northern Lights to Ring in the New Year (CIRA 2025-01-02 - 2 n21-snpp-n20 viirs dnb nyeaurora nolabels0).png",
-    "source": "https://commons.wikimedia.org/wiki/File:Northern_Lights_to_Ring_in_the_New_Year_(CIRA_2025-01-02_-_2_n21-snpp-n20_viirs_dnb_nyeaurora_nolabels0).png"
+    "height": 667,
+    "license": "CC0",
+    "file": "Fireworks (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fireworks_(Unsplash).jpg"
   },
   "lavanda": {
     "author": "Robert Brink",
@@ -128,12 +136,12 @@
     "source": "https://commons.wikimedia.org/wiki/File:Colorful_underwater_landscape_of_a_coral_reef.jpg"
   },
   "otono": {
-    "author": "Unknown authorUnknown author or not provided",
-    "width": 1000,
-    "height": 788,
-    "license": "Public domain",
-    "file": "Forest Heritage National Scenic Byway - Colorful Autumn Leaves at Looking Glass Falls - NARA - 7718474.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Forest_Heritage_National_Scenic_Byway_-_Colorful_Autumn_Leaves_at_Looking_Glass_Falls_-_NARA_-_7718474.jpg"
+    "author": "Autumn Mott autumnmott",
+    "width": 667,
+    "height": 1000,
+    "license": "CC0",
+    "file": "Swirling autumn leaves (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Swirling_autumn_leaves_(Unsplash).jpg"
   },
   "lapices": {
     "author": "Artsy Crafty",
@@ -142,5 +150,13 @@
     "license": "CC0",
     "file": "Colored pencils lined up on pink surface.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
+  },
+  "tucan": {
+    "author": "Diego PH jdiegoph",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Toucan (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Toucan_(Unsplash).jpg"
   }
 }
