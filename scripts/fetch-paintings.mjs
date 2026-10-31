@@ -1,6 +1,6 @@
 /* global Buffer, console, setTimeout, fetch */
-// Descarga los cuadros de dominio público de src/data/masterpieces.json desde Wikimedia
-// Commons, verifica la licencia, los redimensiona con sharp y escribe los créditos.
+// Descarga las imágenes de src/data/masterpieces.json desde Wikimedia Commons (solo
+// licencias CC0 o dominio público), verifica la licencia, los redimensiona con sharp y escribe los créditos.
 // Se ejecuta en GitHub Actions (workflow "Cuadros"); en local requiere red y `npm i --no-save sharp`.
 //
 //   node scripts/fetch-paintings.mjs
@@ -30,7 +30,7 @@ async function api(params) {
 async function candidates(p) {
   if (p.file) return [`File:${p.file}`];
   const json = await api(
-    `list=search&srnamespace=6&srlimit=10&srsearch=${encodeURIComponent(p.search)}`,
+    `list=search&srnamespace=6&srlimit=40&srsearch=${encodeURIComponent(p.search + ' filetype:bitmap')}`,
   );
   return (json.query?.search ?? []).map((r) => r.title);
 }
@@ -48,11 +48,11 @@ async function pick(p) {
     if (!info) continue;
     const license = String(info.extmetadata?.LicenseShortName?.value ?? '');
     const aspect = info.width / info.height;
-    if (!/public domain|^pd|dominio p/i.test(license)) {
+    if (!/public domain|^pd|dominio p|cc0|cc-zero/i.test(license)) {
       reasons.push(`${title}: licencia "${license}"`);
       continue;
     }
-    if (!/jpe?g|png/.test(info.mime) || info.width < 900 || aspect < 0.55 || aspect > 2.1) {
+    if (!/jpe?g|png/.test(info.mime) || info.width < 1200 || aspect < 0.55 || aspect > 2.1) {
       reasons.push(`${title}: ${info.mime} ${info.width}x${info.height}`);
       continue;
     }
@@ -76,7 +76,12 @@ for (const p of data.paintings) {
       .resize({ width: max, height: max, fit: 'inside', withoutEnlargement: true })
       .jpeg({ quality: 82, progressive: true, mozjpeg: true })
       .toFile(out);
+    const strip = (v) =>
+      String(v ?? '')
+        .replace(/<[^>]+>/g, '')
+        .trim();
     credits[p.id] = {
+      author: strip(info.extmetadata?.Artist?.value).slice(0, 80),
       width: info2.width,
       height: info2.height,
       license,

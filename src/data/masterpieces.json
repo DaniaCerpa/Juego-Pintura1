@@ -1,5 +1,5 @@
 {
-  "source": "Wikimedia Commons (obras de dominio público)",
+  "source": "Wikimedia Commons (imágenes CC0 o de dominio público)",
   "displayMaxPx": 1000,
   "analysisWidthPx": 220,
   "segments": {
@@ -18,204 +18,204 @@
   },
   "paintings": [
     {
-      "id": "fuji-rojo",
-      "file": "Red_Fuji_southern_wind_clear_morning.jpg",
+      "id": "guacamayo",
+      "search": "scarlet macaw Ara macao portrait",
       "title": {
-        "es": "Fuji rojo",
-        "en": "Fine Wind, Clear Morning"
+        "es": "Guacamayo rojo",
+        "en": "Scarlet Macaw"
       },
-      "artist": "Katsushika Hokusai",
-      "year": "c. 1831"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "gran-ola",
-      "file": "Tsunami_by_hokusai_19th_century.jpg",
+      "id": "globos",
+      "search": "hot air balloons Cappadocia",
       "title": {
-        "es": "La gran ola de Kanagawa",
-        "en": "The Great Wave off Kanagawa"
+        "es": "Globos aerostáticos",
+        "en": "Hot Air Balloons"
       },
-      "artist": "Katsushika Hokusai",
-      "year": "c. 1831"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "caballos-azules",
-      "search": "Franz Marc Blue Horses 1911",
+      "id": "tulipanes",
+      "search": "tulip field Netherlands",
       "title": {
-        "es": "Caballo azul I",
-        "en": "Blue Horse I"
+        "es": "Campo de tulipanes",
+        "en": "Tulip Field"
       },
-      "artist": "Franz Marc",
-      "year": "1911"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "girasoles",
-      "file": "Vincent_Willem_van_Gogh_127.jpg",
+      "id": "pez-payaso",
+      "search": "clownfish anemone",
       "title": {
-        "es": "Los girasoles",
-        "en": "Sunflowers"
+        "es": "Pez payaso",
+        "en": "Clownfish"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1888"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "dormitorio",
-      "search": "Van Gogh Bedroom in Arles Van Gogh Museum 1888",
+      "id": "loris",
+      "search": "rainbow lorikeet",
       "title": {
-        "es": "El dormitorio en Arlés",
-        "en": "Bedroom in Arles"
+        "es": "Loris arcoíris",
+        "en": "Rainbow Lorikeet"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1888"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "noche-estrellada",
-      "file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+      "id": "burano",
+      "search": "Burano houses colorful",
       "title": {
-        "es": "La noche estrellada",
-        "en": "The Starry Night"
+        "es": "Casas de Burano",
+        "en": "Burano Houses"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1889"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "composicion-7",
-      "search": "Kandinsky Composition VII 1913",
+      "id": "pavo-real",
+      "search": "peacock displaying feathers",
       "title": {
-        "es": "Composición VII",
-        "en": "Composition VII"
+        "es": "Pavo real",
+        "en": "Peacock"
       },
-      "artist": "Vasili Kandinski",
-      "year": "1913"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "almendro",
-      "search": "Van Gogh Almond blossom 1890",
+      "id": "camaleon",
+      "search": "panther chameleon Furcifer pardalis",
       "title": {
-        "es": "Almendro en flor",
-        "en": "Almond Blossom"
+        "es": "Camaleón",
+        "en": "Chameleon"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1890"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "beso",
-      "file": "The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
+      "id": "aurora",
+      "search": "aurora borealis",
       "title": {
-        "es": "El beso",
-        "en": "The Kiss"
+        "es": "Aurora boreal",
+        "en": "Northern Lights"
       },
-      "artist": "Gustav Klimt",
-      "year": "1907–1908"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "terraza-cafe",
-      "search": "Van Gogh Cafe Terrace at Night Kröller-Müller",
+      "id": "flamencos",
+      "search": "flamingos Phoenicopterus group",
       "title": {
-        "es": "Terraza de café por la noche",
-        "en": "Café Terrace at Night"
+        "es": "Flamencos",
+        "en": "Flamingos"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1888"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "vaca-amarilla",
-      "search": "Franz Marc Yellow Cow 1911",
+      "id": "macarons",
+      "search": "macarons colorful",
       "title": {
-        "es": "La vaca amarilla",
-        "en": "Yellow Cow"
+        "es": "Macarons",
+        "en": "Macarons"
       },
-      "artist": "Franz Marc",
-      "year": "1911"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "ciruelos",
-      "search": "Hiroshige Plum Park in Kameido",
+      "id": "koi",
+      "search": "koi carp pond",
       "title": {
-        "es": "Jardín de ciruelos en Kameido",
-        "en": "Plum Park in Kameido"
+        "es": "Peces koi",
+        "en": "Koi Fish"
       },
-      "artist": "Utagawa Hiroshige",
-      "year": "1857"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "tigre",
-      "search": "Henri Rousseau Tiger in a Tropical Storm Surprised",
+      "id": "medusa",
+      "search": "jellyfish aquarium",
       "title": {
-        "es": "¡Sorprendido! Tigre en una tormenta tropical",
-        "en": "Tiger in a Tropical Storm (Surprised!)"
+        "es": "Medusas",
+        "en": "Jellyfish"
       },
-      "artist": "Henri Rousseau",
-      "year": "1891"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "noche-rodano",
-      "search": "Van Gogh Starry Night Over the Rhône",
+      "id": "mariposa",
+      "search": "butterfly flower colorful macro",
       "title": {
-        "es": "Noche estrellada sobre el Ródano",
-        "en": "Starry Night Over the Rhône"
+        "es": "Mariposa",
+        "en": "Butterfly"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1888"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "lirios",
-      "file": "Irises-Vincent_van_Gogh.jpg",
+      "id": "fuegos",
+      "search": "fireworks night sky colorful",
       "title": {
-        "es": "Lirios",
-        "en": "Irises"
+        "es": "Fuegos artificiales",
+        "en": "Fireworks"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1889"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "castillo-sol",
-      "search": "Paul Klee Castle and Sun 1928",
+      "id": "lavanda",
+      "search": "lavender field",
       "title": {
-        "es": "Castillo y sol",
-        "en": "Castle and Sun"
+        "es": "Campo de lavanda",
+        "en": "Lavender Field"
       },
-      "artist": "Paul Klee",
-      "year": "1928"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "dama-verde",
-      "search": "August Macke Lady in a Green Jacket",
+      "id": "arrecife",
+      "search": "coral reef fish colorful",
       "title": {
-        "es": "Dama con chaqueta verde",
-        "en": "Lady in a Green Jacket"
+        "es": "Arrecife de coral",
+        "en": "Coral Reef"
       },
-      "artist": "August Macke",
-      "year": "1913"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "arearea",
-      "search": "Paul Gauguin Arearea 1892",
+      "id": "otono",
+      "search": "autumn forest leaves colorful",
       "title": {
-        "es": "Arearea",
-        "en": "Arearea (Joyousness)"
+        "es": "Bosque en otoño",
+        "en": "Autumn Forest"
       },
-      "artist": "Paul Gauguin",
-      "year": "1892"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "nenufares",
-      "file": "Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg",
+      "id": "lapices",
+      "search": "colored pencils",
       "title": {
-        "es": "El estanque de los nenúfares",
-        "en": "Water Lilies and Japanese Bridge"
+        "es": "Lápices de colores",
+        "en": "Colored Pencils"
       },
-      "artist": "Claude Monet",
-      "year": "1899"
+      "artist": "",
+      "year": ""
     },
     {
-      "id": "formas-luchando",
-      "search": "Franz Marc Fighting Forms 1914",
+      "id": "tucan",
+      "search": "toco toucan Ramphastos toco",
       "title": {
-        "es": "Formas luchando",
-        "en": "Fighting Forms"
+        "es": "Tucán",
+        "en": "Toucan"
       },
-      "artist": "Franz Marc",
-      "year": "1914"
+      "artist": "",
+      "year": ""
     }
   ]
 }
