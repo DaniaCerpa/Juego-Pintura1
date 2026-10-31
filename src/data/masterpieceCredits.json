@@ -1,11 +1,19 @@
 {
-  "guacamayo": {
-    "author": "Nadine Burzler nadineburzler",
-    "width": 662,
-    "height": 1000,
+  "lapices": {
+    "author": "Artsy Crafty",
+    "width": 1000,
+    "height": 663,
     "license": "CC0",
-    "file": "Blue macaw (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Blue_macaw_(Unsplash).jpg"
+    "file": "Colored pencils lined up on pink surface.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
+  },
+  "pez-payaso": {
+    "author": "Bruxton",
+    "width": 1000,
+    "height": 791,
+    "license": "CC0",
+    "file": "Cinnamon clownfish right.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Cinnamon_clownfish_right.jpg"
   },
   "tulipanes": {
     "author": "Sylwia Forysińska jareth21st",
@@ -15,21 +23,13 @@
     "file": "Tulip season (Unsplash).jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Tulip_season_(Unsplash).jpg"
   },
-  "pez-payaso": {
-    "author": "Janderk",
-    "width": 1000,
-    "height": 750,
-    "license": "Public domain",
-    "file": "Common clownfish.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Common_clownfish.jpg"
-  },
-  "loris": {
-    "author": "Public domainPublic domainfalsefalse\n\n\n\n\n\nThis work has been released into the p",
-    "width": 800,
+  "guacamayo": {
+    "author": "Andrew Pons a_pons",
+    "width": 667,
     "height": 1000,
-    "license": "Public domain",
-    "file": "Trichoglossus moluccanus, flowering Xanthorrhoea.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Trichoglossus_moluccanus,_flowering_Xanthorrhoea.jpg"
+    "license": "CC0",
+    "file": "Macaw parrot (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Macaw_parrot_(Unsplash).jpg"
   },
   "burano": {
     "author": "Luu",
@@ -38,109 +38,5 @@
     "license": "Public domain",
     "file": "Burano - 1.JPG",
     "source": "https://commons.wikimedia.org/wiki/File:Burano_-_1.JPG"
-  },
-  "pavo-real": {
-    "author": "Joselodos",
-    "width": 667,
-    "height": 1000,
-    "license": "CC0",
-    "file": "Peacock showing its beautiful feathers old.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Peacock_showing_its_beautiful_feathers_old.jpg"
-  },
-  "dulces": {
-    "author": "Viktor Forgacs sonance",
-    "width": 1000,
-    "height": 666,
-    "license": "CC0",
-    "file": "Colorful candy cupcakes (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colorful_candy_cupcakes_(Unsplash).jpg"
-  },
-  "aurora": {
-    "author": "Alan Labisch labisch",
-    "width": 1000,
-    "height": 667,
-    "license": "CC0",
-    "file": "Colorful aurora borealis (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colorful_aurora_borealis_(Unsplash).jpg"
-  },
-  "macarons": {
-    "author": "Tatiana Lapina veila",
-    "width": 1000,
-    "height": 664,
-    "license": "CC0",
-    "file": "Colorful Macarons (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colorful_Macarons_(Unsplash).jpg"
-  },
-  "koi": {
-    "author": "Bernard Spragg. NZ",
-    "width": 1000,
-    "height": 672,
-    "license": "CC0",
-    "file": "Koi carp; March 2009.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Koi_carp;_March_2009.jpg"
-  },
-  "medusa": {
-    "author": "Jackhill",
-    "width": 1000,
-    "height": 750,
-    "license": "CC0",
-    "file": "Waikiki Aquarium Jellyfish.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Waikiki_Aquarium_Jellyfish.jpg"
-  },
-  "mariposa": {
-    "author": "Tung Minh tshusi",
-    "width": 1000,
-    "height": 667,
-    "license": "CC0",
-    "file": "Butterfly on a flower in close-up (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Butterfly_on_a_flower_in_close-up_(Unsplash).jpg"
-  },
-  "paraguas": {
-    "author": "Austin Scherbarth ascherby",
-    "width": 1000,
-    "height": 667,
-    "license": "CC0",
-    "file": "Colorful Coincidence (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colorful_Coincidence_(Unsplash).jpg"
-  },
-  "lavanda": {
-    "author": "Robert Brink",
-    "width": 1000,
-    "height": 750,
-    "license": "CC0",
-    "file": "Lavender field in bloom.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Lavender_field_in_bloom.jpg"
-  },
-  "arrecife": {
-    "author": "Jim E Maragos, U.S. Fish and Wildlife Service",
-    "width": 1000,
-    "height": 666,
-    "license": "Public domain",
-    "file": "Colorful underwater landscape of a coral reef.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colorful_underwater_landscape_of_a_coral_reef.jpg"
-  },
-  "otono": {
-    "author": "Autumn Mott autumnmott",
-    "width": 667,
-    "height": 1000,
-    "license": "CC0",
-    "file": "Swirling autumn leaves (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Swirling_autumn_leaves_(Unsplash).jpg"
-  },
-  "lapices": {
-    "author": "Artsy Crafty",
-    "width": 1000,
-    "height": 663,
-    "license": "CC0",
-    "file": "Colored pencils lined up on pink surface.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
-  },
-  "colibri": {
-    "author": "joel herzog joel_herzog",
-    "width": 1000,
-    "height": 652,
-    "license": "CC0",
-    "file": "Hummingbird over purple flowers (Unsplash).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Hummingbird_over_purple_flowers_(Unsplash).jpg"
   }
 }
