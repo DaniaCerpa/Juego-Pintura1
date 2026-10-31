@@ -19,7 +19,7 @@
   "paintings": [
     {
       "id": "guacamayo",
-      "search": "scarlet macaw Ara macao portrait",
+      "search": "macaw Unsplash",
       "title": {
         "es": "Guacamayo rojo",
         "en": "Scarlet Macaw"
@@ -29,7 +29,7 @@
     },
     {
       "id": "globos",
-      "search": "hot air balloons Cappadocia",
+      "search": "hot air balloons Unsplash",
       "title": {
         "es": "Globos aerostáticos",
         "en": "Hot Air Balloons"
@@ -88,18 +88,18 @@
       "year": ""
     },
     {
-      "id": "camaleon",
-      "search": "panther chameleon Furcifer pardalis",
+      "id": "loros",
+      "search": "parrots colorful Unsplash",
       "title": {
-        "es": "Camaleón",
-        "en": "Chameleon"
+        "es": "Loros",
+        "en": "Parrots"
       },
       "artist": "",
       "year": ""
     },
     {
       "id": "aurora",
-      "search": "aurora borealis",
+      "search": "aurora borealis Unsplash",
       "title": {
         "es": "Aurora boreal",
         "en": "Northern Lights"
@@ -159,7 +159,7 @@
     },
     {
       "id": "fuegos",
-      "search": "fireworks night sky colorful",
+      "search": "fireworks Unsplash",
       "title": {
         "es": "Fuegos artificiales",
         "en": "Fireworks"
@@ -189,7 +189,7 @@
     },
     {
       "id": "otono",
-      "search": "autumn forest leaves colorful",
+      "search": "autumn leaves Unsplash",
       "title": {
         "es": "Bosque en otoño",
         "en": "Autumn Forest"
@@ -209,7 +209,7 @@
     },
     {
       "id": "tucan",
-      "search": "toco toucan Ramphastos toco",
+      "search": "toucan Unsplash",
       "title": {
         "es": "Tucán",
         "en": "Toucan"

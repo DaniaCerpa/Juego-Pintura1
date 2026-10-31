@@ -39,7 +39,11 @@ async function candidates(p) {
 async function pick(p) {
   const reasons = [];
   for (const title of await candidates(p)) {
-    if (/detail|detalle|crop|frame|marco|\.(pdf|tif|tiff|svg|djvu|webm|ogv)$/i.test(title))
+    if (
+      /detail|detalle|crop|frame|marco|google art project|painting|nara|nasa|cira|\.(pdf|tif|tiff|svg|djvu|webm|ogv)$/i.test(
+        title,
+      )
+    )
       continue;
     const json = await api(
       `prop=imageinfo&iiprop=url|size|mime|extmetadata&iiurlwidth=1400&titles=${encodeURIComponent(title)}`,
