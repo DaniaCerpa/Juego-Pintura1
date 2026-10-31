@@ -29,13 +29,13 @@
     },
     {
       "id": "pez-payaso",
-      "search": "clownfish anemone",
       "title": {
         "es": "Pez payaso",
         "en": "Clownfish"
       },
       "artist": "",
-      "year": ""
+      "year": "",
+      "file": "Common clownfish.jpg"
     },
     {
       "id": "tulipanes",
@@ -79,13 +79,13 @@
     },
     {
       "id": "arrecife",
-      "search": "coral reef fish colorful",
       "title": {
         "es": "Arrecife de coral",
         "en": "Coral Reef"
       },
       "artist": "",
-      "year": ""
+      "year": "",
+      "file": "Colorful underwater landscape of a coral reef.jpg"
     },
     {
       "id": "dulces",
@@ -109,23 +109,23 @@
     },
     {
       "id": "pavo-real",
-      "search": "peacock displaying feathers",
       "title": {
         "es": "Pavo real",
         "en": "Peacock"
       },
       "artist": "",
-      "year": ""
+      "year": "",
+      "file": "Peacock showing its beautiful feathers old.jpg"
     },
     {
       "id": "mariposa",
-      "search": "butterfly flower colorful macro",
       "title": {
         "es": "Mariposa",
         "en": "Butterfly"
       },
       "artist": "",
-      "year": ""
+      "year": "",
+      "file": "Butterfly on a flower in close-up (Unsplash).jpg"
     },
     {
       "id": "aurora",
@@ -158,31 +158,11 @@
       "year": ""
     },
     {
-      "id": "gomitas",
-      "search": "gummy bears colorful Unsplash",
-      "title": {
-        "es": "Gomitas",
-        "en": "Gummy Bears"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
       "id": "casas",
       "search": "colorful houses Unsplash",
       "title": {
         "es": "Casas de colores",
         "en": "Colorful Houses"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "paraguas",
-      "search": "colorful umbrellas street decoration Unsplash",
-      "title": {
-        "es": "Paraguas de colores",
-        "en": "Colorful Umbrellas"
       },
       "artist": "",
       "year": ""
