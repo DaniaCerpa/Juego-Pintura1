@@ -1,5 +1,6 @@
 {
   "lapices": {
+    "query": "colored pencils",
     "author": "Artsy Crafty",
     "width": 1000,
     "height": 663,
@@ -8,6 +9,7 @@
     "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
   },
   "pez-payaso": {
+    "query": "clownfish anemone",
     "author": "Bruxton",
     "width": 1000,
     "height": 791,
@@ -16,6 +18,7 @@
     "source": "https://commons.wikimedia.org/wiki/File:Cinnamon_clownfish_right.jpg"
   },
   "tulipanes": {
+    "query": "tulip field Netherlands",
     "author": "Sylwia Forysińska jareth21st",
     "width": 1000,
     "height": 667,
@@ -24,6 +27,7 @@
     "source": "https://commons.wikimedia.org/wiki/File:Tulip_season_(Unsplash).jpg"
   },
   "guacamayo": {
+    "query": "macaw Unsplash",
     "author": "Andrew Pons a_pons",
     "width": 667,
     "height": 1000,
@@ -32,11 +36,129 @@
     "source": "https://commons.wikimedia.org/wiki/File:Macaw_parrot_(Unsplash).jpg"
   },
   "burano": {
+    "query": "Burano houses colorful",
     "author": "Luu",
     "width": 1000,
     "height": 706,
     "license": "Public domain",
     "file": "Burano - 1.JPG",
     "source": "https://commons.wikimedia.org/wiki/File:Burano_-_1.JPG"
+  },
+  "macarons": {
+    "query": "macarons colorful",
+    "author": "Tatiana Lapina veila",
+    "width": 1000,
+    "height": 664,
+    "license": "CC0",
+    "file": "Colorful Macarons (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_Macarons_(Unsplash).jpg"
+  },
+  "arrecife": {
+    "query": "coral reef fish colorful",
+    "author": "National Marine Sanctuaries",
+    "width": 1000,
+    "height": 750,
+    "license": "Public domain",
+    "file": "NMSAS - Rose Atoll Fish (33304906425).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:NMSAS_-_Rose_Atoll_Fish_(33304906425).jpg"
+  },
+  "dulces": {
+    "query": "colorful candy Unsplash",
+    "author": "Tim Gouw punttim",
+    "width": 1000,
+    "height": 668,
+    "license": "CC0",
+    "file": "Easter candy (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Easter_candy_(Unsplash).jpg"
+  },
+  "loris": {
+    "query": "rainbow lorikeet",
+    "author": "Public domainPublic domainfalsefalse\n\n\n\n\n\nThis work has been released into the p",
+    "width": 800,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "Trichoglossus moluccanus, flowering Xanthorrhoea.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Trichoglossus_moluccanus,_flowering_Xanthorrhoea.jpg"
+  },
+  "pavo-real": {
+    "query": "peacock displaying feathers",
+    "author": "Clara Driscoll",
+    "width": 778,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "Peacock Table Lamp.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Peacock_Table_Lamp.jpg"
+  },
+  "mariposa": {
+    "query": "butterfly flower colorful macro",
+    "author": "Pablo Samuel",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Pit Stop (212590363).jpeg",
+    "source": "https://commons.wikimedia.org/wiki/File:Pit_Stop_(212590363).jpeg"
+  },
+  "aurora": {
+    "query": "aurora borealis Unsplash",
+    "author": "Alan Labisch labisch",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Colorful aurora borealis (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_aurora_borealis_(Unsplash).jpg"
+  },
+  "koi": {
+    "query": "koi carp pond",
+    "author": "Bernard Spragg. NZ from Christchurch, New Zealand",
+    "width": 1000,
+    "height": 669,
+    "license": "CC0",
+    "file": "Koi Carp. (16999185026).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Koi_Carp._(16999185026).jpg"
+  },
+  "lavanda": {
+    "query": "lavender field",
+    "author": "Robert Brink",
+    "width": 1000,
+    "height": 750,
+    "license": "CC0",
+    "file": "Lavender field in bloom.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lavender_field_in_bloom.jpg"
+  },
+  "casas": {
+    "query": "colorful houses Unsplash",
+    "author": "Jakob Owens jakobowens1",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Row of houses trees and cars (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Row_of_houses_trees_and_cars_(Unsplash).jpg"
+  },
+  "colibri": {
+    "query": "hummingbird Unsplash",
+    "author": "Andrea Reiman firstmohican",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Andrea Reiman 2017-05-03 (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Andrea_Reiman_2017-05-03_(Unsplash).jpg"
+  },
+  "medusa": {
+    "query": "jellyfish aquarium",
+    "author": "Bernard Spragg. NZ from Christchurch, New Zealand",
+    "width": 1000,
+    "height": 790,
+    "license": "CC0",
+    "file": "Monterey Aquarium. Jellyfish. (8113900798).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Monterey_Aquarium._Jellyfish._(8113900798).jpg"
+  },
+  "otono": {
+    "query": "autumn leaves Unsplash",
+    "author": "Autumn Mott autumnmott",
+    "width": 667,
+    "height": 1000,
+    "license": "CC0",
+    "file": "Swirling autumn leaves (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Swirling_autumn_leaves_(Unsplash).jpg"
   }
 }
