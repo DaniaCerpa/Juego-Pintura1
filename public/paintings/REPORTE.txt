@@ -1,21 +1,21 @@
-Cuadros descargados: 20 de 20
-OK  fuji-rojo  1000x668  Public domain  Red_Fuji_southern_wind_clear_morning.jpg
-OK  gran-ola  1000x672  Public domain  Tsunami_by_hokusai_19th_century.jpg
-OK  caballos-azules  749x1000  Public domain  Marc, Franz - Blue Horse I - Google Art Project.jpg
-OK  girasoles  792x1000  Public domain  Vincent_Willem_van_Gogh_127.jpg
-OK  dormitorio  1000x782  Public domain  La Chambre à Arles, by Vincent van Gogh, from C2RMF.jpg
-OK  noche-estrellada  1000x792  Public domain  Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg
-OK  composicion-7  1000x665  Public domain  Composition VII - Wassily Kandinsky, GAC.jpg
-OK  almendro  1000x790  Public domain  Amandelbloesem - s0176V1962 - Van Gogh Museum.jpg
-OK  beso  996x1000  Public domain  The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg
-OK  terraza-cafe  803x1000  Public domain  Vincent van Gogh (1853-1890) Caféterras bij nacht (place du Forum) Kröller-Müller Museum Otterlo 23-8-2016 13-35-40.JPG
-OK  vaca-amarilla  1000x747  Public domain  Franz Marc-The Yellow Cow-1911.jpg
-OK  ciruelos  680x1000  Public domain  De pruimenboomgaard te Kameido-Rijksmuseum RP-P-1956-743.jpeg
-OK  tigre  1000x799  Public domain  Surprised-Rousseau.jpg
-OK  noche-rodano  1000x772  Public domain  Vincent van Gogh - Starry Night - Google Art Project.jpg
-OK  lirios  1000x764  Public domain  Irises-Vincent_van_Gogh.jpg
-OK  castillo-sol  1000x820  Public domain  Burg und Sonne - Klee.jpg
-OK  dama-verde  1000x1000  Public domain  А Маке Дама в зеленом жакете.jpg
-OK  arearea  1000x788  Public domain  Paul Gauguin - Arearea - Google Art Project.jpg
-OK  nenufares  1000x955  Public domain  Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg
-OK  formas-luchando  1000x691  Public domain  Marc - Kämpfende Formen PA291382.jpg
+Cuadros descargados: 18 de 20
+OK  globos  1000x750  CC0  Aerial view of Cappadocia from hot air balloon 01.jpg
+OK  tulipanes  1000x667  CC0  Tulip season (Unsplash).jpg
+OK  pez-payaso  1000x750  Public domain  Common clownfish.jpg
+OK  loris  800x1000  Public domain  Trichoglossus moluccanus, flowering Xanthorrhoea.jpg
+OK  burano  1000x706  Public domain  Burano - 1.JPG
+OK  pavo-real  667x1000  CC0  Peacock showing its beautiful feathers old.jpg
+OK  camaleon  1000x662  CC0  Furcifer pardalis 188577163.jpg
+OK  aurora  1000x673  Public domain  Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg
+OK  flamencos  1000x667  CC0  Flamingos at Lincoln park zoo.jpg
+OK  macarons  1000x664  CC0  Colorful Macarons (Unsplash).jpg
+OK  koi  1000x672  CC0  Koi carp; March 2009.jpg
+OK  medusa  1000x750  CC0  Waikiki Aquarium Jellyfish.jpg
+OK  mariposa  1000x667  CC0  Butterfly on a flower in close-up (Unsplash).jpg
+OK  fuegos  1000x563  Public domain  Northern Lights to Ring in the New Year (CIRA 2025-01-02 - 2 n21-snpp-n20 viirs dnb nyeaurora nolabels0).png
+OK  lavanda  1000x750  CC0  Lavender field in bloom.jpg
+OK  arrecife  1000x666  Public domain  Colorful underwater landscape of a coral reef.jpg
+OK  otono  1000x788  Public domain  Forest Heritage National Scenic Byway - Colorful Autumn Leaves at Looking Glass Falls - NARA - 7718474.jpg
+OK  lapices  1000x663  CC0  Colored pencils lined up on pink surface.jpg
+ERR guacamayo: sin candidato válido (File:Wearing Colombia Colors.jpg: licencia "CC BY-SA 4.0")
+ERR tucan: sin candidato válido (File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg: licencia "CC BY-SA 4.0"; File:Toco Toucan (Ramphastos toco) - 48153967707.jpg: licencia "CC BY-SA 2.0"; File:Toco toucan (Ramphastos toco) drinking composite.jpg: licencia "CC BY-SA 4.0")

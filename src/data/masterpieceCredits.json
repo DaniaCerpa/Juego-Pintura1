@@ -1,142 +1,146 @@
 {
-  "fuji-rojo": {
+  "globos": {
+    "author": "Netha Hussain",
     "width": 1000,
-    "height": 668,
-    "license": "Public domain",
-    "file": "Red_Fuji_southern_wind_clear_morning.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Red_Fuji_southern_wind_clear_morning.jpg"
+    "height": 750,
+    "license": "CC0",
+    "file": "Aerial view of Cappadocia from hot air balloon 01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cappadocia_from_hot_air_balloon_01.jpg"
   },
-  "gran-ola": {
+  "tulipanes": {
+    "author": "Sylwia Forysińska jareth21st",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Tulip season (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tulip_season_(Unsplash).jpg"
+  },
+  "pez-payaso": {
+    "author": "Janderk",
+    "width": 1000,
+    "height": 750,
+    "license": "Public domain",
+    "file": "Common clownfish.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_clownfish.jpg"
+  },
+  "loris": {
+    "author": "Public domainPublic domainfalsefalse\n\n\n\n\n\nThis work has been released into the p",
+    "width": 800,
+    "height": 1000,
+    "license": "Public domain",
+    "file": "Trichoglossus moluccanus, flowering Xanthorrhoea.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Trichoglossus_moluccanus,_flowering_Xanthorrhoea.jpg"
+  },
+  "burano": {
+    "author": "Luu",
+    "width": 1000,
+    "height": 706,
+    "license": "Public domain",
+    "file": "Burano - 1.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Burano_-_1.JPG"
+  },
+  "pavo-real": {
+    "author": "Joselodos",
+    "width": 667,
+    "height": 1000,
+    "license": "CC0",
+    "file": "Peacock showing its beautiful feathers old.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Peacock_showing_its_beautiful_feathers_old.jpg"
+  },
+  "camaleon": {
+    "author": "Marius Burger",
+    "width": 1000,
+    "height": 662,
+    "license": "CC0",
+    "file": "Furcifer pardalis 188577163.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Furcifer_pardalis_188577163.jpg"
+  },
+  "aurora": {
+    "author": "Frederic Edwin Church",
+    "width": 1000,
+    "height": 673,
+    "license": "Public domain",
+    "file": "Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Frederic_Edwin_Church_-_Aurora_Borealis_-_Google_Art_Project.jpg"
+  },
+  "flamencos": {
+    "author": "Fuzzsimp",
+    "width": 1000,
+    "height": 667,
+    "license": "CC0",
+    "file": "Flamingos at Lincoln park zoo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Flamingos_at_Lincoln_park_zoo.jpg"
+  },
+  "macarons": {
+    "author": "Tatiana Lapina veila",
+    "width": 1000,
+    "height": 664,
+    "license": "CC0",
+    "file": "Colorful Macarons (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_Macarons_(Unsplash).jpg"
+  },
+  "koi": {
+    "author": "Bernard Spragg. NZ",
     "width": 1000,
     "height": 672,
-    "license": "Public domain",
-    "file": "Tsunami_by_hokusai_19th_century.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Tsunami_by_hokusai_19th_century.jpg"
+    "license": "CC0",
+    "file": "Koi carp; March 2009.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Koi_carp;_March_2009.jpg"
   },
-  "caballos-azules": {
-    "width": 749,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "Marc, Franz - Blue Horse I - Google Art Project.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Marc,_Franz_-_Blue_Horse_I_-_Google_Art_Project.jpg"
-  },
-  "girasoles": {
-    "width": 792,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "Vincent_Willem_van_Gogh_127.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_127.jpg"
-  },
-  "dormitorio": {
+  "medusa": {
+    "author": "Jackhill",
     "width": 1000,
-    "height": 782,
-    "license": "Public domain",
-    "file": "La Chambre à Arles, by Vincent van Gogh, from C2RMF.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:La_Chambre_%C3%A0_Arles,_by_Vincent_van_Gogh,_from_C2RMF.jpg"
+    "height": 750,
+    "license": "CC0",
+    "file": "Waikiki Aquarium Jellyfish.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Waikiki_Aquarium_Jellyfish.jpg"
   },
-  "noche-estrellada": {
+  "mariposa": {
+    "author": "Tung Minh tshusi",
     "width": 1000,
-    "height": 792,
-    "license": "Public domain",
-    "file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+    "height": 667,
+    "license": "CC0",
+    "file": "Butterfly on a flower in close-up (Unsplash).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Butterfly_on_a_flower_in_close-up_(Unsplash).jpg"
   },
-  "composicion-7": {
+  "fuegos": {
+    "author": "JPSS imagery: CSU/CIRA &amp; NOAA/NESDIS",
     "width": 1000,
-    "height": 665,
+    "height": 563,
     "license": "Public domain",
-    "file": "Composition VII - Wassily Kandinsky, GAC.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Composition_VII_-_Wassily_Kandinsky,_GAC.jpg"
+    "file": "Northern Lights to Ring in the New Year (CIRA 2025-01-02 - 2 n21-snpp-n20 viirs dnb nyeaurora nolabels0).png",
+    "source": "https://commons.wikimedia.org/wiki/File:Northern_Lights_to_Ring_in_the_New_Year_(CIRA_2025-01-02_-_2_n21-snpp-n20_viirs_dnb_nyeaurora_nolabels0).png"
   },
-  "almendro": {
+  "lavanda": {
+    "author": "Robert Brink",
     "width": 1000,
-    "height": 790,
-    "license": "Public domain",
-    "file": "Amandelbloesem - s0176V1962 - Van Gogh Museum.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Amandelbloesem_-_s0176V1962_-_Van_Gogh_Museum.jpg"
+    "height": 750,
+    "license": "CC0",
+    "file": "Lavender field in bloom.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lavender_field_in_bloom.jpg"
   },
-  "beso": {
-    "width": 996,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg"
-  },
-  "terraza-cafe": {
-    "width": 803,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "Vincent van Gogh (1853-1890) Caféterras bij nacht (place du Forum) Kröller-Müller Museum Otterlo 23-8-2016 13-35-40.JPG",
-    "source": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_(1853-1890)_Caf%C3%A9terras_bij_nacht_(place_du_Forum)_Kr%C3%B6ller-M%C3%BCller_Museum_Otterlo_23-8-2016_13-35-40.JPG"
-  },
-  "vaca-amarilla": {
+  "arrecife": {
+    "author": "Jim E Maragos, U.S. Fish and Wildlife Service",
     "width": 1000,
-    "height": 747,
+    "height": 666,
     "license": "Public domain",
-    "file": "Franz Marc-The Yellow Cow-1911.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Franz_Marc-The_Yellow_Cow-1911.jpg"
+    "file": "Colorful underwater landscape of a coral reef.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colorful_underwater_landscape_of_a_coral_reef.jpg"
   },
-  "ciruelos": {
-    "width": 680,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "De pruimenboomgaard te Kameido-Rijksmuseum RP-P-1956-743.jpeg",
-    "source": "https://commons.wikimedia.org/wiki/File:De_pruimenboomgaard_te_Kameido-Rijksmuseum_RP-P-1956-743.jpeg"
-  },
-  "tigre": {
-    "width": 1000,
-    "height": 799,
-    "license": "Public domain",
-    "file": "Surprised-Rousseau.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Surprised-Rousseau.jpg"
-  },
-  "noche-rodano": {
-    "width": 1000,
-    "height": 772,
-    "license": "Public domain",
-    "file": "Vincent van Gogh - Starry Night - Google Art Project.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
-  },
-  "lirios": {
-    "width": 1000,
-    "height": 764,
-    "license": "Public domain",
-    "file": "Irises-Vincent_van_Gogh.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Irises-Vincent_van_Gogh.jpg"
-  },
-  "castillo-sol": {
-    "width": 1000,
-    "height": 820,
-    "license": "Public domain",
-    "file": "Burg und Sonne - Klee.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Burg_und_Sonne_-_Klee.jpg"
-  },
-  "dama-verde": {
-    "width": 1000,
-    "height": 1000,
-    "license": "Public domain",
-    "file": "А Маке Дама в зеленом жакете.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:%D0%90_%D0%9C%D0%B0%D0%BA%D0%B5_%D0%94%D0%B0%D0%BC%D0%B0_%D0%B2_%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%BE%D0%BC_%D0%B6%D0%B0%D0%BA%D0%B5%D1%82%D0%B5.jpg"
-  },
-  "arearea": {
+  "otono": {
+    "author": "Unknown authorUnknown author or not provided",
     "width": 1000,
     "height": 788,
     "license": "Public domain",
-    "file": "Paul Gauguin - Arearea - Google Art Project.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Paul_Gauguin_-_Arearea_-_Google_Art_Project.jpg"
+    "file": "Forest Heritage National Scenic Byway - Colorful Autumn Leaves at Looking Glass Falls - NARA - 7718474.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Forest_Heritage_National_Scenic_Byway_-_Colorful_Autumn_Leaves_at_Looking_Glass_Falls_-_NARA_-_7718474.jpg"
   },
-  "nenufares": {
+  "lapices": {
+    "author": "Artsy Crafty",
     "width": 1000,
-    "height": 955,
-    "license": "Public domain",
-    "file": "Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Claude_Monet_-_Water_Lilies_and_Japanese_Bridge.jpg"
-  },
-  "formas-luchando": {
-    "width": 1000,
-    "height": 691,
-    "license": "Public domain",
-    "file": "Marc - Kämpfende Formen PA291382.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Marc_-_K%C3%A4mpfende_Formen_PA291382.jpg"
+    "height": 663,
+    "license": "CC0",
+    "file": "Colored pencils lined up on pink surface.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Colored_pencils_lined_up_on_pink_surface.jpg"
   }
 }
