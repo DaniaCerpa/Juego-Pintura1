@@ -41,11 +41,25 @@ export interface SegmentsConfig {
   smoothPasses: number;
 }
 
+/** Aspecto en pantalla: boceto en acuarela (lo pendiente) y realce de lo ya pintado. */
+export interface LookConfig {
+  /** Cuánto color de la obra lleva el boceto (0 = papel, 1 = obra). */
+  sketchColor: number;
+  /** Saturación del color del boceto (0 = gris). */
+  sketchSaturation: number;
+  /** Fuerza de los trazos de lápiz en los bordes. */
+  edgeStrength: number;
+  /** Realce de saturación de lo pintado (1 = sin cambio). */
+  vibrance: number;
+  contrast: number;
+}
+
 interface MasterpiecesFile {
   source: string;
   displayMaxPx: number;
   analysisWidthPx: number;
   segments: SegmentsConfig;
+  look: LookConfig;
   paintings: Masterpiece[];
 }
 
@@ -389,4 +403,19 @@ export function seedFor(id: string): number {
     h = Math.imul(h, 16777619);
   }
   return h >>> 0;
+}
+
+/** Realza saturación y contraste de un buffer RGBA en sitio (colores más vivos). */
+export function boostColors(px: Uint8ClampedArray, vibrance: number, contrast: number): void {
+  for (let o = 0; o < px.length; o += 4) {
+    const r = px[o];
+    const g = px[o + 1];
+    const b = px[o + 2];
+    const l = 0.299 * r + 0.587 * g + 0.114 * b;
+    for (let c = 0; c < 3; c++) {
+      const v = px[o + c];
+      const sat = l + (v - l) * vibrance;
+      px[o + c] = (sat - 128) * contrast + 128;
+    }
+  }
 }

@@ -6,6 +6,7 @@ import {
   masterpiecesConfig,
   planDecade,
   segmentCountFor,
+  boostColors,
   decadeSlots,
   segmentImage,
   seedFor,
@@ -189,6 +190,7 @@ export class MasterpieceCanvas extends Phaser.GameObjects.Container {
     if (!ctx) return;
     ctx.drawImage(src, 0, 0, w, h);
     const colorData = ctx.getImageData(0, 0, w, h);
+    boostColors(colorData.data, masterpiecesConfig.look.vibrance, masterpiecesConfig.look.contrast);
     this.colorPx = new Uint8ClampedArray(colorData.data);
     this.ctx = ctx;
     this.texKey = `mpc-${m.id}-${w}x${h}-${++instanceCounter}`;
@@ -575,6 +577,7 @@ function upsampleLabels(
 
 /** Boceto: papel con sombreado suave según la luminosidad y trazos de lápiz en los bordes. */
 function makeSketch(color: Uint8ClampedArray, w: number, h: number): Uint8ClampedArray {
+  const look = masterpiecesConfig.look;
   const lum = new Float32Array(w * h);
   for (let i = 0; i < w * h; i++) {
     lum[i] = 0.299 * color[i * 4] + 0.587 * color[i * 4 + 1] + 0.114 * color[i * 4 + 2];
@@ -599,11 +602,15 @@ function makeSketch(color: Uint8ClampedArray, w: number, h: number): Uint8Clampe
         gy = g + 2 * hh + k - a - 2 * b - c;
       }
       const edge = Math.min(1, Math.sqrt(gx * gx + gy * gy) / 260);
-      const shadeF = 0.86 + 0.14 * l; // sombreado muy suave
-      const e = Math.pow(edge, 0.8) * 0.85;
+      const e = Math.pow(edge, 0.8) * look.edgeStrength;
+      // Acuarela: papel teñido con el color de la obra (desaturado) + trazos de lápiz.
+      const o = i * 4;
+      const lv = lum[i];
       for (let ch = 0; ch < 3; ch++) {
-        const base = PAPER[ch] * shadeF;
-        out[i * 4 + ch] = base * (1 - e) + GRAPHITE[ch] * e;
+        const desat = lv + (color[o + ch] - lv) * look.sketchSaturation;
+        const wash = PAPER[ch] * (1 - look.sketchColor) + desat * look.sketchColor;
+        const lifted = wash * (0.94 + 0.06 * l);
+        out[o + ch] = lifted * (1 - e) + GRAPHITE[ch] * e;
       }
       out[i * 4 + 3] = 255;
     }
