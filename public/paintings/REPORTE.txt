@@ -3,7 +3,7 @@ OK  fuji-rojo  1000x668  Public domain  Red_Fuji_southern_wind_clear_morning.jpg
 OK  gran-ola  1000x672  Public domain  Tsunami_by_hokusai_19th_century.jpg
 OK  caballos-azules  749x1000  Public domain  Marc, Franz - Blue Horse I - Google Art Project.jpg
 OK  girasoles  792x1000  Public domain  Vincent_Willem_van_Gogh_127.jpg
-OK  sueno  1000x681  Public domain  Henri Rousseau - Le Rêve - Google Art Project.jpg
+OK  dormitorio  1000x782  Public domain  La Chambre à Arles, by Vincent van Gogh, from C2RMF.jpg
 OK  noche-estrellada  1000x792  Public domain  Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg
 OK  composicion-7  1000x665  Public domain  Composition VII - Wassily Kandinsky, GAC.jpg
 OK  almendro  1000x790  Public domain  Amandelbloesem - s0176V1962 - Van Gogh Museum.jpg
