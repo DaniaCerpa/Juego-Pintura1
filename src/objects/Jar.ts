@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { getPigment } from '../core/pigments';
 import type { PigmentId } from '../core/types';
-import { COLORS, textStyle, UI } from '../ui/theme';
+import { textStyle, UI } from '../ui/theme';
 import {
   CORK_LIP_Y,
   corkKey,
@@ -120,12 +120,7 @@ export class Jar extends Phaser.GameObjects.Container {
     this.add(this.cork);
     this.fuseRing = scene.add.graphics();
     this.fuseText = scene.add
-      .text(
-        w / 2 + 10,
-        -h / 2 - 22,
-        '',
-        textStyle(Math.round(Math.max(36, w * 0.26)), UI.colors.danger),
-      )
+      .text(0, -h / 2 - 34, '', textStyle(Math.round(Math.max(40, w * 0.3)), UI.colors.danger))
       .setOrigin(0.5)
       .setVisible(false);
     this.fuseText.setStroke(UI.colors.panel, 6);
@@ -292,27 +287,7 @@ export class Jar extends Phaser.GameObjects.Container {
     }
     const frac = Phaser.Math.Clamp(remaining / max, 0, 1);
     this.dryness = 1 - frac;
-    // Anillo de progreso alrededor de la boca: elipse en perspectiva sobre el labio.
-    const cy = -this.jarHeight / 2 + 9;
-    const rx = this.jarWidth / 2 + 16;
-    const ry = Math.max(14, this.jarWidth * 0.11);
-    const color = frac > 0.5 ? COLORS.accent : frac > 0.25 ? 0xee8a2a : COLORS.danger;
-    const ring = (from: number, to: number) => {
-      const steps = 48;
-      const pts: Phaser.Math.Vector2[] = [];
-      for (let i = 0; i <= steps; i++) {
-        const a = from + ((to - from) * i) / steps;
-        pts.push(new Phaser.Math.Vector2(Math.cos(a) * rx, cy + Math.sin(a) * ry));
-      }
-      return pts;
-    };
-    g.lineStyle(7, COLORS.panel, 0.65);
-    g.strokePoints(ring(0, Math.PI * 2), false);
-    if (frac > 0) {
-      g.lineStyle(7, color, 1);
-      // Empieza arriba (-π/2) y se consume en sentido horario.
-      g.strokePoints(ring(-Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * frac), false);
-    }
+    // Sin anillo: el número que baja y la costra que se forma bastan para entenderlo.
     // Movimientos que le quedan a la pintura antes de secarse: siempre a la vista; en los
     // últimos 3, rojo y con pulso.
     const urgent = remaining <= 3;

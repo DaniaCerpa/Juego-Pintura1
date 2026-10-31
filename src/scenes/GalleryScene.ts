@@ -9,20 +9,20 @@ import { services } from '../services';
 import { Button } from '../ui/Button';
 import { t } from '../ui/i18n';
 import { showToast } from '../ui/Toast';
-import { COLORS, drawBackdrop, H, shade, textStyle, UI, W } from '../ui/theme';
+import { COLORS, drawBackdrop, H, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
 import { sharePaintingFromScene } from '../ui/share';
 import { IconButton } from '../ui/IconButton';
 import { iconKey } from '../ui/icons';
 import { addWordmark } from '../ui/wordmark';
+import { addCoinCounter } from '../ui/coins';
+import { easelBackKey, easelFrontKey } from '../objects/easel';
 
 /**
  * Galería (§7.3, §9.1.2): pared con los últimos cuadros colgados, caballete con el cuadro
  * de la decena actual a medio pintar, "Pintar nivel N", Paleta, Ajustes y Regalo diario.
  */
 export class GalleryScene extends Phaser.Scene {
-  private coinsText!: Phaser.GameObjects.Text;
-
   constructor() {
     super('Gallery');
   }
@@ -120,17 +120,8 @@ export class GalleryScene extends Phaser.Scene {
 
   private drawCoins(): void {
     const { state } = services();
-    const g = this.add.graphics();
-    g.fillStyle(COLORS.panel, 0.7);
-    g.fillRoundedRect(50, 95, 250, 90, 45);
-    g.fillStyle(COLORS.accent, 1);
-    g.fillCircle(100, 140, 28);
-    g.fillStyle(shade(COLORS.accent, -0.3), 1);
-    g.fillCircle(100, 140, 18);
-    this.coinsText = this.add
-      .text(145, 140, String(state.coins), textStyle(40, UI.colors.text))
-      .setOrigin(0, 0.5);
-    const off = state.on('coins', () => this.coinsText.setText(String(state.coins)));
+    const counter = addCoinCounter(this, 175, 140, state.coins, { width: 200, height: 72 });
+    const off = state.on('coins', () => counter.setValue(state.coins));
     this.events.once('shutdown', off);
   }
 
@@ -142,10 +133,15 @@ export class GalleryScene extends Phaser.Scene {
   private drawWall(currentPainting: number): void {
     const { state } = services();
     const g = this.add.graphics();
-    g.fillStyle(COLORS.panel, 0.45);
+    // Pared de exposición: panel claro con borde de color y riel de madera para colgar.
+    g.fillStyle(0xffffff, 0.6);
     g.fillRoundedRect(50, 290, W - 100, 330, 30);
-    g.fillStyle(shade(COLORS.accentDark, -0.4), 1);
+    g.lineStyle(3, COLORS.accent, 0.35);
+    g.strokeRoundedRect(50, 290, W - 100, 330, 30);
+    g.fillStyle(0xc68a4c, 1);
     g.fillRoundedRect(70, 590, W - 140, 14, 6);
+    g.fillStyle(0xf0c58a, 1);
+    g.fillRoundedRect(70, 590, W - 140, 4, 2);
     const slots = galleryData.slotsPerWall;
     const per = galleryData.levelsPerPainting;
     const first = Math.floor(currentPainting / slots) * slots;
@@ -222,7 +218,7 @@ export class GalleryScene extends Phaser.Scene {
         g.lineStyle(2, COLORS.accent, idx === currentPainting ? 0.4 : 0.18);
         g.strokeRoundedRect(fx + 12, fy + 12, slotW - 48, slotH - 64, 4);
         this.add
-          .text(x, y - 18, '?', textStyle(64, UI.colors.textDim))
+          .text(x, y - 18, '?', textStyle(64, UI.colors.onWallDim))
           .setOrigin(0.5)
           .setAlpha(idx === currentPainting ? 0.5 : 0.3);
         this.add
@@ -230,7 +226,7 @@ export class GalleryScene extends Phaser.Scene {
             x,
             y + 52,
             t('gallery.level', { n: (idx + 1) * per }),
-            textStyle(24, UI.colors.textDim, '600'),
+            textStyle(24, UI.colors.onWallDim, '600'),
           )
           .setOrigin(0.5)
           .setAlpha(0.7);
@@ -241,54 +237,54 @@ export class GalleryScene extends Phaser.Scene {
   private drawEasel(paintingIdx: number): void {
     const { state } = services();
     const cx = W / 2;
-    const cy = 1000;
-    const g = this.add.graphics();
-    // Patas del caballete (detrás del cuadro)
-    g.lineStyle(16, COLORS.accentDark, 1);
-    g.lineBetween(cx - 60, cy - 300, cx - 235, cy + 270);
-    g.lineBetween(cx + 60, cy - 300, cx + 235, cy + 270);
-    g.lineBetween(cx, cy - 200, cx, cy + 285);
-    g.lineStyle(14, COLORS.accentDark, 1);
-    g.lineBetween(cx - 250, cy + 150, cx + 250, cy + 150);
-    const w = 560;
-    const h = 440;
+    const top = 600; // borde superior de la textura del atril
+    this.add.image(cx, top, easelBackKey(this)).setOrigin(0.5, 0);
+    const maxW = 540;
+    const maxH = 420;
+    const pcy = 960;
     const pct = state.paintingPercent(paintingIdx);
     const mp = masterpieceFor(paintingIdx);
     let title: string;
+    let ph = maxH;
     if (mp) {
-      new MasterpieceCanvas(this, cx, cy - 30, w, h, paintingIdx, {
+      const mc = new MasterpieceCanvas(this, cx, pcy, maxW, maxH, paintingIdx, {
         revealedLevels: state.wonLevelsInPainting(paintingIdx),
         complete: pct >= 100,
       });
+      ph = mc.ph;
       title = masterpieceTitle(mp);
     } else {
       const canvas = new PaintingCanvas(
         this,
         cx,
-        cy - 30,
-        w,
-        h,
+        pcy,
+        maxW,
+        maxH,
         paintingIdx,
         paintingPigments(paintingIdx, galleryData.levelsPerPainting),
         pct,
       );
       title = t(canvas.spec.titleKey);
     }
-    // Placa con el título y el progreso (tapa el cruce de las patas)
+    // Bandeja bajo el lienzo y pinza arriba (delante del cuadro)
+    const frame = Math.max(10, Math.round(ph * 0.05));
+    const trayY = Math.round(pcy + ph / 2 + frame + 10 - top);
+    const clampY = Math.round(pcy - ph / 2 - frame - top);
+    this.add.image(cx, top, easelFrontKey(this, trayY, clampY)).setOrigin(0.5, 0);
+    // Placa con el título y el progreso
+    const py = top + trayY + 92;
+    const g = this.add.graphics();
     g.fillStyle(COLORS.panel, 0.92);
-    g.fillRoundedRect(cx - 330, cy + 236, 660, 64, 20);
-    g.lineStyle(2, COLORS.accent, 0.4);
-    g.strokeRoundedRect(cx - 330, cy + 236, 660, 64, 20);
+    g.fillRoundedRect(cx - 330, py - 32, 660, 64, 32);
+    g.lineStyle(2, COLORS.accent, 0.6);
+    g.strokeRoundedRect(cx - 330, py - 32, 660, 64, 32);
     this.add
       .text(
         cx,
-        cy + 268,
+        py,
         `${title} · ${t('gallery.progress', { pct })}`,
-        textStyle(32, UI.colors.textDim, '600'),
+        textStyle(32, UI.colors.text, '600'),
       )
       .setOrigin(0.5);
-    // Repisa del caballete
-    g.fillStyle(COLORS.accentDark, 1);
-    g.fillRoundedRect(cx - 320, cy + 196, 640, 22, 8);
   }
 }

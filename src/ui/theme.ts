@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import uiData from '../data/ui.json';
-import { ensureWorkshopLight } from '../objects/workshop';
+import { ensureStudioSplatters, ensureWorkshopLight } from '../objects/workshop';
 
 export const UI = uiData;
 export const W = uiData.canvas.width;
@@ -20,6 +20,8 @@ export const COLORS = {
   textDim: hexToNum(uiData.colors.textDim),
   accent: hexToNum(uiData.colors.accent),
   accentDark: hexToNum(uiData.colors.accentDark),
+  gold: hexToNum(uiData.colors.gold),
+  goldDark: hexToNum(uiData.colors.goldDark),
   glass: hexToNum(uiData.colors.glass),
   danger: hexToNum(uiData.colors.danger),
   success: hexToNum(uiData.colors.success),
@@ -67,6 +69,8 @@ export function drawBackdrop(scene: Phaser.Scene): void {
     const noise = scene.add.tileSprite(W / 2, H / 2, W, H, 'canvas-noise');
     noise.setAlpha(0.16);
   }
+  // Salpicaduras de pintura en la pared (taller artístico).
+  scene.add.image(W / 2, H / 2, ensureStudioSplatters(scene)).setDisplaySize(W, H);
   // Luz cálida de taller desde arriba a la izquierda + viñeta (B2).
   scene.add.image(W / 2, H / 2, ensureWorkshopLight(scene)).setDisplaySize(W, H);
 }

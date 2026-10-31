@@ -53,7 +53,7 @@ export class OfferScene extends Phaser.Scene {
         height: 120,
         fontSize: 38,
         color: primary ? COLORS.accent : COLORS.backgroundLight,
-        textColor: primary ? UI.colors.panel : UI.colors.text,
+        textColor: primary ? UI.colors.onAccent : UI.colors.text,
       });
     const adBtn = mk(y + 270, t('offer.ad'), true);
     adBtn.onPress = async () => {

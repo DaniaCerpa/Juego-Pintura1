@@ -113,22 +113,19 @@ export class PaintingCanvas extends Phaser.GameObjects.Container {
   private static frameKey(scene: Phaser.Scene, w: number, h: number): string {
     const fw = Math.max(10, Math.round(Math.min(w, h) * 0.05));
     return canvasTexture(scene, `pframe-${w}x${h}`, w + fw * 2 + 14, h + fw * 2 + 18, (ctx) => {
-      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.fillStyle = 'rgba(44,35,80,0.28)';
       roundRectPath(ctx, 10, 14, w + fw * 2, h + fw * 2, 8);
       ctx.fill();
+      // Marco moderno de galería: blanco con canto sutil
       const g = ctx.createLinearGradient(4, 4, w + fw * 2, h + fw * 2);
-      g.addColorStop(0, '#F2C46A');
-      g.addColorStop(0.5, UI.colors.accent);
-      g.addColorStop(1, UI.colors.accentDark);
+      g.addColorStop(0, '#FFFFFF');
+      g.addColorStop(1, '#ECE7F3');
       ctx.fillStyle = g;
-      roundRectPath(ctx, 4, 4, w + fw * 2, h + fw * 2, 8);
+      roundRectPath(ctx, 4, 4, w + fw * 2, h + fw * 2, 6);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(80,50,10,0.55)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(4 + fw - 3, 4 + fw - 3, w + 6, h + 6);
-      ctx.strokeStyle = 'rgba(255,240,200,0.5)';
-      roundRectPath(ctx, 7, 7, w + fw * 2 - 6, h + fw * 2 - 6, 6);
-      ctx.stroke();
+      ctx.strokeStyle = 'rgba(44,35,80,0.22)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(4 + fw - 2, 4 + fw - 2, w + 4, h + 4);
     });
   }
 

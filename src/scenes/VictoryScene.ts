@@ -89,7 +89,7 @@ export class VictoryScene extends Phaser.Scene {
           W / 2 + (i - 1) * 150,
           starY,
           '★',
-          textStyle(120, i < r.stars ? UI.colors.accent : '#D3C6B1'),
+          textStyle(120, i < r.stars ? UI.colors.gold : '#E6DCEB'),
         )
         .setOrigin(0.5)
         .setScale(0)
@@ -273,7 +273,7 @@ export class VictoryScene extends Phaser.Scene {
       const share = new IconButton(this, W / 2 + 290, 690, 'share', {
         size: 104,
         color: UI.colors.accent,
-        iconColor: UI.colors.panel,
+        iconColor: UI.colors.onAccent,
       });
       share.setAlpha(0).setDepth(5);
       this.time.delayedCall(1000 + UI.anim.brushMs + 300, () => {

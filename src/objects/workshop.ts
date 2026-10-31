@@ -157,3 +157,56 @@ export function ensureWorkshopLight(scene: Phaser.Scene): string {
     ctx.fillRect(0, 0, w, h);
   });
 }
+
+/**
+ * Salpicaduras de pintura en la pared del taller: manchas, chorreados y gotitas de colores
+ * vivos, sobre todo en los bordes (no compiten con el tablero). Generadas una vez.
+ */
+export function ensureStudioSplatters(scene: Phaser.Scene): string {
+  return canvasTexture(scene, 'studio-splatters', 540, 960, (ctx, w, h) => {
+    const rnd = texRng(2026);
+    const colors = ['#FF4F81', '#FFC83A', '#1BB7E8', '#7C4DFF', '#22C55E', '#FF7A1A'];
+    const nearEdge = () => {
+      // Más probabilidad cerca de los bordes izquierdo/derecho y de las esquinas.
+      const side = rnd() < 0.5 ? rnd() * 0.22 : 1 - rnd() * 0.22;
+      return { x: side * w, y: rnd() * h };
+    };
+    for (let i = 0; i < 26; i++) {
+      const { x, y } = nearEdge();
+      const col = colors[Math.floor(rnd() * colors.length)];
+      const r = 10 + rnd() * 34;
+      ctx.globalAlpha = 0.1 + rnd() * 0.12;
+      ctx.fillStyle = col;
+      // Mancha irregular: varios círculos superpuestos
+      for (let k = 0; k < 6; k++) {
+        ctx.beginPath();
+        ctx.arc(
+          x + (rnd() - 0.5) * r,
+          y + (rnd() - 0.5) * r,
+          r * (0.35 + rnd() * 0.5),
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+      // Gotitas alrededor
+      for (let k = 0; k < 10; k++) {
+        const a = rnd() * Math.PI * 2;
+        const d = r * (1 + rnd() * 1.6);
+        ctx.beginPath();
+        ctx.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, 1 + rnd() * 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Chorreado hacia abajo en algunas
+      if (rnd() < 0.45) {
+        const len = 30 + rnd() * 120;
+        const dw = 3 + rnd() * 6;
+        ctx.fillRect(x - dw / 2, y, dw, len);
+        ctx.beginPath();
+        ctx.arc(x, y + len, dw * 0.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  });
+}

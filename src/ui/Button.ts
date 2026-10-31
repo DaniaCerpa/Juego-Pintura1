@@ -38,7 +38,7 @@ export class Button extends Phaser.GameObjects.Container {
       width: options.width ?? 420,
       height: options.height ?? 120,
       color: options.color ?? COLORS.accent,
-      textColor: options.textColor ?? UI.colors.panel,
+      textColor: options.textColor ?? UI.colors.onAccent,
       fontSize: options.fontSize ?? 44,
       radius: options.radius ?? 28,
       outline: options.outline ?? false,

@@ -47,7 +47,7 @@ export class PauseScene extends Phaser.Scene {
         height: 120,
         fontSize: 40,
         color: primary ? COLORS.accent : COLORS.backgroundLight,
-        textColor: primary ? UI.colors.panel : UI.colors.text,
+        textColor: primary ? UI.colors.onAccent : UI.colors.text,
       });
     mk(y + 230, t('pause.continue'), true).onPress = resume;
     mk(y + 380, t('pause.restart'), false).onPress = () => {

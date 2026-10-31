@@ -120,5 +120,5 @@
   "deadEnd.restart": "Empezar de nuevo",
   "victory.painting": "{title} · {pct} % pintado",
   "level.hint.sortedMix": "¡Casi! {counts} no llenan un frasco.\nMézclalos: {a} + {b} = {p}",
-  "level.tooltip.drying": "El frasco con anillo se está secando: el número son los movimientos que le quedan. Llénalo de un solo color o vacíalo antes de que llegue a 0."
+  "level.tooltip.drying": "Este frasco se está secando: el número sobre él son los movimientos que le quedan. Llénalo de un solo color o vacíalo antes de que llegue a 0."
 }

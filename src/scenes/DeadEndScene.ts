@@ -78,7 +78,7 @@ export class DeadEndScene extends Phaser.Scene {
         height: 116,
         fontSize: 38,
         color: primary ? COLORS.accent : COLORS.backgroundLight,
-        textColor: primary ? UI.colors.panel : UI.colors.text,
+        textColor: primary ? UI.colors.onAccent : UI.colors.text,
       });
       b.onPress = onPress;
       by += 140;

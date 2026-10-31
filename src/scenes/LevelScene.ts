@@ -37,7 +37,8 @@ import { IconButton } from '../ui/IconButton';
 import { services } from '../services';
 import { t } from '../ui/i18n';
 import { showToast } from '../ui/Toast';
-import { COLORS, drawBackdrop, hexToNum, shade, textStyle, UI, W } from '../ui/theme';
+import { addCoinCounter } from '../ui/coins';
+import { COLORS, drawBackdrop, hexToNum, textStyle, UI, W } from '../ui/theme';
 import { fadeIn, goTo } from '../ui/transitions';
 import type { DeadEndData } from './DeadEndScene';
 import type { VictoryData } from './VictoryScene';
@@ -66,7 +67,6 @@ export class LevelScene extends Phaser.Scene {
   private stream!: Phaser.GameObjects.Graphics;
   private fx!: Fx;
   private movesText!: Phaser.GameObjects.Text;
-  private coinsText!: Phaser.GameObjects.Text;
   private undoBtn!: IconButton;
   private extraBtn!: IconButton;
   private restartBtn!: IconButton;
@@ -169,15 +169,8 @@ export class LevelScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     // Monedas (derecha)
-    const coin = this.add.graphics();
-    coin.fillStyle(COLORS.accent, 1);
-    coin.fillCircle(W - 215, 145, 22);
-    coin.fillStyle(shade(COLORS.accent, -0.3), 1);
-    coin.fillCircle(W - 215, 145, 13);
-    this.coinsText = this.add
-      .text(W - 180, 145, String(state.coins), textStyle(36, UI.colors.text))
-      .setOrigin(0, 0.5);
-    const off = state.on('coins', () => this.coinsText.setText(String(state.coins)));
+    const counter = addCoinCounter(this, W - 175, 145, state.coins, { width: 190, height: 64 });
+    const off = state.on('coins', () => counter.setValue(state.coins));
     this.events.once('shutdown', off);
     this.updateMoves();
   }
