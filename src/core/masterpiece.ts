@@ -16,7 +16,9 @@ import type { PigmentId } from './types';
  */
 export interface Masterpiece {
   id: string;
-  file: string;
+  /** Archivo exacto en Wikimedia Commons, o `search` para que el workflow lo busque. */
+  file?: string;
+  search?: string;
   title: { es: string; en: string };
   artist: string;
   year: string;
@@ -26,6 +28,7 @@ export interface MasterpieceCredit {
   width: number;
   height: number;
   license: string;
+  file?: string;
   source: string;
 }
 

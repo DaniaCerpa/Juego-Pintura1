@@ -31,6 +31,16 @@
       "year": "c. 1831"
     },
     {
+      "id": "caballos-azules",
+      "search": "Franz Marc Blue Horses 1911",
+      "title": {
+        "es": "Los grandes caballos azules",
+        "en": "The Large Blue Horses"
+      },
+      "artist": "Franz Marc",
+      "year": "1911"
+    },
+    {
       "id": "girasoles",
       "file": "Vincent_Willem_van_Gogh_127.jpg",
       "title": {
@@ -39,6 +49,16 @@
       },
       "artist": "Vincent van Gogh",
       "year": "1888"
+    },
+    {
+      "id": "sueno",
+      "search": "Henri Rousseau The Dream 1910",
+      "title": {
+        "es": "El sueño",
+        "en": "The Dream"
+      },
+      "artist": "Henri Rousseau",
+      "year": "1910"
     },
     {
       "id": "noche-estrellada",
@@ -51,24 +71,24 @@
       "year": "1889"
     },
     {
-      "id": "lirios",
-      "file": "Irises-Vincent_van_Gogh.jpg",
+      "id": "composicion-7",
+      "search": "Kandinsky Composition VII 1913",
       "title": {
-        "es": "Lirios",
-        "en": "Irises"
+        "es": "Composición VII",
+        "en": "Composition VII"
       },
-      "artist": "Vincent van Gogh",
-      "year": "1889"
+      "artist": "Vasili Kandinski",
+      "year": "1913"
     },
     {
-      "id": "sombrilla",
-      "file": "Claude_Monet_-_Woman_with_a_Parasol_-_Madame_Monet_and_Her_Son_-_Google_Art_Project.jpg",
+      "id": "almendro",
+      "search": "Van Gogh Almond blossom 1890",
       "title": {
-        "es": "Mujer con sombrilla",
-        "en": "Woman with a Parasol"
+        "es": "Almendro en flor",
+        "en": "Almond Blossom"
       },
-      "artist": "Claude Monet",
-      "year": "1875"
+      "artist": "Vincent van Gogh",
+      "year": "1890"
     },
     {
       "id": "beso",
@@ -81,14 +101,94 @@
       "year": "1907–1908"
     },
     {
-      "id": "trigo-cipreses",
-      "file": "Wheat-Field-with-Cypresses-(1889)-Vincent-van-Gogh-Met.jpg",
+      "id": "terraza-cafe",
+      "search": "Van Gogh Cafe Terrace at Night Kröller-Müller",
       "title": {
-        "es": "Campo de trigo con cipreses",
-        "en": "Wheat Field with Cypresses"
+        "es": "Terraza de café por la noche",
+        "en": "Café Terrace at Night"
+      },
+      "artist": "Vincent van Gogh",
+      "year": "1888"
+    },
+    {
+      "id": "vaca-amarilla",
+      "search": "Franz Marc Yellow Cow 1911",
+      "title": {
+        "es": "La vaca amarilla",
+        "en": "Yellow Cow"
+      },
+      "artist": "Franz Marc",
+      "year": "1911"
+    },
+    {
+      "id": "ciruelos",
+      "search": "Hiroshige Plum Park in Kameido",
+      "title": {
+        "es": "Jardín de ciruelos en Kameido",
+        "en": "Plum Park in Kameido"
+      },
+      "artist": "Utagawa Hiroshige",
+      "year": "1857"
+    },
+    {
+      "id": "tigre",
+      "search": "Henri Rousseau Tiger in a Tropical Storm Surprised",
+      "title": {
+        "es": "¡Sorprendido! Tigre en una tormenta tropical",
+        "en": "Tiger in a Tropical Storm (Surprised!)"
+      },
+      "artist": "Henri Rousseau",
+      "year": "1891"
+    },
+    {
+      "id": "noche-rodano",
+      "search": "Van Gogh Starry Night Over the Rhône",
+      "title": {
+        "es": "Noche estrellada sobre el Ródano",
+        "en": "Starry Night Over the Rhône"
+      },
+      "artist": "Vincent van Gogh",
+      "year": "1888"
+    },
+    {
+      "id": "lirios",
+      "file": "Irises-Vincent_van_Gogh.jpg",
+      "title": {
+        "es": "Lirios",
+        "en": "Irises"
       },
       "artist": "Vincent van Gogh",
       "year": "1889"
+    },
+    {
+      "id": "castillo-sol",
+      "search": "Paul Klee Castle and Sun 1928",
+      "title": {
+        "es": "Castillo y sol",
+        "en": "Castle and Sun"
+      },
+      "artist": "Paul Klee",
+      "year": "1928"
+    },
+    {
+      "id": "dama-verde",
+      "search": "August Macke Lady in a Green Jacket",
+      "title": {
+        "es": "Dama con chaqueta verde",
+        "en": "Lady in a Green Jacket"
+      },
+      "artist": "August Macke",
+      "year": "1913"
+    },
+    {
+      "id": "arearea",
+      "search": "Paul Gauguin Arearea 1892",
+      "title": {
+        "es": "Arearea",
+        "en": "Arearea (Joyousness)"
+      },
+      "artist": "Paul Gauguin",
+      "year": "1892"
     },
     {
       "id": "nenufares",
@@ -101,64 +201,14 @@
       "year": "1899"
     },
     {
-      "id": "joven-perla",
-      "file": "1665_Girl_with_a_Pearl_Earring.jpg",
+      "id": "formas-luchando",
+      "search": "Franz Marc Fighting Forms 1914",
       "title": {
-        "es": "La joven de la perla",
-        "en": "Girl with a Pearl Earring"
+        "es": "Formas luchando",
+        "en": "Fighting Forms"
       },
-      "artist": "Johannes Vermeer",
-      "year": "c. 1665"
-    },
-    {
-      "id": "sol-naciente",
-      "file": "Monet_-_Impression,_Sunrise.jpg",
-      "title": {
-        "es": "Impresión, sol naciente",
-        "en": "Impression, Sunrise"
-      },
-      "artist": "Claude Monet",
-      "year": "1872"
-    },
-    {
-      "id": "grande-jatte",
-      "file": "A_Sunday_on_La_Grande_Jatte,_Georges_Seurat,_1884.jpg",
-      "title": {
-        "es": "Tarde de domingo en la isla de La Grande Jatte",
-        "en": "A Sunday on La Grande Jatte"
-      },
-      "artist": "Georges Seurat",
-      "year": "1884–1886"
-    },
-    {
-      "id": "moulin-galette",
-      "file": "Pierre-Auguste_Renoir,_Le_Moulin_de_la_Galette.jpg",
-      "title": {
-        "es": "Baile en el Moulin de la Galette",
-        "en": "Bal du moulin de la Galette"
-      },
-      "artist": "Pierre-Auguste Renoir",
-      "year": "1876"
-    },
-    {
-      "id": "carreta-heno",
-      "file": "John_Constable_The_Hay_Wain.jpg",
-      "title": {
-        "es": "La carreta de heno",
-        "en": "The Hay Wain"
-      },
-      "artist": "John Constable",
-      "year": "1821"
-    },
-    {
-      "id": "temerario",
-      "file": "The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
-      "title": {
-        "es": "El Temerario",
-        "en": "The Fighting Temeraire"
-      },
-      "artist": "J. M. W. Turner",
-      "year": "1839"
+      "artist": "Franz Marc",
+      "year": "1914"
     }
   ]
 }
