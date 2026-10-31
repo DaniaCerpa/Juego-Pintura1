@@ -9,6 +9,13 @@
     "spatialWeight": 38,
     "smoothPasses": 2
   },
+  "look": {
+    "sketchColor": 0.45,
+    "sketchSaturation": 0.4,
+    "edgeStrength": 0.5,
+    "vibrance": 1.2,
+    "contrast": 1.06
+  },
   "paintings": [
     {
       "id": "fuji-rojo",
@@ -34,8 +41,8 @@
       "id": "caballos-azules",
       "search": "Franz Marc Blue Horses 1911",
       "title": {
-        "es": "Los grandes caballos azules",
-        "en": "The Large Blue Horses"
+        "es": "Caballo azul I",
+        "en": "Blue Horse I"
       },
       "artist": "Franz Marc",
       "year": "1911"
@@ -51,14 +58,14 @@
       "year": "1888"
     },
     {
-      "id": "sueno",
-      "search": "Henri Rousseau The Dream 1910",
+      "id": "dormitorio",
+      "search": "Van Gogh Bedroom in Arles Van Gogh Museum 1888",
       "title": {
-        "es": "El sueño",
-        "en": "The Dream"
+        "es": "El dormitorio en Arlés",
+        "en": "Bedroom in Arles"
       },
-      "artist": "Henri Rousseau",
-      "year": "1910"
+      "artist": "Vincent van Gogh",
+      "year": "1888"
     },
     {
       "id": "noche-estrellada",
