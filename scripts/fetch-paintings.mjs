@@ -6,7 +6,14 @@
 //   node scripts/fetch-paintings.mjs
 //
 // Salidas: public/paintings/<id>.jpg y src/data/masterpieceCredits.json
-import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
 import { join } from 'node:path';
 
 // sharp se instala solo en el workflow (no es dependencia del juego).
@@ -17,13 +24,38 @@ const data = JSON.parse(readFileSync('src/data/masterpieces.json', 'utf8'));
 const outDir = 'public/paintings';
 mkdirSync(outDir, { recursive: true });
 
+// Créditos previos: lo ya descargado con la misma búsqueda no se vuelve a pedir.
+let previous = {};
+try {
+  previous = JSON.parse(readFileSync('src/data/masterpieceCredits.json', 'utf8'));
+} catch {
+  previous = {};
+}
 const credits = {};
 const failures = [];
 const API = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&formatversion=2';
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Llamada a la API con pausa y reintentos (Wikimedia limita la frecuencia). */
 async function api(params) {
-  const res = await fetch(`${API}&${params}`, { headers: { 'User-Agent': UA } });
-  return res.json();
+  for (let attempt = 0; attempt < 5; attempt++) {
+    await sleep(700 + attempt * 2500);
+    const res = await fetch(`${API}&${params}`, { headers: { 'User-Agent': UA } });
+    const text = await res.text();
+    if (res.ok && text.trimStart().startsWith('{')) return JSON.parse(text);
+  }
+  throw new Error('la API de Wikimedia no respondió (límite de frecuencia)');
+}
+
+/** Descarga con reintentos. */
+async function download(url) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    await sleep(500 + attempt * 2500);
+    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    if (res.ok) return Buffer.from(await res.arrayBuffer());
+  }
+  throw new Error(`no se pudo descargar ${url}`);
 }
 
 /** Archivos candidatos: el nombre exacto (`file`) o los resultados de búsqueda (`search`). */
@@ -40,9 +72,9 @@ async function candidates(p) {
  * o lavadas: así, entre varios candidatos válidos se queda la imagen más vistosa.
  */
 async function vividness(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA } });
-  if (!res.ok) return 0;
-  const { data, info } = await sharp(Buffer.from(await res.arrayBuffer()))
+  const buf = await download(url).catch(() => null);
+  if (!buf) return 0;
+  const { data, info } = await sharp(buf)
     .resize(160, 160, { fit: 'inside' })
     .removeAlpha()
     .raw()
@@ -120,14 +152,18 @@ async function pick(p) {
 }
 
 for (const p of data.paintings) {
+  const out = join(outDir, `${p.id}.jpg`);
+  const query = p.file ?? p.search;
+  const prev = previous[p.id];
+  if (prev && prev.query === query && existsSync(out)) {
+    credits[p.id] = prev;
+    console.log(`=   ${p.id}  (sin cambios)`);
+    continue;
+  }
   try {
     const { title, info, license } = await pick(p);
-    const url = info.thumburl ?? info.url;
-    const img = await fetch(url, { headers: { 'User-Agent': UA } });
-    if (!img.ok) throw new Error(`descarga ${img.status}`);
-    const out = join(outDir, `${p.id}.jpg`);
+    const buf = await download(info.thumburl ?? info.url);
     const max = data.displayMaxPx;
-    const buf = Buffer.from(await img.arrayBuffer());
     const info2 = await sharp(buf)
       .rotate()
       .toColorspace('srgb')
@@ -139,6 +175,7 @@ for (const p of data.paintings) {
         .replace(/<[^>]+>/g, '')
         .trim();
     credits[p.id] = {
+      query,
       author: strip(info.extmetadata?.Artist?.value).slice(0, 80),
       width: info2.width,
       height: info2.height,
@@ -150,8 +187,9 @@ for (const p of data.paintings) {
   } catch (e) {
     failures.push(`${p.id}: ${e.message}`);
     console.log(`ERR ${p.id}: ${e.message}`);
+    // Si falla, se conserva lo que había (si la imagen sigue en disco).
+    if (prev && existsSync(out)) credits[p.id] = prev;
   }
-  await new Promise((r) => setTimeout(r, 400)); // cortesía con la API
 }
 
 // Quitar imágenes de obras que ya no están en la lista.
