@@ -18,31 +18,11 @@
   },
   "paintings": [
     {
-      "id": "guacamayo",
-      "search": "macaw Unsplash",
+      "id": "lapices",
+      "search": "colored pencils",
       "title": {
-        "es": "Guacamayo rojo",
-        "en": "Scarlet Macaw"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "globos",
-      "search": "colorful hot air balloon close up Unsplash",
-      "title": {
-        "es": "Globo aerostático",
-        "en": "Hot Air Balloon"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "tulipanes",
-      "search": "tulip field Netherlands",
-      "title": {
-        "es": "Campo de tulipanes",
-        "en": "Tulip Field"
+        "es": "Lápices de colores",
+        "en": "Colored Pencils"
       },
       "artist": "",
       "year": ""
@@ -58,11 +38,21 @@
       "year": ""
     },
     {
-      "id": "loris",
-      "search": "rainbow lorikeet",
+      "id": "tulipanes",
+      "search": "tulip field Netherlands",
       "title": {
-        "es": "Loris arcoíris",
-        "en": "Rainbow Lorikeet"
+        "es": "Campo de tulipanes",
+        "en": "Tulip Field"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "guacamayo",
+      "search": "macaw Unsplash",
+      "title": {
+        "es": "Guacamayo rojo",
+        "en": "Scarlet Macaw"
       },
       "artist": "",
       "year": ""
@@ -78,101 +68,11 @@
       "year": ""
     },
     {
-      "id": "pavo-real",
-      "search": "peacock displaying feathers",
-      "title": {
-        "es": "Pavo real",
-        "en": "Peacock"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "dulces",
-      "search": "colorful candy Unsplash",
-      "title": {
-        "es": "Dulces de colores",
-        "en": "Colorful Candy"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "aurora",
-      "search": "aurora borealis Unsplash",
-      "title": {
-        "es": "Aurora boreal",
-        "en": "Northern Lights"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "atardecer",
-      "search": "sunset sea colorful Unsplash",
-      "title": {
-        "es": "Atardecer",
-        "en": "Sunset"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
       "id": "macarons",
       "search": "macarons colorful",
       "title": {
         "es": "Macarons",
         "en": "Macarons"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "koi",
-      "search": "koi carp pond",
-      "title": {
-        "es": "Peces koi",
-        "en": "Koi Fish"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "medusa",
-      "search": "jellyfish aquarium",
-      "title": {
-        "es": "Medusas",
-        "en": "Jellyfish"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "mariposa",
-      "search": "butterfly flower colorful macro",
-      "title": {
-        "es": "Mariposa",
-        "en": "Butterfly"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "paraguas",
-      "search": "colorful umbrellas Unsplash",
-      "title": {
-        "es": "Paraguas de colores",
-        "en": "Colorful Umbrellas"
-      },
-      "artist": "",
-      "year": ""
-    },
-    {
-      "id": "lavanda",
-      "search": "lavender field",
-      "title": {
-        "es": "Campo de lavanda",
-        "en": "Lavender Field"
       },
       "artist": "",
       "year": ""
@@ -188,31 +88,131 @@
       "year": ""
     },
     {
-      "id": "otono",
-      "search": "autumn leaves Unsplash",
+      "id": "dulces",
+      "search": "colorful candy Unsplash",
       "title": {
-        "es": "Bosque en otoño",
-        "en": "Autumn Forest"
+        "es": "Dulces de colores",
+        "en": "Colorful Candy"
       },
       "artist": "",
       "year": ""
     },
     {
-      "id": "lapices",
-      "search": "colored pencils",
+      "id": "loris",
+      "search": "rainbow lorikeet",
       "title": {
-        "es": "Lápices de colores",
-        "en": "Colored Pencils"
+        "es": "Loris arcoíris",
+        "en": "Rainbow Lorikeet"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "pavo-real",
+      "search": "peacock displaying feathers",
+      "title": {
+        "es": "Pavo real",
+        "en": "Peacock"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "mariposa",
+      "search": "butterfly flower colorful macro",
+      "title": {
+        "es": "Mariposa",
+        "en": "Butterfly"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "aurora",
+      "search": "aurora borealis Unsplash",
+      "title": {
+        "es": "Aurora boreal",
+        "en": "Northern Lights"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "koi",
+      "search": "koi carp pond",
+      "title": {
+        "es": "Peces koi",
+        "en": "Koi Fish"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "lavanda",
+      "search": "lavender field",
+      "title": {
+        "es": "Campo de lavanda",
+        "en": "Lavender Field"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "gomitas",
+      "search": "gummy bears colorful Unsplash",
+      "title": {
+        "es": "Gomitas",
+        "en": "Gummy Bears"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "casas",
+      "search": "colorful houses Unsplash",
+      "title": {
+        "es": "Casas de colores",
+        "en": "Colorful Houses"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "paraguas",
+      "search": "colorful umbrellas street decoration Unsplash",
+      "title": {
+        "es": "Paraguas de colores",
+        "en": "Colorful Umbrellas"
       },
       "artist": "",
       "year": ""
     },
     {
       "id": "colibri",
-      "search": "hummingbird flower Unsplash",
+      "search": "hummingbird Unsplash",
       "title": {
         "es": "Colibrí",
         "en": "Hummingbird"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "medusa",
+      "search": "jellyfish aquarium",
+      "title": {
+        "es": "Medusas",
+        "en": "Jellyfish"
+      },
+      "artist": "",
+      "year": ""
+    },
+    {
+      "id": "otono",
+      "search": "autumn leaves Unsplash",
+      "title": {
+        "es": "Bosque en otoño",
+        "en": "Autumn Forest"
       },
       "artist": "",
       "year": ""

@@ -35,10 +35,52 @@ async function candidates(p) {
   return (json.query?.search ?? []).map((r) => r.title);
 }
 
-/** Primer candidato con licencia de dominio público, imagen grande y proporción razonable. */
+/**
+ * Colorido de una miniatura (métrica de Hasler y Süsstrunk), penalizando imágenes oscuras
+ * o lavadas: así, entre varios candidatos válidos se queda la imagen más vistosa.
+ */
+async function vividness(url) {
+  const res = await fetch(url, { headers: { 'User-Agent': UA } });
+  if (!res.ok) return 0;
+  const { data, info } = await sharp(Buffer.from(await res.arrayBuffer()))
+    .resize(160, 160, { fit: 'inside' })
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let srg = 0,
+    syb = 0,
+    srg2 = 0,
+    syb2 = 0,
+    sl = 0;
+  const n = info.width * info.height;
+  for (let i = 0; i < data.length; i += 3) {
+    const r = data[i],
+      g = data[i + 1],
+      b = data[i + 2];
+    const rg = r - g;
+    const yb = 0.5 * (r + g) - b;
+    srg += rg;
+    syb += yb;
+    srg2 += rg * rg;
+    syb2 += yb * yb;
+    sl += 0.299 * r + 0.587 * g + 0.114 * b;
+  }
+  const mrg = srg / n,
+    myb = syb / n;
+  const sdrg = Math.sqrt(Math.max(0, srg2 / n - mrg * mrg));
+  const sdyb = Math.sqrt(Math.max(0, syb2 / n - myb * myb));
+  const colorful = Math.sqrt(sdrg ** 2 + sdyb ** 2) + 0.3 * Math.sqrt(mrg ** 2 + myb ** 2);
+  const light = sl / n;
+  const lightFactor = light < 60 ? 0.4 : light < 95 ? 0.75 : light > 225 ? 0.7 : 1;
+  return colorful * lightFactor;
+}
+
+/** Entre los candidatos con licencia libre, imagen grande y proporción razonable, el más vistoso. */
 async function pick(p) {
   const reasons = [];
+  const valid = [];
   for (const title of await candidates(p)) {
+    if (valid.length >= 6) break;
     if (
       /detail|detalle|crop|frame|marco|google art project|painting|nara|nasa|cira|\.(pdf|tif|tiff|svg|djvu|webm|ogv)$/i.test(
         title,
@@ -60,9 +102,21 @@ async function pick(p) {
       reasons.push(`${title}: ${info.mime} ${info.width}x${info.height}`);
       continue;
     }
-    return { title, info, license };
+    valid.push({ title, info, license });
   }
-  throw new Error(`sin candidato válido (${reasons.slice(0, 3).join('; ') || 'sin resultados'})`);
+  if (valid.length === 0)
+    throw new Error(`sin candidato válido (${reasons.slice(0, 3).join('; ') || 'sin resultados'})`);
+  if (p.file || valid.length === 1) return valid[0];
+  let best = valid[0];
+  let bestScore = -1;
+  for (const v of valid) {
+    const score = await vividness(v.info.thumburl ?? v.info.url);
+    if (score > bestScore) {
+      bestScore = score;
+      best = v;
+    }
+  }
+  return best;
 }
 
 for (const p of data.paintings) {
